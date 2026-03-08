@@ -77,22 +77,7 @@ const AlumniDirectoryPage = () => {
     }
   }, [search, sortBy, page, batchFilter]);
 
-  // Fetch available batch years
-  useEffect(() => {
-    const fetchBatches = async () => {
-      const { data } = await supabase
-        .from('alumni')
-        .select('graduation_year')
-        .eq('is_approved', true)
-        .not('graduation_year', 'is', null)
-        .order('graduation_year', { ascending: false });
-      if (data) {
-        const unique = [...new Set(data.map(d => d.graduation_year as number))];
-        setAvailableBatches(unique);
-      }
-    };
-    fetchBatches();
-  }, []);
+
 
   useEffect(() => { fetchAlumni(); }, [fetchAlumni]);
 
