@@ -60,13 +60,7 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
     new TextEncoder().encode(unsignedToken)
   );
 
-  const signedToken = `${unsignedToken}.${btoa(
-    String.fromCharCode(...new Uint8Array(signature))
-  )
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "")}`;
-
+  const signedToken = `${unsignedToken}.${b64url(new Uint8Array(signature))}`;
   const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
