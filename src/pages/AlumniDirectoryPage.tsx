@@ -49,6 +49,9 @@ const AlumniDirectoryPage = () => {
     try {
       let query = supabase.from('alumni').select('*', { count: 'exact' }).eq('is_approved', true);
 
+      if (batchFilter && batchFilter !== 'all') {
+        query = query.eq('graduation_year', parseInt(batchFilter));
+      }
       if (search) {
         query = query.or(`full_name.ilike.%${search}%,company.ilike.%${search}%,job_title.ilike.%${search}%,skills.ilike.%${search}%`);
       }
