@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Briefcase, Mail, Phone, Linkedin, Globe, GraduationCap, Copy, Check, ExternalLink, ArrowLeft, Star, Building2, Calendar, Hash, Home } from 'lucide-react';
+import { MapPin, Briefcase, Mail, Phone, Linkedin, Globe, GraduationCap, Copy, Check, ExternalLink, ArrowLeft, Star, Building2, Calendar, Hash, Home, Share2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { fadeInUp } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
