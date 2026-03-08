@@ -139,7 +139,19 @@ const AlumniDirectoryPage = () => {
             <p className="text-sm text-muted-foreground font-body">
               Showing <span className="font-semibold text-foreground">{alumni.length}</span> of <span className="font-semibold text-foreground">{total}</span> alumni
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
+              <Select value={batchFilter} onValueChange={(v) => { setBatchFilter(v); setPage(0); }}>
+                <SelectTrigger className="w-44 font-body text-sm">
+                  <GraduationCap className="w-4 h-4 mr-2 text-muted-foreground" />
+                  <SelectValue placeholder="Filter by Batch" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Batches</SelectItem>
+                  {availableBatches.map((year) => (
+                    <SelectItem key={year} value={String(year)}>Batch {year}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-40 font-body text-sm"><SelectValue /></SelectTrigger>
                 <SelectContent>
