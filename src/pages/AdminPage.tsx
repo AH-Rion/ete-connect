@@ -123,7 +123,13 @@ const AdminPage = () => {
   return (
     <motion.div {...pageTransition} className="pt-20 pb-16 bg-background min-h-screen">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-heading font-bold text-foreground mb-8">Admin Dashboard</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-heading font-bold text-foreground">Admin Dashboard</h1>
+          <Button onClick={syncToSheets} disabled={syncing} variant="outline" className="font-heading gap-2">
+            <RefreshCw className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} />
+            {syncing ? 'Syncing...' : 'Sync to Sheets'}
+          </Button>
+        </div>
 
         <Tabs value={tab} onValueChange={setTab}>
           <TabsList className="mb-8">
