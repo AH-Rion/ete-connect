@@ -203,7 +203,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <FeaturedAlumniRotation />
+      <CubeAlumniShowcase />
 
       {/* How It Works */}
       <section className="py-20 bg-card">
