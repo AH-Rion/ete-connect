@@ -33,13 +33,18 @@ async function getAccessToken(clientEmail: string, privateKey: string): Promise<
   const encJson = (obj: any) => b64url(new TextEncoder().encode(JSON.stringify(obj)));
   const unsignedToken = `${encJson(header)}.${encJson(payload)}`;
 
-  // Clean up PEM - handle both literal \n and actual newlines
-  const cleanKey = privateKey
+  // Clean up PEM - handle literal \n strings and actual newlines
+  let cleanKey = privateKey
     .replace(/\\n/g, "\n")
     .replace(/-----BEGIN PRIVATE KEY-----/g, "")
     .replace(/-----END PRIVATE KEY-----/g, "")
     .replace(/\s/g, "");
-
+  
+  // Fix: if key starts with 'n' due to \n prefix corruption, and has odd length, trim it
+  if (cleanKey.startsWith("n") && cleanKey.length % 4 !== 0) {
+    cleanKey = cleanKey.substring(1);
+  }
+  
   console.log("Clean key length:", cleanKey.length, "starts with:", cleanKey.substring(0, 10));
 
   // Decode base64 manually without atob
