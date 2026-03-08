@@ -17,12 +17,14 @@ const AdminPage = () => {
   const [tab, setTab] = useState('overview');
   const [alumni, setAlumni] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
+  const [settings, setSettings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
   const [selectedAlumni, setSelectedAlumni] = useState<any>(null);
   const [deleteDialog, setDeleteDialog] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
+  const [savingSettings, setSavingSettings] = useState(false);
 
   const syncToSheets = async () => {
     setSyncing(true);
