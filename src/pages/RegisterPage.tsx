@@ -372,15 +372,22 @@ const RegisterPage = () => {
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div><Label className="font-heading text-sm">Job Title</Label><Input value={form.job_title} onChange={e => updateForm('job_title', e.target.value)} placeholder="e.g., Software Engineer" /></div>
-                  <div><Label className="font-heading text-sm">Company</Label><Input value={form.company} onChange={e => updateForm('company', e.target.value)} placeholder="e.g., Google" /></div>
+                  <div>
+                    <Label className="font-heading text-sm">Company</Label>
+                    <Input value={form.company} onChange={e => updateForm('company', e.target.value)} placeholder="e.g., Company Title" />
+                    <Input value={form.company_link} onChange={e => updateForm('company_link', e.target.value)} placeholder="Company website link (e.g., https://...)" className="mt-2" />
+                  </div>
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label className="font-heading text-sm">Industry</Label>
-                    <Select value={form.industry} onValueChange={v => updateForm('industry', v)}>
+                    <Select value={form.industry} onValueChange={v => { updateForm('industry', v); if (v !== 'Other') updateForm('other_industry', ''); }}>
                       <SelectTrigger><SelectValue placeholder="Select industry" /></SelectTrigger>
                       <SelectContent>{industries.map(i => <SelectItem key={i} value={i}>{i}</SelectItem>)}</SelectContent>
                     </Select>
+                    {form.industry === 'Other' && (
+                      <Input value={form.other_industry} onChange={e => updateForm('other_industry', e.target.value)} placeholder="Please specify your industry" className="mt-2" />
+                    )}
                   </div>
                   <div><Label className="font-heading text-sm">Years of Experience</Label><Input type="number" value={form.years_of_experience} onChange={e => updateForm('years_of_experience', parseInt(e.target.value) || 0)} min={0} max={50} /></div>
                 </div>
