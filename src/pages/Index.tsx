@@ -80,6 +80,10 @@ const HomePage = () => {
     "From Campus to Career, Together",
   ]);
 
+  useEffect(() => {
+    supabase.from('alumni').select('*').eq('is_approved', true).order('created_at', { ascending: false })
+      .then(({ data }) => { if (data) setFeatured(data); });
+  }, []);
 
   const stats = [
     { icon: Users, target: 250, label: 'Alumni', suffix: '+' },
