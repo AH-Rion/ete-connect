@@ -60,7 +60,7 @@ export const Footer = () => (
           <h4 className="font-heading font-semibold text-primary mb-4">Contact</h4>
           <ul className="space-y-3 text-sm text-text-on-dark/60">
             <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" />Dept. of ETE, CUET, Chittagong, Bangladesh</li>
-            <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" />etefamily@cuet.ac.bd</li>
+            <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" />ahrionofc@gmail.com</li>
             <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" />01313729422</li>
           </ul>
         </div>
