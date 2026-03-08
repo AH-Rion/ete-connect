@@ -136,6 +136,10 @@ async function ensureSheetExists(
   };
 
   const res = await fetch(baseUrl, { headers });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Failed to access spreadsheet (${res.status}): ${text.substring(0, 200)}`);
+  }
   const data = await res.json();
   const existingSheets = data.sheets?.map((s: any) => s.properties?.title) || [];
 
