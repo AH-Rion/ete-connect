@@ -15,82 +15,101 @@ interface Alumni {
   photo_url: string | null;
 }
 
-const FACES_COUNT = 4;
-const ROTATION_INTERVAL = 5000;
+const CARDS_PER_PAGE = 6;
+const ROTATION_INTERVAL = 3000;
 
 const getInitials = (name: string) =>
   name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase();
 
-// ─── 3D Cube (Desktop/Tablet) ───
-const AlumniCube = ({ alumni, isPaused }: { alumni: Alumni[]; isPaused: boolean }) => {
-  const [faceIndex, setFaceIndex] = useState(0);
-  const [poolIndex, setPoolIndex] = useState(0);
-  const [faces, setFaces] = useState<Alumni[]>([]);
+const cardVariants = {
+  hidden: (i: number) => ({
+    opacity: 0,
+    y: 50,
+    scale: 0.85,
+    rotateX: 20,
+  }),
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateX: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    },
+  }),
+  exit: (i: number) => ({
+    opacity: 0,
+    y: -40,
+    scale: 0.9,
+    rotateX: -15,
+    transition: {
+      delay: i * 0.05,
+      duration: 0.4,
+    },
+  }),
+};
 
-  // Initialize first 4 faces
-  useEffect(() => {
-    if (alumni.length === 0) return;
-    setFaces(alumni.slice(0, FACES_COUNT));
-    setPoolIndex(FACES_COUNT % alumni.length);
-  }, [alumni]);
+// ─── Grid Rotation (Desktop/Tablet) ───
+const AlumniGrid = ({ alumni, isPaused }: { alumni: Alumni[]; isPaused: boolean }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const totalPages = Math.ceil(alumni.length / CARDS_PER_PAGE);
 
-  // Auto-rotate
   useEffect(() => {
-    if (faces.length < FACES_COUNT || isPaused) return;
+    if (totalPages <= 1 || isPaused) return;
     const interval = setInterval(() => {
-      setFaceIndex((prev) => {
-        const next = (prev + 1) % FACES_COUNT;
-        // Replace the face that just went out of view
-        const behindFace = (prev + 2) % FACES_COUNT;
-        setFaces((f) => {
-          const updated = [...f];
-          updated[behindFace] = alumni[poolIndex];
-          return updated;
-        });
-        setPoolIndex((p) => (p + 1) % alumni.length);
-        return next;
-      });
+      setCurrentPage((prev) => (prev + 1) % totalPages);
     }, ROTATION_INTERVAL);
     return () => clearInterval(interval);
-  }, [faces.length, isPaused, alumni, poolIndex]);
+  }, [totalPages, isPaused]);
 
-  const rotationDeg = faceIndex * -90;
+  const displayed = alumni.slice(
+    currentPage * CARDS_PER_PAGE,
+    (currentPage + 1) * CARDS_PER_PAGE
+  );
 
-  if (faces.length < FACES_COUNT) return null;
+  if (!alumni.length) return null;
 
   return (
-    <div className="flex justify-center items-center" style={{ perspective: '1200px' }}>
-      <div
-        className="relative transition-transform duration-[1.2s] ease-[cubic-bezier(0.23,1,0.32,1)]"
-        style={{
-          width: '320px',
-          height: '400px',
-          transformStyle: 'preserve-3d',
-          transform: `rotateY(${rotationDeg}deg)`,
-        }}
-      >
-        {faces.map((alum, i) => {
-          const yRot = i * 90;
-          const tz = 160; // half of width
-          return (
-            <div
-              key={`${alum.id}-${i}`}
-              className="absolute inset-0 flex items-center justify-center"
-              style={{
-                backfaceVisibility: 'hidden',
-                transform: `rotateY(${yRot}deg) translateZ(${tz}px)`,
-              }}
+    <div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentPage}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {displayed.map((alum, i) => (
+            <motion.div
+              key={alum.id}
+              custom={i}
+              variants={cardVariants}
+              style={{ perspective: '800px' }}
             >
               <CubeCard alumni={alum} />
-            </div>
-          );
-        })}
-      </div>
-      {/* Reflection / shadow */}
-      <div
-        className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[280px] h-6 rounded-full blur-xl opacity-40"
-        style={{ background: 'radial-gradient(ellipse, hsl(var(--primary) / 0.5), transparent 70%)' }}
-      />
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Pagination dots */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-10">
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i)}
+              className={`rounded-full transition-all duration-500 ${
+                i === currentPage
+                  ? 'w-10 h-3 bg-gradient-to-r from-primary to-secondary shadow-[0_0_12px_hsl(var(--primary)/0.5)]'
+                  : 'w-3 h-3 bg-white/20 hover:bg-white/40'
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
