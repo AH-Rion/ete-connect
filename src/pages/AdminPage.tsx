@@ -22,6 +22,32 @@ const AdminPage = () => {
   const [filter, setFilter] = useState('all');
   const [selectedAlumni, setSelectedAlumni] = useState<any>(null);
   const [deleteDialog, setDeleteDialog] = useState<string | null>(null);
+  const [syncing, setSyncing] = useState(false);
+
+  const syncToSheets = async () => {
+    setSyncing(true);
+    try {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || 'fhzsksqfvkviwhwndhdw';
+      const res = await fetch(`https://${projectId}.supabase.co/functions/v1/sync-alumni-sheets`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZoenNrc3Fmdmt2aXdod25kaGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NzI3ODUsImV4cCI6MjA4ODU0ODc4NX0.APBcxgbc1veGEuIywN8d_EO9XuymxbCsZy4QuKbkUs0'}`,
+        },
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(`Sheet synced! ${data.total_alumni} alumni updated.`);
+      } else {
+        toast.error(`Sync failed: ${data.error}`);
+      }
+    } catch (e: any) {
+      toast.error('Sheet sync failed');
+      console.error(e);
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -41,6 +67,7 @@ const AdminPage = () => {
     if (error) { toast.error('Failed'); return; }
     toast.success('Alumni approved!');
     fetchData();
+    syncToSheets();
   };
 
   const handleReject = async (id: string) => {
@@ -48,6 +75,7 @@ const AdminPage = () => {
     if (error) { toast.error('Failed'); return; }
     toast.success('Alumni rejected');
     fetchData();
+    syncToSheets();
   };
 
   const handleFeature = async (id: string, current: boolean) => {
@@ -63,6 +91,7 @@ const AdminPage = () => {
     toast.success('Deleted');
     setDeleteDialog(null);
     fetchData();
+    syncToSheets();
   };
 
   const handleMarkRead = async (id: string) => {
