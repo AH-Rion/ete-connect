@@ -37,7 +37,7 @@ const AlumniDirectoryPage = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [batchFilter, setBatchFilter] = useState<string>('all');
-  const [availableBatches, setAvailableBatches] = useState<number[]>([]);
+  const availableBatches = Array.from({ length: 2026 - 2016 + 1 }, (_, i) => 2026 - i);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(0);
