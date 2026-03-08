@@ -58,24 +58,37 @@ export const Navbar = () => {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`relative px-4 py-2 font-heading text-sm font-medium transition-all duration-200
-                ${scrolled || !isHeroPage ? 'text-foreground hover:text-primary' : 'text-white/80 hover:text-white'}
-                ${location.pathname === link.path ? '' : ''}
-              `}
-            >
-              {link.label}
-              {location.pathname === link.path && (
-                <motion.div
-                  className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary rounded-full"
-                  layoutId="navUnderline"
-                />
-              )}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`relative px-4 py-2 font-heading text-sm font-medium transition-all duration-200 rounded-full
+                  ${scrolled || !isHeroPage ? 'text-foreground hover:text-primary' : 'text-white/80 hover:text-white'}
+                  ${isActive && (scrolled || !isHeroPage) ? '!text-primary' : ''}
+                  ${isActive && !(scrolled || !isHeroPage) ? '!text-white' : ''}
+                `}
+              >
+                {isActive && (
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-primary/10 border border-primary/30"
+                    layoutId="navPill"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    style={{ boxShadow: '0 0 12px rgba(99,102,241,0.25)' }}
+                  />
+                )}
+                <span className="relative z-10">{link.label}</span>
+                {isActive && (
+                  <motion.div
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary rounded-full"
+                    layoutId="navDot"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="hidden md:flex items-center gap-3">
