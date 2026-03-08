@@ -33,6 +33,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetOpen, setResetOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('login');
 
   useEffect(() => {
     if (isAuthenticated) navigate(params.get('redirect') || '/', { replace: true });
