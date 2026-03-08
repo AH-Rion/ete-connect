@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 // Standard base64 decode using Deno's built-in
-import { decode as base64Decode } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+import { decodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 async function getAccessToken(serviceAccountKey: any): Promise<string> {
   const header = { alg: "RS256", typ: "JWT" };
