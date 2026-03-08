@@ -1,73 +1,79 @@
-# Welcome to your Lovable project
+# 🎓 ETE Family
 
-## Project info
+**ETE Family** is a modern alumni networking platform designed for the **Department of Electronics and Telecommunication Engineering (ETE)**.
+The platform connects graduates, students, and professionals in one place to share experiences, build networks, and stay connected with the department.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## 🌐 Project Overview
 
-There are several ways of editing your application.
+ETE Family allows alumni to:
 
-**Use Lovable**
+* Discover fellow graduates
+* Connect with the alumni community
+* Register as alumni
+* Explore alumni profiles
+* Stay updated with department activities
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+The platform is designed with a **modern UI, animated backgrounds, and responsive layout** to create a professional alumni networking experience.
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## ✨ Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+* 🏫 **Alumni Directory**
+  Browse and explore alumni profiles.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+* 📝 **Alumni Registration**
+  Graduates can register themselves to join the network.
 
-Follow these steps:
+* 🔐 **Authentication System**
+  Secure login system for users.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+* 🎨 **Modern UI Design**
+  Clean interface with animations and interactive elements.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+* ⚡ **Fast and Responsive**
+  Optimized for desktop and mobile devices.
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 🛠️ Technologies Used
 
-**Edit a file directly in GitHub**
+* **Frontend**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+  * HTML
+  * CSS / Tailwind CSS
+  * JavaScript
+  * Modern UI animations
 
-**Use GitHub Codespaces**
+* **Backend / Services**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+  * Supabase (Authentication & Database)
 
-## What technologies are used for this project?
+* **Deployment**
 
-This project is built with:
+  * Vercel
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## 📸 Screenshots
+<img width="1901" height="907" alt="Screenshot 2026-03-09 013634" src="https://github.com/user-attachments/assets/1344af14-f365-4eea-ab38-2fd56adb59f7" />
+<img width="1906" height="909" alt="Screenshot 2026-03-09 013746" src="https://github.com/user-attachments/assets/22df9a29-9d53-4a29-a22e-7c39e3905e47" />
+<img width="1902" height="914" alt="Screenshot 2026-03-09 013812" src="https://github.com/user-attachments/assets/a85a2ac0-023b-4242-9917-e6c2768059c1" />
+<img width="1919" height="906" alt="Screenshot 2026-03-09 013757" src="https://github.com/user-attachments/assets/1fa91209-02d9-48ac-82b3-c472e4513f4a" />
+<img width="1919" height="915" alt="Screenshot 2026-03-09 013822" src="https://github.com/user-attachments/assets/40c86c8a-5bcf-4ea9-99aa-6f8317d405a8" />
+<img width="1919" height="912" alt="Screenshot 2026-03-09 013833" src="https://github.com/user-attachments/assets/774fa4ae-ecf7-433c-9bdf-eb9fb3189b99" />
+<img width="1919" height="904" alt="Screenshot 2026-03-09 013851" src="https://github.com/user-attachments/assets/85bde5a7-3305-4854-8260-1b4bced319c9" />
+<img width="1481" height="796" alt="Screenshot 2026-03-09 010816" src="https://github.com/user-attachments/assets/a7503d20-9b6f-4bf3-aa4b-a6908a29d4b7" />
+<img width="1912" height="760" alt="Screenshot 2026-03-09 010829" src="https://github.com/user-attachments/assets/0bc22e23-c1a9-419d-9b54-a7d280b3b5dc" />
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## 👨‍💻 Author
 
-## Can I connect a custom domain to my Lovable project?
+Developed by **AH Rion**
+<h1>ETE 24</h1>
+FB:https://www.facebook.com/ah.rion.98
+in:www.linkedin.com/in/ahrion
 
-Yes, you can!
+If you like this project, feel free to ⭐ the repository.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
