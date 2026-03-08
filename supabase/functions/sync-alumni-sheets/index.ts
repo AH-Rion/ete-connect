@@ -44,7 +44,7 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
   
   console.log("PEM key length:", pk.length, "First 20 chars:", pk.substring(0, 20));
   
-  const binaryKey = base64Decode(pk);
+  const binaryKey = decodeBase64(pk);
 
   const cryptoKey = await crypto.subtle.importKey(
     "pkcs8",
