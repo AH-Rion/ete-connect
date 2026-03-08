@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 
 interface Node {
   x: number;
@@ -18,10 +18,13 @@ const COLORS = {
   accent: '#F97316',
 };
 
+const isMobile = () => window.innerWidth < 768;
+
 export const NeuralNetworkBg = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
   const nodesRef = useRef<Node[]>([]);
+  const frameCount = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -29,10 +32,15 @@ export const NeuralNetworkBg = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const mobile = isMobile();
+    // Use lower DPR on mobile to reduce pixel count
+    const dpr = mobile ? Math.min(window.devicePixelRatio, 1.5) : window.devicePixelRatio;
+
     const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
     };
     resize();
     window.addEventListener('resize', resize);
@@ -40,29 +48,36 @@ export const NeuralNetworkBg = () => {
     const w = () => canvas.offsetWidth;
     const h = () => canvas.offsetHeight;
 
-    // Init nodes
-    const nodeCount = Math.min(70, Math.floor((w() * h()) / 12000));
+    // Fewer nodes on mobile, same density on desktop
+    const nodeCount = mobile
+      ? Math.min(25, Math.floor((w() * h()) / 25000))
+      : Math.min(70, Math.floor((w() * h()) / 12000));
+
+    const speed = mobile ? 0.25 : 0.4;
+
     nodesRef.current = Array.from({ length: nodeCount }, () => ({
       x: Math.random() * w(),
       y: Math.random() * h(),
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      radius: 1.5 + Math.random() * 2,
+      vx: (Math.random() - 0.5) * speed,
+      vy: (Math.random() - 0.5) * speed,
+      radius: mobile ? 1.2 + Math.random() * 1.5 : 1.5 + Math.random() * 2,
       pulsePhase: Math.random() * Math.PI * 2,
       pulseSpeed: 0.01 + Math.random() * 0.02,
       color: Math.random() > 0.85 ? COLORS.accent : Math.random() > 0.5 ? COLORS.node1 : COLORS.node2,
     }));
 
-    const connectionDist = 150;
+    const connectionDist = mobile ? 120 : 150;
+    // Skip frames on mobile: render every 2nd frame for ~30fps instead of 60fps
+    const frameSkip = mobile ? 2 : 1;
 
     const draw = () => {
+      frameCount.current++;
+
       const width = w();
       const height = h();
-      ctx.clearRect(0, 0, width, height);
-
       const nodes = nodesRef.current;
 
-      // Update positions
+      // Always update positions for smooth physics
       for (const n of nodes) {
         n.x += n.vx;
         n.y += n.vy;
@@ -73,43 +88,51 @@ export const NeuralNetworkBg = () => {
         n.y = Math.max(0, Math.min(height, n.y));
       }
 
-      // Draw connections
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < connectionDist) {
-            const alpha = (1 - dist / connectionDist) * 0.25;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+      // Only render every Nth frame on mobile
+      if (frameCount.current % frameSkip === 0) {
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw connections — on mobile skip glow, use simpler path batching
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const distSq = dx * dx + dy * dy;
+            if (distSq < connectionDist * connectionDist) {
+              const dist = Math.sqrt(distSq);
+              const alpha = (1 - dist / connectionDist) * 0.25;
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`;
+              ctx.stroke();
+            }
           }
         }
-      }
 
-      // Draw nodes
-      for (const n of nodes) {
-        const pulse = 0.5 + 0.5 * Math.sin(n.pulsePhase);
-        const r = n.radius * (1 + pulse * 0.3);
+        // Draw nodes
+        for (const n of nodes) {
+          const pulse = 0.5 + 0.5 * Math.sin(n.pulsePhase);
+          const r = n.radius * (1 + pulse * 0.3);
 
-        // Glow
-        const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 4);
-        grad.addColorStop(0, n.color + '60');
-        grad.addColorStop(1, n.color + '00');
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, r * 4, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
+          // Skip glow effect on mobile for performance
+          if (!mobile) {
+            const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 4);
+            grad.addColorStop(0, n.color + '60');
+            grad.addColorStop(1, n.color + '00');
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, r * 4, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+          }
 
-        // Core
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = n.color;
-        ctx.fill();
+          // Core dot
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = n.color;
+          ctx.fill();
+        }
       }
 
       animRef.current = requestAnimationFrame(draw);
