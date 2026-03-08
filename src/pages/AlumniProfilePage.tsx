@@ -97,7 +97,7 @@ const AlumniProfilePage = () => {
               <Button asChild className="bg-accent text-accent-foreground hover:bg-accent-hover font-heading">
                 <a href={`mailto:${alumni.email}`}><Mail className="w-4 h-4 mr-2" />Connect via Email</a>
               </Button>
-              <Button variant="outline" className="border-text-on-dark/30 text-text-on-dark hover:bg-text-on-dark/10 font-heading"
+              <Button className="bg-accent text-accent-foreground hover:bg-accent-hover font-heading"
                 onClick={() => { navigator.clipboard.writeText(window.location.href); toast.success('Link copied!'); }}>
                 <Share2 className="w-4 h-4 mr-1" /> Share Profile
               </Button>
