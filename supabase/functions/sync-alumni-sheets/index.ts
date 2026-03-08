@@ -174,14 +174,18 @@ Deno.serve(async (req) => {
     }
 
     // Get Google credentials
-    const serviceAccountKeyStr = Deno.env.get("GOOGLE_SERVICE_ACCOUNT_KEY");
+    const clientEmail = Deno.env.get("GOOGLE_SA_CLIENT_EMAIL");
+    const privateKey = Deno.env.get("GOOGLE_SA_PRIVATE_KEY");
     const sheetId = Deno.env.get("GOOGLE_SHEET_ID");
 
-    if (!serviceAccountKeyStr || !sheetId) {
-      throw new Error("Missing GOOGLE_SERVICE_ACCOUNT_KEY or GOOGLE_SHEET_ID");
+    if (!clientEmail || !privateKey || !sheetId) {
+      throw new Error("Missing GOOGLE_SA_CLIENT_EMAIL, GOOGLE_SA_PRIVATE_KEY, or GOOGLE_SHEET_ID");
     }
 
-    const serviceAccountKey = JSON.parse(serviceAccountKeyStr);
+    const serviceAccountKey = {
+      client_email: clientEmail,
+      private_key: privateKey.replace(/\\n/g, "\n"),
+    };
     const accessToken = await getAccessToken(serviceAccountKey);
 
     const headerRow = [
