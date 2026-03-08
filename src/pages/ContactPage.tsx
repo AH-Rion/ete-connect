@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { fadeInUp, fadeInLeft, fadeInRight } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
 import { supabase } from '@/integrations/supabase/client';
