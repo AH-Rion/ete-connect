@@ -36,8 +36,23 @@ const ContactPage = () => {
   const onSubmit = async (data: z.infer<typeof contactSchema>) => {
     setLoading(true);
     try {
-      const { error } = await supabase.from('contact_messages').insert(data);
-      if (error) throw error;
+      // Save to database
+      await supabase.from('contact_messages').insert(data);
+
+      // Send email notification via Cloud edge function
+      const res = await fetch(
+        'https://fhzsksqfvkviwhwndhdw.supabase.co/functions/v1/send-contact-email',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        }
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to send email');
+      }
+
       toast.success('Message sent! We\'ll get back to you soon.');
       form.reset();
     } catch (e: any) {
