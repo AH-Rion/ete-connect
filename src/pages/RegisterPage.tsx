@@ -79,7 +79,7 @@ const RegisterPage = () => {
     gender: '', city: '', country: '', linkedin_url: '', website_url: '',
     department: 'Electronics & Telecommunication Engineering (ETE)',
     degree: '', graduation_year: '', student_id: '', hall_of_residence: '', university_memory: '',
-    employment_status: '', job_title: '', company: '', industry: '',
+    employment_status: '', job_title: '', company: '', company_link: '', industry: '', other_industry: '',
     years_of_experience: 0, previous_companies: '', skills: '' as string,
     salary_range: '', willing_to_mentor: false, bio: '',
   });
