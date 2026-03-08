@@ -85,10 +85,9 @@ const HomePage = () => {
   }, []);
 
   const stats = [
-    { icon: Users, target: 500, label: 'Alumni Registered', suffix: '+' },
-    { icon: Building2, target: 200, label: 'Companies Represented', suffix: '+' },
-    { icon: Globe, target: 30, label: 'Countries Reached', suffix: '+' },
-    { icon: Calendar, target: 25, label: 'Years of Legacy', suffix: '+' },
+    { icon: Users, target: 250, label: 'Alumni', suffix: '+' },
+    { icon: Globe, target: 5, label: 'Countries', suffix: '+' },
+    { icon: Building2, target: 30, label: 'Companies', suffix: '+' },
   ];
 
   return (
