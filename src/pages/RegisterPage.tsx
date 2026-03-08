@@ -36,7 +36,19 @@ const departments = [
   'Other',
 ];
 
-const degrees = ["Bachelor's", "Master's", 'PhD', 'Diploma', 'Postdoc'];
+const degrees = ['BSc', 'MSc', 'PhD'];
+
+const halls = [
+  'Muktijoddah Hall',
+  'Shahid Mohammad Shah Hall',
+  'Dr. Qudrat-E-Khuda Hall',
+  'Kabi Kazi Nazrul Islam Hall',
+  'Shaheed Tareq Huda Hall',
+  'Shaheed Abu Sayed Hall',
+  'Sufia Kamal Hall',
+  'Begum Shamsennahar Khan Hall',
+  'Tapashi Rabeya Hall',
+];
 const industries = ['IT/Software', 'Telecom', 'Banking/Finance', 'Healthcare', 'Education', 'Engineering/Manufacturing', 'Government', 'Startup', 'NGO/Development', 'Research/Academia', 'Defense', 'Real Estate', 'Energy', 'Media', 'Other'];
 const salaryRanges = ['Prefer not to say', 'Below $30k', '$30k-$60k', '$60k-$100k', '$100k-$150k', '$150k-$200k', '$200k+'];
 const employmentStatuses = [
