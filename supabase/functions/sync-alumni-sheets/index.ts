@@ -6,15 +6,8 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Base64 decode helper
-function base64Decode(str: string): Uint8Array {
-  const binStr = atob(str);
-  const bytes = new Uint8Array(binStr.length);
-  for (let i = 0; i < binStr.length; i++) {
-    bytes[i] = binStr.charCodeAt(i);
-  }
-  return bytes;
-}
+// Standard base64 decode using Deno's built-in
+import { decode as base64Decode } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 async function getAccessToken(serviceAccountKey: any): Promise<string> {
   const header = { alg: "RS256", typ: "JWT" };
@@ -27,21 +20,31 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
     iat: now,
   };
 
-  const enc = (obj: any) =>
-    btoa(JSON.stringify(obj))
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_")
-      .replace(/=+$/, "");
+  const b64url = (data: Uint8Array | string): string => {
+    const input = typeof data === "string" ? new TextEncoder().encode(data) : data;
+    let b64 = "";
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    for (let i = 0; i < input.length; i += 3) {
+      const a = input[i], b = input[i + 1] ?? 0, c = input[i + 2] ?? 0;
+      b64 += chars[(a >> 2)] + chars[((a & 3) << 4) | (b >> 4)];
+      if (i + 1 < input.length) b64 += chars[((b & 15) << 2) | (c >> 6)];
+      if (i + 2 < input.length) b64 += chars[c & 63];
+    }
+    return b64.replace(/\+/g, "-").replace(/\//g, "_");
+  };
 
-  const unsignedToken = `${enc(header)}.${enc(payload)}`;
+  const encJson = (obj: any) => b64url(JSON.stringify(obj));
+  const unsignedToken = `${encJson(header)}.${encJson(payload)}`;
 
   // Import the private key - clean up PEM format
-  const pemContent = serviceAccountKey.private_key
+  const pk = serviceAccountKey.private_key
     .replace(/-----BEGIN PRIVATE KEY-----/g, "")
     .replace(/-----END PRIVATE KEY-----/g, "")
     .replace(/[\n\r\s]/g, "");
   
-  const binaryKey = base64Decode(pemContent);
+  console.log("PEM key length:", pk.length, "First 20 chars:", pk.substring(0, 20));
+  
+  const binaryKey = base64Decode(pk);
 
   const cryptoKey = await crypto.subtle.importKey(
     "pkcs8",
