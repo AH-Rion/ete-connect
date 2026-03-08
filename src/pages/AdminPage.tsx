@@ -17,12 +17,14 @@ const AdminPage = () => {
   const [tab, setTab] = useState('overview');
   const [alumni, setAlumni] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
+  const [settings, setSettings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
   const [selectedAlumni, setSelectedAlumni] = useState<any>(null);
   const [deleteDialog, setDeleteDialog] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
+  const [savingSettings, setSavingSettings] = useState(false);
 
   const syncToSheets = async () => {
     setSyncing(true);
@@ -51,12 +53,14 @@ const AdminPage = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [alumniRes, messagesRes] = await Promise.all([
+    const [alumniRes, messagesRes, settingsRes] = await Promise.all([
       supabase.from('alumni').select('*').order('created_at', { ascending: false }),
       supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
+      supabase.from('site_settings').select('*').order('key', { ascending: true }),
     ]);
     setAlumni(alumniRes.data || []);
     setMessages(messagesRes.data || []);
+    setSettings(settingsRes.data || []);
     setLoading(false);
   };
 
@@ -99,6 +103,23 @@ const AdminPage = () => {
     fetchData();
   };
 
+  const handleSaveSetting = async (key: string, value: string) => {
+    setSavingSettings(true);
+    const { error } = await supabase.from('site_settings').update({ value }).eq('key', key);
+    setSavingSettings(false);
+    if (error) {
+      toast.error('Failed to update setting');
+    } else {
+      toast.success('Setting updated successfully');
+      // No need to fetch all data again, state is already updated locally
+    }
+  };
+
+  const handleSettingsChange = (key: string, value: string) => {
+    setSettings(settings.map(s => s.key === key ? { ...s, value } : s));
+  };
+
+
   const totalAlumni = alumni.length;
   const pending = alumni.filter(a => !a.is_approved && !a.is_rejected).length;
   const approved = alumni.filter(a => a.is_approved).length;
@@ -139,6 +160,7 @@ const AdminPage = () => {
               <MessageSquare className="w-4 h-4" />Messages
               {unreadMessages > 0 && <Badge variant="destructive" className="ml-1 text-xs px-1.5 py-0">{unreadMessages}</Badge>}
             </TabsTrigger>
+            <TabsTrigger value="settings" className="font-heading gap-2"><Settings className="w-4 h-4" />Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -265,6 +287,46 @@ const AdminPage = () => {
                 </TableBody>
               </Table>
               {messages.length === 0 && <p className="text-center text-muted-foreground py-8 font-body">No messages yet</p>}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="settings">
+            <div className="bg-card rounded-xl p-6 shadow-sm max-w-3xl">
+              <h2 className="font-heading font-semibold text-foreground mb-6">Frontend Settings</h2>
+              <div className="space-y-6">
+                {settings.map(setting => (
+                  <div key={setting.id} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label htmlFor={setting.key} className="font-heading font-medium text-sm text-foreground capitalize">
+                          {setting.key.replace(/_/g, ' ')}
+                        </label>
+                        {setting.description && (
+                          <p className="text-xs text-muted-foreground mt-1">{setting.description}</p>
+                        )}
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => handleSaveSetting(setting.key, setting.value)}
+                        disabled={savingSettings}
+                        className="font-heading"
+                      >
+                        Save
+                      </Button>
+                    </div>
+                    <Input
+                      id={setting.key}
+                      value={setting.value || ''}
+                      onChange={e => handleSettingsChange(setting.key, e.target.value)}
+                      placeholder={`Enter ${setting.key.replace(/_/g, ' ')}`}
+                      className="w-full"
+                    />
+                  </div>
+                ))}
+              </div>
+              {settings.length === 0 && (
+                <p className="text-center text-muted-foreground py-8 font-body">No settings available</p>
+              )}
             </div>
           </TabsContent>
         </Tabs>
