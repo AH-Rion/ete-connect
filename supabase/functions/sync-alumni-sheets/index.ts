@@ -140,10 +140,8 @@ Deno.serve(async (req) => {
 
   try {
     // Use the external Supabase instance
-    const supabaseUrl = "https://wproesbyazmuzfzwqgtg.supabase.co";
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
-    // Try to use the external service role key if available, otherwise use the stored one
+    const supabaseUrl = Deno.env.get("EXTERNAL_SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("EXTERNAL_SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Fetch all approved alumni
