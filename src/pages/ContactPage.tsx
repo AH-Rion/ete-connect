@@ -40,9 +40,8 @@ const ContactPage = () => {
       await supabase.from('contact_messages').insert(data);
 
       // Send email notification via Cloud edge function
-      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
       const res = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/send-contact-email`,
+        'https://fhzsksqfvkviwhwndhdw.supabase.co/functions/v1/send-contact-email',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
