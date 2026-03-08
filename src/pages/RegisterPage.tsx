@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Upload, X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { Check, Upload, X, ChevronRight, ChevronLeft, Users, Globe, Building2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { pageTransition, fadeInUp } from '@/lib/animations';
+import { pageTransition, fadeInUp, staggerContainer } from '@/lib/animations';
 import { Button } from '@/components/ui/button';
+import { NeuralNetworkBg } from '@/components/NeuralNetworkBg';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -179,8 +180,37 @@ const RegisterPage = () => {
 
   const years = Array.from({ length: 46 }, (_, i) => (2025 - i).toString());
 
+  const regStats = [
+    { icon: Users, target: 250, label: 'Alumni', suffix: '+' },
+    { icon: Globe, target: 5, label: 'Countries', suffix: '+' },
+    { icon: Building2, target: 30, label: 'Companies', suffix: '+' },
+  ];
+
   return (
-    <motion.div {...pageTransition} className="min-h-screen pt-20 pb-16 bg-background">
+    <motion.div {...pageTransition} className="min-h-screen bg-background">
+      {/* Hero Stats Banner */}
+      <section className="relative pt-24 pb-16 overflow-hidden" style={{ background: '#020617' }}>
+        <NeuralNetworkBg />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/60 via-transparent to-[#020617]/90 pointer-events-none z-[1]" />
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-heading font-black text-gradient-hero mb-3">
+            Join the ETE Family
+          </motion.h1>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-foreground/50 font-body mb-10 text-lg">
+            Where Every Graduate Stays Connected Forever
+          </motion.p>
+          <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-wrap justify-center gap-6">
+            {regStats.map((stat, i) => (
+              <motion.div key={i} variants={fadeInUp} className="rounded-2xl px-8 py-5 text-center border border-accent/30 bg-accent/5 backdrop-blur-md min-w-[140px]">
+                <p className="text-4xl md:text-5xl font-heading font-black text-accent">{stat.target}{stat.suffix}</p>
+                <p className="text-foreground/60 font-heading text-xs tracking-widest uppercase mt-1">{stat.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <div className="pb-16 pt-10 bg-background">
       {/* Confetti */}
       {showConfetti && (
         <div className="fixed inset-0 z-50 pointer-events-none overflow-hidden">
@@ -196,7 +226,7 @@ const RegisterPage = () => {
       )}
 
       <div className="container mx-auto px-4 max-w-3xl">
-        <h1 className="text-3xl font-heading font-bold text-foreground text-center mb-2">Alumni Registration</h1>
+        <h2 className="text-2xl font-heading font-bold text-foreground text-center mb-2">Alumni Registration</h2>
         <p className="text-muted-foreground font-body text-center mb-8">Fill in your details to join the ETE Family network</p>
 
         {/* Progress Steps */}
@@ -438,6 +468,7 @@ const RegisterPage = () => {
             </Button>
           )}
         </div>
+      </div>
       </div>
     </motion.div>
   );
