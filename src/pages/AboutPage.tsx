@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, scaleIn } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
-import { Users, Briefcase, Star, GraduationCap, Globe, TrendingUp, Heart, Target } from 'lucide-react';
+import { Users, Briefcase, Star, GraduationCap, Globe, TrendingUp, Heart, Target, ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const milestones = [
   { year: '1995', title: 'Department Established', desc: 'ETE department founded at CUET' },
