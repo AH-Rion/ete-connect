@@ -184,19 +184,17 @@ const HomePage = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-20 relative" style={{ background: '#020617' }}>
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(99,102,241,0.5) 50px), repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(99,102,241,0.5) 50px)', backgroundSize: '50px 50px' }} />
+      <section className="py-24 relative overflow-hidden" style={{ background: '#020617' }}>
+        <NeuralNetworkBg />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-transparent to-[#020617]/80 pointer-events-none z-[1]" />
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex flex-wrap justify-center gap-8">
             {stats.map((stat, i) => {
               const { count, ref } = useCountUp(stat.target);
               return (
-                <motion.div key={i} ref={ref} variants={fadeInUp} className="rounded-xl p-6 text-center border border-primary/10 bg-white/[0.03] backdrop-blur-sm hover:border-primary/30 transition-all duration-300">
-                  <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.15, type: 'spring' }}>
-                    <stat.icon className="w-10 h-10 text-primary mx-auto mb-3" />
-                  </motion.div>
-                  <p className="text-4xl md:text-5xl font-heading font-bold text-gradient-hero">{count}{stat.suffix}</p>
-                  <p className="text-text-on-dark/40 font-body mt-1">{stat.label}</p>
+                <motion.div key={i} ref={ref} variants={fadeInUp} className="rounded-2xl px-10 py-8 text-center border border-accent/30 bg-accent/5 backdrop-blur-md hover:border-accent/60 hover:bg-accent/10 transition-all duration-500 min-w-[160px]">
+                  <p className="text-5xl md:text-6xl font-heading font-black text-accent">{count}{stat.suffix}</p>
+                  <p className="text-foreground/60 font-heading text-sm tracking-widest uppercase mt-2">{stat.label}</p>
                 </motion.div>
               );
             })}
