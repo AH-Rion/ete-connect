@@ -99,7 +99,7 @@ const AlumniProfilePage = () => {
               </Button>
               <Button variant="outline" className="border-text-on-dark/30 text-text-on-dark hover:bg-text-on-dark/10 font-heading"
                 onClick={() => { navigator.clipboard.writeText(window.location.href); toast.success('Link copied!'); }}>
-                Share Profile
+                <Share2 className="w-4 h-4 mr-1" /> Share Profile
               </Button>
             </div>
           </motion.div>
