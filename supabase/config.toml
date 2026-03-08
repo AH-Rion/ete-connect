@@ -2,3 +2,6 @@ project_id = "fhzsksqfvkviwhwndhdw"
 
 [functions.send-contact-email]
 verify_jwt = false
+
+[functions.sync-alumni-sheets]
+verify_jwt = false
