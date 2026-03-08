@@ -51,7 +51,7 @@ const LoginPage = () => {
   };
 
   const handleSignup = async (data: z.infer<typeof signupSchema>) => {
-    try { setLoading(true); await signUpWithEmail(data.email, data.password, data.fullName); toast.success('Account created! Check your email to verify.'); signupForm.reset(); setActiveTab('login'); } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
+    try { setLoading(true); await signUpWithEmail(data.email, data.password, data.fullName); toast.success('Account created successfully! Please login.'); signupForm.reset(); setActiveTab('login'); } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
   };
 
   const handleResetPassword = async () => {
