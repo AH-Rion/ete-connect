@@ -288,7 +288,7 @@ export const CubeAlumniShowcase = () => {
           {isMobile ? (
             <MobileCarousel alumni={allAlumni} />
           ) : (
-            <AlumniCube alumni={allAlumni} isPaused={isPaused} />
+            <AlumniGrid alumni={allAlumni} isPaused={isPaused} />
           )}
         </div>
 
