@@ -6,7 +6,7 @@ import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, scaleIn } from '@/
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { NeuralNetworkBg } from '@/components/NeuralNetworkBg';
-import { FeaturedAlumniRotation } from '@/components/FeaturedAlumniRotation';
+import { CubeAlumniShowcase } from '@/components/CubeAlumniShowcase';
 
 // Typewriter hook
 const useTypewriter = (phrases: string[], typingSpeed = 50, deletingSpeed = 30, pauseDuration = 2000) => {
