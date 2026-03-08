@@ -87,7 +87,9 @@ export const Footer = () => (
           <span className="text-base text-text-on-dark/40 font-heading tracking-wide">
             <span className="text-accent font-bold text-lg">ETE 24</span>
           </span>
-        </div>
+    </div>
+  </footer>
+);
         <a href="https://www.facebook.com/ah.rion.98" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-text-on-dark/40 hover:text-primary transition-colors">
           <Facebook className="w-4 h-4" /> facebook.com/ah.rion.98
         </a>
