@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, Eye, EyeOff, GraduationCap } from 'lucide-react';
+import { NeuralNetworkBg } from '@/components/NeuralNetworkBg';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -60,25 +61,18 @@ const LoginPage = () => {
   return (
     <motion.div {...pageTransition} className="min-h-screen pt-16 flex">
       {/* Left panel - desktop only */}
-      <div className="hidden lg:flex lg:w-1/2 gradient-hero relative items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <motion.div key={i} className="absolute w-1 h-1 rounded-full bg-text-on-dark/20"
-              style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%` }}
-              animate={{ x: [0, (Math.random() - 0.5) * 80], y: [0, (Math.random() - 0.5) * 80] }}
-              transition={{ duration: 15, repeat: Infinity, repeatType: "reverse" }}
-            />
-          ))}
-        </div>
+      <div className="hidden lg:flex lg:w-1/2 relative items-center justify-center overflow-hidden" style={{ background: '#020617' }}>
+        <NeuralNetworkBg />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/40 via-transparent to-[#020617]/40 pointer-events-none z-[1]" />
         <div className="relative z-10 text-center space-y-6 p-8">
           <GraduationCap className="w-20 h-20 text-accent mx-auto" />
           <h2 className="text-4xl font-heading font-bold text-text-on-dark"><span className="text-accent">ETE</span> Family</h2>
           <p className="text-text-on-dark/70 font-body max-w-sm">Where Every Graduate Stays Connected Forever</p>
           <div className="flex gap-4 justify-center mt-8">
-            {[{ n: '500+', l: 'Alumni' }, { n: '30+', l: 'Countries' }, { n: '200+', l: 'Companies' }].map((s, i) => (
-              <div key={i} className="glass rounded-lg px-4 py-3 text-center">
-                <p className="text-xl font-heading font-bold text-accent">{s.n}</p>
-                <p className="text-xs text-text-on-dark/60 font-body">{s.l}</p>
+            {[{ n: '250+', l: 'Alumni' }, { n: '5+', l: 'Countries' }, { n: '30+', l: 'Companies' }].map((s, i) => (
+              <div key={i} className="rounded-2xl px-6 py-4 text-center border border-accent/30 bg-accent/5 backdrop-blur-md">
+                <p className="text-2xl font-heading font-black text-accent">{s.n}</p>
+                <p className="text-xs text-text-on-dark/60 font-heading tracking-widest uppercase">{s.l}</p>
               </div>
             ))}
           </div>
