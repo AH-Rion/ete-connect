@@ -61,7 +61,7 @@ export const Footer = () => (
           <ul className="space-y-3 text-sm text-text-on-dark/60">
             <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" />Dept. of ETE, CUET, Chittagong, Bangladesh</li>
             <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" />etefamily@cuet.ac.bd</li>
-            <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" />+880-31-XXXXXXX</li>
+            <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" />01313729422</li>
           </ul>
         </div>
       </div>
@@ -88,8 +88,9 @@ export const Footer = () => (
             <span className="text-accent font-bold text-lg">ETE 24</span>
           </span>
         </div>
-        <a href="https://www.facebook.com/ah.rion.98" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-text-on-dark/40 hover:text-primary transition-colors">
-          <Facebook className="w-4 h-4" /> facebook.com/ah.rion.98
+        <a href="https://www.facebook.com/ah.rion.98" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-sm text-text-on-dark/40 hover:text-[#1877F2] transition-colors">
+          <span className="inline-block animate-bounce"><Facebook className="w-5 h-5" /></span>
+          <span className="group-hover:underline">facebook.com/ah.rion.98</span>
         </a>
       </div>
     </div>
