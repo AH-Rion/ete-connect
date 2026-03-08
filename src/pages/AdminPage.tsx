@@ -53,12 +53,14 @@ const AdminPage = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [alumniRes, messagesRes] = await Promise.all([
+    const [alumniRes, messagesRes, settingsRes] = await Promise.all([
       supabase.from('alumni').select('*').order('created_at', { ascending: false }),
       supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
+      supabase.from('site_settings').select('*').order('key', { ascending: true }),
     ]);
     setAlumni(alumniRes.data || []);
     setMessages(messagesRes.data || []);
+    setSettings(settingsRes.data || []);
     setLoading(false);
   };
 
