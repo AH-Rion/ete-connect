@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, MapPin, Briefcase, Star, LayoutGrid, List, X, Filter, SearchX, ArrowRight } from 'lucide-react';
+import { Search, MapPin, Briefcase, Star, LayoutGrid, List, X, Filter, SearchX, ArrowRight, GraduationCap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
@@ -36,6 +36,8 @@ const AlumniDirectoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('newest');
+  const [batchFilter, setBatchFilter] = useState<string>('all');
+  const [availableBatches, setAvailableBatches] = useState<number[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(0);
@@ -47,6 +49,9 @@ const AlumniDirectoryPage = () => {
     try {
       let query = supabase.from('alumni').select('*', { count: 'exact' }).eq('is_approved', true);
 
+      if (batchFilter && batchFilter !== 'all') {
+        query = query.eq('graduation_year', parseInt(batchFilter));
+      }
       if (search) {
         query = query.or(`full_name.ilike.%${search}%,company.ilike.%${search}%,job_title.ilike.%${search}%,skills.ilike.%${search}%`);
       }
@@ -70,7 +75,24 @@ const AlumniDirectoryPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [search, sortBy, page]);
+  }, [search, sortBy, page, batchFilter]);
+
+  // Fetch available batch years
+  useEffect(() => {
+    const fetchBatches = async () => {
+      const { data } = await supabase
+        .from('alumni')
+        .select('graduation_year')
+        .eq('is_approved', true)
+        .not('graduation_year', 'is', null)
+        .order('graduation_year', { ascending: false });
+      if (data) {
+        const unique = [...new Set(data.map(d => d.graduation_year as number))];
+        setAvailableBatches(unique);
+      }
+    };
+    fetchBatches();
+  }, []);
 
   useEffect(() => { fetchAlumni(); }, [fetchAlumni]);
 
@@ -117,7 +139,19 @@ const AlumniDirectoryPage = () => {
             <p className="text-sm text-muted-foreground font-body">
               Showing <span className="font-semibold text-foreground">{alumni.length}</span> of <span className="font-semibold text-foreground">{total}</span> alumni
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
+              <Select value={batchFilter} onValueChange={(v) => { setBatchFilter(v); setPage(0); }}>
+                <SelectTrigger className="w-44 font-body text-sm">
+                  <GraduationCap className="w-4 h-4 mr-2 text-muted-foreground" />
+                  <SelectValue placeholder="Filter by Batch" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Batches</SelectItem>
+                  {availableBatches.map((year) => (
+                    <SelectItem key={year} value={String(year)}>Batch {year}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-40 font-body text-sm"><SelectValue /></SelectTrigger>
                 <SelectContent>
