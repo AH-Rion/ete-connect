@@ -37,7 +37,9 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
   const unsignedToken = `${encJson(header)}.${encJson(payload)}`;
 
   // Import the private key - clean up PEM format
+  // Handle both actual newlines and literal \n strings
   const pk = serviceAccountKey.private_key
+    .replace(/\\n/g, "\n")
     .replace(/-----BEGIN PRIVATE KEY-----/g, "")
     .replace(/-----END PRIVATE KEY-----/g, "")
     .replace(/[\n\r\s]/g, "");
