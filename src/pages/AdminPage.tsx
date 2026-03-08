@@ -103,6 +103,23 @@ const AdminPage = () => {
     fetchData();
   };
 
+  const handleSaveSetting = async (key: string, value: string) => {
+    setSavingSettings(true);
+    const { error } = await supabase.from('site_settings').update({ value }).eq('key', key);
+    setSavingSettings(false);
+    if (error) {
+      toast.error('Failed to update setting');
+    } else {
+      toast.success('Setting updated successfully');
+      // No need to fetch all data again, state is already updated locally
+    }
+  };
+
+  const handleSettingsChange = (key: string, value: string) => {
+    setSettings(settings.map(s => s.key === key ? { ...s, value } : s));
+  };
+
+
   const totalAlumni = alumni.length;
   const pending = alumni.filter(a => !a.is_approved && !a.is_rejected).length;
   const approved = alumni.filter(a => a.is_approved).length;
