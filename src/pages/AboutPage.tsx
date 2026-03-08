@@ -11,11 +11,10 @@ import cuetHero3 from '@/assets/cuet-hero-3.png';
 const heroImages = [cuetHero1, cuetHero2, cuetHero3];
 
 const milestones = [
-  { year: '1995', title: 'Department Established', desc: 'ETE department founded at CUET' },
-  { year: '2000', title: 'First Batch Graduates', desc: 'The first batch of ETE engineers graduate' },
-  { year: '2010', title: '500+ Alumni Milestone', desc: 'Half a thousand alumni and growing' },
-  { year: '2020', title: 'International Recognition', desc: 'Alumni placed in top global companies' },
-  { year: '2024', title: 'ETE Family Launched', desc: 'The alumni portal goes live' },
+  { year: '2012', title: 'Department Established', desc: 'ETE department founded at CUET' },
+  { year: '2016', title: 'First Batch Graduates', desc: 'The first batch of ETE engineers graduate' },
+  { year: '2025', title: '250+ Alumni Milestone', desc: 'One fourth a thousand alumni and growing' },
+  { year: '2026', title: 'ETE Department Growing', desc: 'Continuing to expand and excel in education & research' },
 ];
 
 const benefits = [
@@ -156,21 +155,45 @@ const AboutPage = () => {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 bg-card">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-12">
-            <h2 className="text-3xl font-heading font-bold text-foreground">ETE Department Timeline</h2>
+      <section className="py-24 bg-gradient-to-b from-card to-background overflow-hidden">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-16">
+            <span className="text-sm font-heading font-semibold text-accent uppercase tracking-widest">Our Journey</span>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mt-2">ETE Department Timeline</h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-accent to-primary rounded-full mx-auto mt-4" />
           </motion.div>
           <div className="relative">
-            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-accent/30" />
-            {milestones.map((m, i) => (
-              <motion.div key={i} variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="relative pl-16 pb-10 last:pb-0">
-                <div className="absolute left-4 w-5 h-5 rounded-full bg-accent border-4 border-card" />
-                <span className="text-sm font-heading font-bold text-accent">{m.year}</span>
-                <h3 className="font-heading font-semibold text-foreground mt-1">{m.title}</h3>
-                <p className="text-sm text-muted-foreground font-body">{m.desc}</p>
-              </motion.div>
-            ))}
+            {/* Gradient timeline line */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-accent via-primary to-accent/20 hidden md:block" />
+            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-accent via-primary to-accent/20 md:hidden" />
+
+            {milestones.map((m, i) => {
+              const isLeft = i % 2 === 0;
+              return (
+                <motion.div
+                  key={i}
+                  variants={isLeft ? fadeInLeft : fadeInRight}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className={`relative pb-14 last:pb-0 md:w-1/2 ${isLeft ? 'md:pr-12 md:text-right md:ml-0' : 'md:pl-12 md:ml-auto'} pl-16 md:pl-0`}
+                >
+                  {/* Mobile dot */}
+                  <div className="absolute left-4 top-1 w-5 h-5 rounded-full bg-accent border-4 border-card shadow-lg shadow-accent/20 md:hidden" />
+                  {/* Desktop dot */}
+                  <div className={`hidden md:block absolute top-1 w-6 h-6 rounded-full bg-accent border-4 border-card shadow-lg shadow-accent/30 ${isLeft ? '-right-3' : '-left-3'}`} />
+                  
+                  <div className="group relative bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:shadow-accent/10 transition-all duration-300 hover:-translate-y-1">
+                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3 ${isLeft ? 'md:ml-auto' : ''}`}>
+                      <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                      <span className="text-sm font-heading font-bold text-accent">{m.year}</span>
+                    </div>
+                    <h3 className="text-lg font-heading font-bold text-foreground">{m.title}</h3>
+                    <p className="text-sm text-muted-foreground font-body mt-1 leading-relaxed">{m.desc}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
