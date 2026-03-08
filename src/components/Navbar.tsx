@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, Menu, X, LogOut, User, Settings, LayoutDashboard } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Menu, LogOut, User, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import eteLogo from '@/assets/ete-logo.png';
 
 const navLinks = [
   { label: 'Home', path: '/' },
@@ -36,7 +37,7 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navStyle = scrolled || !isHeroPage ? 'glass-light' : 'glass';
+  const navStyle = scrolled || !isHeroPage ? 'glass-light' : 'glass-dark';
 
   const initials = (profile?.full_name || user?.email || '?').charAt(0).toUpperCase();
 
@@ -48,10 +49,10 @@ export const Navbar = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 group">
-          <GraduationCap className="w-8 h-8 text-accent" />
-          <span className={`font-heading font-bold text-xl ${scrolled || !isHeroPage ? 'text-primary' : 'text-text-on-dark'}`}>
-            <span className="text-accent">ETE</span> Family
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <img src={eteLogo} alt="ETE Family" className="w-9 h-9 object-contain" />
+          <span className={`font-heading font-bold text-xl transition-colors duration-300 ${scrolled || !isHeroPage ? 'text-foreground' : 'text-white'}`}>
+            <span className="text-primary">ETE</span> Family
           </span>
         </Link>
 
@@ -61,15 +62,15 @@ export const Navbar = () => {
             <Link
               key={link.path}
               to={link.path}
-              className={`relative px-4 py-2 font-heading text-sm font-medium transition-colors
-                ${scrolled || !isHeroPage ? 'text-foreground hover:text-primary' : 'text-text-on-dark hover:text-accent'}
+              className={`relative px-4 py-2 font-heading text-sm font-medium transition-all duration-200
+                ${scrolled || !isHeroPage ? 'text-foreground hover:text-primary' : 'text-white/80 hover:text-white'}
                 ${location.pathname === link.path ? '' : ''}
               `}
             >
               {link.label}
               {location.pathname === link.path && (
                 <motion.div
-                  className="absolute bottom-0 left-4 right-4 h-0.5 bg-accent rounded-full"
+                  className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary rounded-full"
                   layoutId="navUnderline"
                 />
               )}
@@ -81,10 +82,10 @@ export const Navbar = () => {
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="rounded-full ring-2 ring-accent ring-offset-2 ring-offset-transparent">
+                <button className="rounded-full ring-2 ring-primary ring-offset-2 ring-offset-transparent">
                   <Avatar className="w-9 h-9">
                     <AvatarImage src={profile?.avatar_url || ''} />
-                    <AvatarFallback className="bg-accent text-accent-foreground font-heading font-bold text-sm">
+                    <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white font-heading font-bold text-sm">
                       {initials}
                     </AvatarFallback>
                   </Avatar>
@@ -110,7 +111,7 @@ export const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground font-heading">
+            <Button asChild className="btn-gradient-primary font-heading rounded-full px-6">
               <Link to="/login">Login</Link>
             </Button>
           )}
@@ -120,7 +121,7 @@ export const Navbar = () => {
         <div className="md:hidden">
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <button className={scrolled || !isHeroPage ? 'text-foreground' : 'text-text-on-dark'}>
+              <button className={scrolled || !isHeroPage ? 'text-foreground' : 'text-white'}>
                 <Menu className="w-6 h-6" />
               </button>
             </SheetTrigger>
@@ -132,7 +133,7 @@ export const Navbar = () => {
                     to={link.path}
                     onClick={() => setMobileOpen(false)}
                     className={`px-4 py-3 rounded-lg font-heading font-medium transition-colors hover:bg-muted
-                      ${location.pathname === link.path ? 'bg-accent/10 text-accent' : 'text-foreground'}
+                      ${location.pathname === link.path ? 'bg-primary/10 text-primary' : 'text-foreground'}
                     `}
                   >
                     {link.label}
@@ -155,7 +156,7 @@ export const Navbar = () => {
                   </>
                 ) : (
                   <Link to="/login" onClick={() => setMobileOpen(false)}>
-                    <Button className="w-full bg-accent text-accent-foreground hover:bg-accent-hover font-heading">Login</Button>
+                    <Button className="w-full btn-gradient-primary font-heading">Login</Button>
                   </Link>
                 )}
               </div>
