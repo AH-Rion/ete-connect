@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Clock, CheckCircle, Star, Mail, Eye, Trash2, Check, X as XIcon, LayoutDashboard, MessageSquare, Settings } from 'lucide-react';
+import { Users, Clock, CheckCircle, Star, Mail, Eye, Trash2, Check, X as XIcon, LayoutDashboard, MessageSquare, Settings, RefreshCw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
@@ -22,6 +22,32 @@ const AdminPage = () => {
   const [filter, setFilter] = useState('all');
   const [selectedAlumni, setSelectedAlumni] = useState<any>(null);
   const [deleteDialog, setDeleteDialog] = useState<string | null>(null);
+  const [syncing, setSyncing] = useState(false);
+
+  const syncToSheets = async () => {
+    setSyncing(true);
+    try {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || 'fhzsksqfvkviwhwndhdw';
+      const res = await fetch(`https://${projectId}.supabase.co/functions/v1/sync-alumni-sheets`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZoenNrc3Fmdmt2aXdod25kaGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NzI3ODUsImV4cCI6MjA4ODU0ODc4NX0.APBcxgbc1veGEuIywN8d_EO9XuymxbCsZy4QuKbkUs0'}`,
+        },
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(`Sheet synced! ${data.total_alumni} alumni updated.`);
+      } else {
+        toast.error(`Sync failed: ${data.error}`);
+      }
+    } catch (e: any) {
+      toast.error('Sheet sync failed');
+      console.error(e);
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -41,6 +67,7 @@ const AdminPage = () => {
     if (error) { toast.error('Failed'); return; }
     toast.success('Alumni approved!');
     fetchData();
+    syncToSheets();
   };
 
   const handleReject = async (id: string) => {
@@ -48,6 +75,7 @@ const AdminPage = () => {
     if (error) { toast.error('Failed'); return; }
     toast.success('Alumni rejected');
     fetchData();
+    syncToSheets();
   };
 
   const handleFeature = async (id: string, current: boolean) => {
@@ -63,6 +91,7 @@ const AdminPage = () => {
     toast.success('Deleted');
     setDeleteDialog(null);
     fetchData();
+    syncToSheets();
   };
 
   const handleMarkRead = async (id: string) => {
@@ -94,7 +123,13 @@ const AdminPage = () => {
   return (
     <motion.div {...pageTransition} className="pt-20 pb-16 bg-background min-h-screen">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-heading font-bold text-foreground mb-8">Admin Dashboard</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-heading font-bold text-foreground">Admin Dashboard</h1>
+          <Button onClick={syncToSheets} disabled={syncing} variant="outline" className="font-heading gap-2">
+            <RefreshCw className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} />
+            {syncing ? 'Syncing...' : 'Sync to Sheets'}
+          </Button>
+        </div>
 
         <Tabs value={tab} onValueChange={setTab}>
           <TabsList className="mb-8">
