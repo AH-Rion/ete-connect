@@ -199,51 +199,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Featured Alumni */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">Our Distinguished Alumni</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-4 rounded-full" />
-            <p className="text-muted-foreground mt-4 font-body">Meet some of the incredible people from our ETE family</p>
-          </motion.div>
-          <motion.div key={currentPage} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.5 }} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {displayedAlumni.map((alum) => (
-              <motion.div key={alum.id} variants={fadeInUp} className="group perspective-1000">
-                <div className="relative h-[350px] rounded-xl overflow-hidden shadow-md card-hover bg-card">
-                  {/* Front */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 backface-hidden group-hover:[transform:rotateY(180deg)] transition-transform duration-700" style={{ backfaceVisibility: 'hidden', background: 'linear-gradient(135deg, #1e1b4b, #312e81, #1e1b4b)' }}>
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-2xl font-heading font-bold text-white mb-4 ring-4 ring-primary/30">
-                      {alum.full_name.charAt(0)}
-                    </div>
-                    <h3 className="text-xl font-heading font-bold text-white">{alum.full_name}</h3>
-                    <span className="inline-block mt-2 px-3 py-1 text-xs font-heading bg-primary/20 text-primary-foreground rounded-full border border-primary/30">
-                      Batch {alum.graduation_year}
-                    </span>
-                  </div>
-                  {/* Back */}
-                  <div className="absolute inset-0 bg-card flex flex-col items-center justify-center text-center p-6 [transform:rotateY(180deg)] group-hover:[transform:rotateY(0deg)] transition-transform duration-700 border-t-4 border-primary" style={{ backfaceVisibility: 'hidden' }}>
-                    <h3 className="text-lg font-heading font-bold text-foreground">{alum.job_title}</h3>
-                    <p className="text-muted-foreground font-body">{alum.company}</p>
-                    {alum.industry && <span className="inline-block mt-2 px-3 py-1 text-xs font-heading bg-primary/10 text-primary rounded-full">{alum.industry}</span>}
-                    <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1"><MapPin className="w-3 h-3" />{alum.city}, {alum.country}</p>
-                    <Link to={`/alumni/${alum.id}`} className="mt-4 text-sm font-heading font-semibold text-primary hover:text-secondary transition-colors flex items-center gap-1">
-                      View Profile <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-          {totalPages > 1 && (
-            <div className="flex justify-center gap-2 mt-8">
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <button key={i} onClick={() => setCurrentPage(i)} className={`w-3 h-3 rounded-full transition-all duration-300 ${i === currentPage ? 'bg-primary w-8' : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'}`} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      <FeaturedAlumniRotation />
 
       {/* How It Works */}
       <section className="py-20 bg-card">
