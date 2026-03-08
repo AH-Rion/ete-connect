@@ -12,7 +12,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["Poppins", "sans-serif"],
+        heading: ["Sora", "Poppins", "sans-serif"],
         body: ["Inter", "sans-serif"],
       },
       colors: {
