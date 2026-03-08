@@ -3,6 +3,9 @@ import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, scaleIn } from '@/
 import { pageTransition } from '@/lib/animations';
 import { Users, Briefcase, Star, GraduationCap, Globe, TrendingUp, Heart, Target, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import cuetHero1 from '@/assets/cuet-hero-1.png';
+import cuetHero2 from '@/assets/cuet-hero-2.png';
+import cuetHero3 from '@/assets/cuet-hero-3.png';
 
 const milestones = [
   { year: '1995', title: 'Department Established', desc: 'ETE department founded at CUET' },
@@ -21,11 +24,32 @@ const benefits = [
   { icon: TrendingUp, title: 'Professional Growth', desc: 'Grow through events and workshops' },
 ];
 
+const floatingImages = [
+  { src: cuetHero1, className: 'top-4 left-[5%] w-64 rotate-[-6deg]', delay: 0 },
+  { src: cuetHero2, className: 'top-12 left-1/2 -translate-x-1/2 w-56 rotate-[3deg]', delay: 0.2 },
+  { src: cuetHero3, className: 'top-6 right-[5%] w-64 rotate-[5deg]', delay: 0.4 },
+];
+
 const AboutPage = () => (
   <motion.div {...pageTransition} className="pt-16">
     {/* Hero */}
-    <section className="gradient-hero py-20">
-      <div className="container mx-auto px-4 text-center">
+    <section className="gradient-hero py-20 relative overflow-hidden min-h-[340px]">
+      {/* Floating background images */}
+      {floatingImages.map((img, i) => (
+        <motion.img
+          key={i}
+          src={img.src}
+          alt=""
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 0.15, y: [0, -12, 0] }}
+          transition={{
+            opacity: { duration: 1, delay: img.delay },
+            y: { duration: 6, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: img.delay },
+          }}
+          className={`absolute rounded-xl shadow-2xl pointer-events-none select-none ${img.className}`}
+        />
+      ))}
+      <div className="container mx-auto px-4 text-center relative z-10">
         <motion.h1 variants={fadeInUp} initial="hidden" animate="visible" className="text-4xl font-heading font-bold text-text-on-dark">About ETE Family</motion.h1>
         <motion.p variants={fadeInUp} initial="hidden" animate="visible" className="text-text-on-dark/70 font-body mt-4 max-w-2xl mx-auto">
           Connecting generations of Electronics & Telecommunication Engineering graduates from Chittagong University of Engineering & Technology
