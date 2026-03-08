@@ -36,6 +36,8 @@ const AlumniDirectoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('newest');
+  const [batchFilter, setBatchFilter] = useState<string>('all');
+  const [availableBatches, setAvailableBatches] = useState<number[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(0);
