@@ -80,24 +80,6 @@ const HomePage = () => {
     "From Campus to Career, Together",
   ]);
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const alumniPerPage = 3;
-
-  useEffect(() => {
-    supabase.from('alumni').select('*').eq('is_approved', true).order('created_at', { ascending: false })
-      .then(({ data }) => { if (data) setFeatured(data); });
-  }, []);
-
-  const totalPages = Math.ceil(featured.length / alumniPerPage);
-  const displayedAlumni = featured.slice(currentPage * alumniPerPage, (currentPage + 1) * alumniPerPage);
-
-  useEffect(() => {
-    if (totalPages <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentPage((prev) => (prev + 1) % totalPages);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [totalPages]);
 
   const stats = [
     { icon: Users, target: 250, label: 'Alumni', suffix: '+' },
