@@ -71,22 +71,26 @@ export const Footer = () => (
     <div className="border-t border-white/5">
       <div className="container mx-auto px-4 py-4">
         <p className="text-center text-sm text-text-on-dark/40">
-          © 2025 ETE Family. Made with ❤️ for our alumni community.
+          © ETE Family. Made with ❤️ for our alumni community.
         </p>
       </div>
     </div>
 
     {/* Made By Credit */}
     <div className="border-t border-white/5">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-center gap-6">
-        <span className="text-xs text-text-on-dark/30 font-heading tracking-wide">
-          Made By <span className="text-primary font-semibold">AH RION</span>
-        </span>
-        <span className="w-px h-4 bg-white/10" />
-        <span className="text-xs text-text-on-dark/30 font-heading tracking-wide">
-          <span className="text-accent font-semibold">ETE 24</span>
-        </span>
+      <div className="container mx-auto px-4 py-4 flex flex-col items-center gap-3">
+        <div className="flex items-center gap-6">
+          <span className="text-base text-text-on-dark/40 font-heading tracking-wide">
+            Made By <span className="text-primary font-bold text-lg">AH RION</span>
+          </span>
+          <span className="w-px h-5 bg-white/10" />
+          <span className="text-base text-text-on-dark/40 font-heading tracking-wide">
+            <span className="text-accent font-bold text-lg">ETE 24</span>
+          </span>
+        </div>
+        <a href="https://www.facebook.com/ah.rion.98" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-text-on-dark/40 hover:text-primary transition-colors">
+          <Facebook className="w-4 h-4" /> facebook.com/ah.rion.98
+        </a>
       </div>
     </div>
-  </footer>
 );
