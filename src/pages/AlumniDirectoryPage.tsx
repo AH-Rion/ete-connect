@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, MapPin, Briefcase, Star, LayoutGrid, List, X, Filter, SearchX, ArrowRight } from 'lucide-react';
+import { Search, MapPin, Briefcase, Star, LayoutGrid, List, X, Filter, SearchX, ArrowRight, GraduationCap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
