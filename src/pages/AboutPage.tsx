@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, scaleIn } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
-import { Users, Briefcase, Star, GraduationCap, Globe, TrendingUp, Heart, Target } from 'lucide-react';
+import { Users, Briefcase, Star, GraduationCap, Globe, TrendingUp, Heart, Target, ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const milestones = [
   { year: '1995', title: 'Department Established', desc: 'ETE department founded at CUET' },
@@ -109,6 +110,20 @@ const AboutPage = () => (
             </motion.div>
           ))}
         </div>
+      </div>
+    </section>
+
+    {/* More Info */}
+    <section className="py-16 bg-background">
+      <div className="container mx-auto px-4 text-center">
+        <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          <h2 className="text-2xl font-heading font-bold text-foreground mb-4">Want to learn more?</h2>
+          <Button asChild size="lg" className="gap-2">
+            <a href="https://cuet.ac.bd/department/ETE" target="_blank" rel="noopener noreferrer">
+              More Info Click <ExternalLink className="w-4 h-4" />
+            </a>
+          </Button>
+        </motion.div>
       </div>
     </section>
   </motion.div>
