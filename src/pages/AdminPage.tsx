@@ -160,6 +160,7 @@ const AdminPage = () => {
               <MessageSquare className="w-4 h-4" />Messages
               {unreadMessages > 0 && <Badge variant="destructive" className="ml-1 text-xs px-1.5 py-0">{unreadMessages}</Badge>}
             </TabsTrigger>
+            <TabsTrigger value="settings" className="font-heading gap-2"><Settings className="w-4 h-4" />Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
