@@ -6,7 +6,16 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Google Sheets API helpers
+// Base64 decode helper
+function base64Decode(str: string): Uint8Array {
+  const binStr = atob(str);
+  const bytes = new Uint8Array(binStr.length);
+  for (let i = 0; i < binStr.length; i++) {
+    bytes[i] = binStr.charCodeAt(i);
+  }
+  return bytes;
+}
+
 async function getAccessToken(serviceAccountKey: any): Promise<string> {
   const header = { alg: "RS256", typ: "JWT" };
   const now = Math.floor(Date.now() / 1000);
@@ -26,12 +35,13 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
 
   const unsignedToken = `${enc(header)}.${enc(payload)}`;
 
-  // Import the private key
+  // Import the private key - clean up PEM format
   const pemContent = serviceAccountKey.private_key
-    .replace(/-----BEGIN PRIVATE KEY-----/, "")
-    .replace(/-----END PRIVATE KEY-----/, "")
-    .replace(/\n/g, "");
-  const binaryKey = Uint8Array.from(atob(pemContent), (c) => c.charCodeAt(0));
+    .replace(/-----BEGIN PRIVATE KEY-----/g, "")
+    .replace(/-----END PRIVATE KEY-----/g, "")
+    .replace(/[\n\r\s]/g, "");
+  
+  const binaryKey = base64Decode(pemContent);
 
   const cryptoKey = await crypto.subtle.importKey(
     "pkcs8",
