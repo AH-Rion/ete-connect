@@ -33,6 +33,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetOpen, setResetOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('login');
 
   useEffect(() => {
     if (isAuthenticated) navigate(params.get('redirect') || '/', { replace: true });
@@ -50,7 +51,7 @@ const LoginPage = () => {
   };
 
   const handleSignup = async (data: z.infer<typeof signupSchema>) => {
-    try { setLoading(true); await signUpWithEmail(data.email, data.password, data.fullName); toast.success('Account created! Check your email to verify.'); } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
+    try { setLoading(true); await signUpWithEmail(data.email, data.password, data.fullName); toast.success('Account created! Check your email to verify.'); signupForm.reset(); setActiveTab('login'); } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
   };
 
   const handleResetPassword = async () => {
@@ -101,7 +102,7 @@ const LoginPage = () => {
             <div className="relative flex justify-center text-xs"><span className="bg-background px-2 text-muted-foreground font-body">or continue with email</span></div>
           </div>
 
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login" className="font-heading">Login</TabsTrigger>
               <TabsTrigger value="signup" className="font-heading">Sign Up</TabsTrigger>
