@@ -70,19 +70,31 @@ const AboutPage = () => {
       {/* Story */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div variants={fadeInLeft} initial="hidden" whileInView="visible" viewport={{ once: true }} className="space-y-4">
-              <h2 className="text-3xl font-heading font-bold text-foreground">Our Story</h2>
-              <div className="w-16 h-1 bg-accent rounded-full" />
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <motion.div variants={fadeInLeft} initial="hidden" whileInView="visible" viewport={{ once: true }} className="space-y-5">
+              <div>
+                <h2 className="text-3xl font-heading font-bold text-foreground">Department of</h2>
+                <h2 className="text-3xl md:text-4xl font-heading font-extrabold mt-1">
+                  <span className="bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
+                    Electronics & Telecommunication Engineering (ETE)
+                  </span>
+                </h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-accent to-primary rounded-full mt-3" />
+              </div>
               <p className="text-muted-foreground font-body leading-relaxed">
-                ETE Family was born from a simple idea: that the bonds formed during our years at CUET's ETE department shouldn't fade with time. Our alumni are spread across the globe — from Silicon Valley to Singapore, from London to Dhaka — yet they all share the same foundation.
+                Today, we are at the peak of the information technology age, and communication engineering plays a vital role in today's rapidly changing world. In this prospect, CUET has launched Department of Electronics and Telecommunication Engineering (ETE) in the year 2012. The vision of this department is to make great contribution by producing efficient and resourceful engineers with research and development capabilities.
               </p>
               <p className="text-muted-foreground font-body leading-relaxed">
-                This platform bridges generations of engineers, enabling mentorship, career growth, and lifelong connections. Whether you graduated in 1995 or 2024, you're part of this family.
+                The ETE Department has well qualified and experienced faculty members with areas of specialization that include Embedded Systems, Applied Electronics and VLSI design. The department has taken step to collect technologically advanced equipment and to build enriched laboratories.
               </p>
             </motion.div>
-            <motion.div variants={fadeInRight} initial="hidden" whileInView="visible" viewport={{ once: true }} className="bg-accent/10 rounded-2xl p-12 flex items-center justify-center">
-              <GraduationCap className="w-32 h-32 text-accent/40" />
+            <motion.div variants={fadeInRight} initial="hidden" whileInView="visible" viewport={{ once: true }} className="space-y-5 lg:pt-16">
+              <p className="text-muted-foreground font-body leading-relaxed">
+                The Department of ETE offers a comprehensive range of rigorous, innovative programs. The undergraduate curriculum is designed to give students a sound knowledge of Engineering fundamentals, strong physical sciences background and adequate practical training so that they will be ready to quickly achieve competence in treating current technical problems as well as those that will come with the rapidly changing technologies of the years to come.
+              </p>
+              <p className="text-muted-foreground font-body leading-relaxed">
+                The aim of the undergraduate program is to provide the students with a technical and engineering background and scientific research capabilities in the design and development and production of electronic devices, circuits and systems used in a wide spectrum of applications ranging from home appliances to the most sophisticated satellite communications.
+              </p>
             </motion.div>
           </div>
         </div>
