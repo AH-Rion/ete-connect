@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { fadeInUp, fadeInLeft, fadeInRight } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
 import { supabase } from '@/integrations/supabase/client';
@@ -86,13 +86,12 @@ const ContactPage = () => {
               <div className="space-y-4">
                 {[
                   { icon: MapPin, label: 'Address', value: 'Dept. of ETE, CUET, Chittagong-4349, Bangladesh' },
-                  { icon: Mail, label: 'Email', value: 'etefamily@cuet.ac.bd' },
-                  { icon: Phone, label: 'Phone', value: '+880-31-XXXXXXX' },
-                  { icon: Clock, label: 'Office Hours', value: 'Sunday - Thursday, 9:00 AM - 5:00 PM' },
+                  { icon: Mail, label: 'Email', value: 'ahrionofc@gmail.com' },
+                  { icon: Phone, label: 'Phone', value: '+880 1313-729422' },
                 ].map((c, i) => (
                   <div key={i} className="flex items-start gap-4 p-4 bg-card rounded-lg">
-                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                      <c.icon className="w-5 h-5 text-accent" />
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <c.icon className="w-5 h-5 text-primary" />
                     </div>
                     <div>
                       <p className="text-sm font-heading font-semibold text-foreground">{c.label}</p>
@@ -101,11 +100,17 @@ const ContactPage = () => {
                   </div>
                 ))}
               </div>
-              <div className="bg-muted rounded-lg p-8 flex items-center justify-center">
-                <div className="text-center text-muted-foreground">
-                  <MapPin className="w-10 h-10 mx-auto mb-2 opacity-40" />
-                  <p className="font-body text-sm">📍 University Location</p>
-                </div>
+              <div className="rounded-lg overflow-hidden border border-border">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3689.2!2d91.971!3d22.4614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30ad2fd0b1f6571b%3A0x6e66c11193ee4097!2sChittagong%20University%20of%20Engineering%20%26%20Technology%20(CUET)!5e0!3m2!1sen!2sbd!4v1700000000000"
+                  width="100%"
+                  height="220"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="CUET Location"
+                />
               </div>
             </motion.div>
           </div>
