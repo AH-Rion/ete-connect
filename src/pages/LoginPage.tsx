@@ -102,7 +102,7 @@ const LoginPage = () => {
             <div className="relative flex justify-center text-xs"><span className="bg-background px-2 text-muted-foreground font-body">or continue with email</span></div>
           </div>
 
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login" className="font-heading">Login</TabsTrigger>
               <TabsTrigger value="signup" className="font-heading">Sign Up</TabsTrigger>
