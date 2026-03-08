@@ -340,8 +340,14 @@ const RegisterPage = () => {
                     </Select>
                   </div>
                 </div>
-                <div><Label className="font-heading text-sm">Student ID / Roll Number *</Label><Input value={form.student_id} onChange={e => updateForm('student_id', e.target.value)} placeholder="e.g., ETE-2015-042" /></div>
-                <div><Label className="font-heading text-sm">Hall of Residence</Label><Input value={form.hall_of_residence} onChange={e => updateForm('hall_of_residence', e.target.value)} placeholder="e.g., Shaheed Titumir Hall" /></div>
+                <div><Label className="font-heading text-sm">Student ID / Roll Number *</Label><Input value={form.student_id} onChange={e => updateForm('student_id', e.target.value)} placeholder="e.g., 2408xxx" /></div>
+                <div>
+                  <Label className="font-heading text-sm">Hall of Residence</Label>
+                  <Select value={form.hall_of_residence} onValueChange={v => updateForm('hall_of_residence', v)}>
+                    <SelectTrigger><SelectValue placeholder="Select hall" /></SelectTrigger>
+                    <SelectContent>{halls.map(h => <SelectItem key={h} value={h}>{h}</SelectItem>)}</SelectContent>
+                  </Select>
+                </div>
                 <div>
                   <Label className="font-heading text-sm">Memorable University Memory</Label>
                   <Textarea value={form.university_memory} onChange={e => updateForm('university_memory', e.target.value.slice(0, 300))} placeholder="Share your favorite campus memory..." maxLength={300} className="resize-none" rows={3} />
