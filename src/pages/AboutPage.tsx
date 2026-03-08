@@ -11,11 +11,10 @@ import cuetHero3 from '@/assets/cuet-hero-3.png';
 const heroImages = [cuetHero1, cuetHero2, cuetHero3];
 
 const milestones = [
-  { year: '1995', title: 'Department Established', desc: 'ETE department founded at CUET' },
-  { year: '2000', title: 'First Batch Graduates', desc: 'The first batch of ETE engineers graduate' },
-  { year: '2010', title: '500+ Alumni Milestone', desc: 'Half a thousand alumni and growing' },
-  { year: '2020', title: 'International Recognition', desc: 'Alumni placed in top global companies' },
-  { year: '2024', title: 'ETE Family Launched', desc: 'The alumni portal goes live' },
+  { year: '2012', title: 'Department Established', desc: 'ETE department founded at CUET' },
+  { year: '2016', title: 'First Batch Graduates', desc: 'The first batch of ETE engineers graduate' },
+  { year: '2025', title: '250+ Alumni Milestone', desc: 'One fourth a thousand alumni and growing' },
+  { year: '2026', title: 'ETE Department Growing', desc: 'Continuing to expand and excel in education & research' },
 ];
 
 const benefits = [
