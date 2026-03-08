@@ -289,6 +289,46 @@ const AdminPage = () => {
               {messages.length === 0 && <p className="text-center text-muted-foreground py-8 font-body">No messages yet</p>}
             </div>
           </TabsContent>
+
+          <TabsContent value="settings">
+            <div className="bg-card rounded-xl p-6 shadow-sm max-w-3xl">
+              <h2 className="font-heading font-semibold text-foreground mb-6">Frontend Settings</h2>
+              <div className="space-y-6">
+                {settings.map(setting => (
+                  <div key={setting.id} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label htmlFor={setting.key} className="font-heading font-medium text-sm text-foreground capitalize">
+                          {setting.key.replace(/_/g, ' ')}
+                        </label>
+                        {setting.description && (
+                          <p className="text-xs text-muted-foreground mt-1">{setting.description}</p>
+                        )}
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => handleSaveSetting(setting.key, setting.value)}
+                        disabled={savingSettings}
+                        className="font-heading"
+                      >
+                        Save
+                      </Button>
+                    </div>
+                    <Input
+                      id={setting.key}
+                      value={setting.value || ''}
+                      onChange={e => handleSettingsChange(setting.key, e.target.value)}
+                      placeholder={`Enter ${setting.key.replace(/_/g, ' ')}`}
+                      className="w-full"
+                    />
+                  </div>
+                ))}
+              </div>
+              {settings.length === 0 && (
+                <p className="text-center text-muted-foreground py-8 font-body">No settings available</p>
+              )}
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
 
