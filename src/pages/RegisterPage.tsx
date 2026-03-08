@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Upload, X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { Check, Upload, X, ChevronRight, ChevronLeft, Users, Globe, Building2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { pageTransition, fadeInUp } from '@/lib/animations';
+import { pageTransition, fadeInUp, staggerContainer } from '@/lib/animations';
 import { Button } from '@/components/ui/button';
+import { NeuralNetworkBg } from '@/components/NeuralNetworkBg';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
