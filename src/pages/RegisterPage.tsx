@@ -36,7 +36,19 @@ const departments = [
   'Other',
 ];
 
-const degrees = ["Bachelor's", "Master's", 'PhD', 'Diploma', 'Postdoc'];
+const degrees = ['BSc', 'MSc', 'PhD'];
+
+const halls = [
+  'Muktijoddah Hall',
+  'Shahid Mohammad Shah Hall',
+  'Dr. Qudrat-E-Khuda Hall',
+  'Kabi Kazi Nazrul Islam Hall',
+  'Shaheed Tareq Huda Hall',
+  'Shaheed Abu Sayed Hall',
+  'Sufia Kamal Hall',
+  'Begum Shamsennahar Khan Hall',
+  'Tapashi Rabeya Hall',
+];
 const industries = ['IT/Software', 'Telecom', 'Banking/Finance', 'Healthcare', 'Education', 'Engineering/Manufacturing', 'Government', 'Startup', 'NGO/Development', 'Research/Academia', 'Defense', 'Real Estate', 'Energy', 'Media', 'Other'];
 const salaryRanges = ['Prefer not to say', 'Below $30k', '$30k-$60k', '$60k-$100k', '$100k-$150k', '$150k-$200k', '$200k+'];
 const employmentStatuses = [
@@ -328,8 +340,14 @@ const RegisterPage = () => {
                     </Select>
                   </div>
                 </div>
-                <div><Label className="font-heading text-sm">Student ID / Roll Number *</Label><Input value={form.student_id} onChange={e => updateForm('student_id', e.target.value)} placeholder="e.g., ETE-2015-042" /></div>
-                <div><Label className="font-heading text-sm">Hall of Residence</Label><Input value={form.hall_of_residence} onChange={e => updateForm('hall_of_residence', e.target.value)} placeholder="e.g., Shaheed Titumir Hall" /></div>
+                <div><Label className="font-heading text-sm">Student ID / Roll Number *</Label><Input value={form.student_id} onChange={e => updateForm('student_id', e.target.value)} placeholder="e.g., 2408xxx" /></div>
+                <div>
+                  <Label className="font-heading text-sm">Hall of Residence</Label>
+                  <Select value={form.hall_of_residence} onValueChange={v => updateForm('hall_of_residence', v)}>
+                    <SelectTrigger><SelectValue placeholder="Select hall" /></SelectTrigger>
+                    <SelectContent>{halls.map(h => <SelectItem key={h} value={h}>{h}</SelectItem>)}</SelectContent>
+                  </Select>
+                </div>
                 <div>
                   <Label className="font-heading text-sm">Memorable University Memory</Label>
                   <Textarea value={form.university_memory} onChange={e => updateForm('university_memory', e.target.value.slice(0, 300))} placeholder="Share your favorite campus memory..." maxLength={300} className="resize-none" rows={3} />
