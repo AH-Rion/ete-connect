@@ -36,8 +36,15 @@ const ContactPage = () => {
   const onSubmit = async (data: z.infer<typeof contactSchema>) => {
     setLoading(true);
     try {
-      const { error } = await supabase.from('contact_messages').insert(data);
+      // Save to database
+      await supabase.from('contact_messages').insert(data);
+
+      // Send email notification
+      const { error } = await supabase.functions.invoke('send-contact-email', {
+        body: data,
+      });
       if (error) throw error;
+
       toast.success('Message sent! We\'ll get back to you soon.');
       form.reset();
     } catch (e: any) {
