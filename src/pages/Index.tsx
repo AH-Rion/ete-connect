@@ -79,10 +79,24 @@ const HomePage = () => {
     "From Campus to Career, Together",
   ]);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const alumniPerPage = 3;
+
   useEffect(() => {
-    supabase.from('alumni').select('*').eq('is_approved', true).eq('is_featured', true).limit(6)
+    supabase.from('alumni').select('*').eq('is_approved', true).order('created_at', { ascending: false })
       .then(({ data }) => { if (data) setFeatured(data); });
   }, []);
+
+  const totalPages = Math.ceil(featured.length / alumniPerPage);
+  const displayedAlumni = featured.slice(currentPage * alumniPerPage, (currentPage + 1) * alumniPerPage);
+
+  useEffect(() => {
+    if (totalPages <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentPage((prev) => (prev + 1) % totalPages);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [totalPages]);
 
   const stats = [
     { icon: Users, target: 250, label: 'Alumni', suffix: '+' },
@@ -210,8 +224,8 @@ const HomePage = () => {
             <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-4 rounded-full" />
             <p className="text-muted-foreground mt-4 font-body">Meet some of the incredible people from our ETE family</p>
           </motion.div>
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featured.map((alum) => (
+          <motion.div key={currentPage} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.5 }} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayedAlumni.map((alum) => (
               <motion.div key={alum.id} variants={fadeInUp} className="group perspective-1000">
                 <div className="relative h-[350px] rounded-xl overflow-hidden shadow-md card-hover bg-card">
                   {/* Front */}
@@ -238,6 +252,13 @@ const HomePage = () => {
               </motion.div>
             ))}
           </motion.div>
+          {totalPages > 1 && (
+            <div className="flex justify-center gap-2 mt-8">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button key={i} onClick={() => setCurrentPage(i)} className={`w-3 h-3 rounded-full transition-all duration-300 ${i === currentPage ? 'bg-primary w-8' : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'}`} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
