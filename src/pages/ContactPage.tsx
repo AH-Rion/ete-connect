@@ -39,11 +39,20 @@ const ContactPage = () => {
       // Save to database
       await supabase.from('contact_messages').insert(data);
 
-      // Send email notification
-      const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: data,
-      });
-      if (error) throw error;
+      // Send email notification via Cloud edge function
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/send-contact-email`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        }
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to send email');
+      }
 
       toast.success('Message sent! We\'ll get back to you soon.');
       form.reset();
