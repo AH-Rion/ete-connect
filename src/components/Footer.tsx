@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { GraduationCap, Facebook, Linkedin, Twitter, Github, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Linkedin, Twitter, Github, Mail, Phone, MapPin } from 'lucide-react';
+import eteLogo from '@/assets/ete-logo.png';
 
 const quickLinks = [
   { label: 'Home', path: '/' },
@@ -17,20 +18,20 @@ const resources = [
 ];
 
 export const Footer = () => (
-  <footer className="bg-bg-dark text-text-on-dark">
+  <footer style={{ background: '#020617' }} className="text-text-on-dark">
     <div className="container mx-auto px-4 py-16">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <GraduationCap className="w-8 h-8 text-accent" />
-            <span className="font-heading font-bold text-xl"><span className="text-accent">ETE</span> Family</span>
+          <div className="flex items-center gap-2.5">
+            <img src={eteLogo} alt="ETE Family" className="w-9 h-9 object-contain" />
+            <span className="font-heading font-bold text-xl"><span className="text-primary">ETE</span> Family</span>
           </div>
-          <p className="text-sm text-text-on-dark/70 leading-relaxed">
+          <p className="text-sm text-text-on-dark/60 leading-relaxed">
             Connecting generations of Electronics & Telecommunication Engineering graduates from CUET.
           </p>
           <div className="flex gap-3">
             {[Facebook, Linkedin, Twitter, Github].map((Icon, i) => (
-              <a key={i} href="#" className="w-9 h-9 rounded-full bg-surface-dark flex items-center justify-center text-text-on-dark/60 hover:text-accent hover:scale-110 transition-all">
+              <a key={i} href="#" className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-text-on-dark/50 hover:text-primary hover:border-primary/30 hover:scale-110 transition-all">
                 <Icon className="w-4 h-4" />
               </a>
             ))}
@@ -38,26 +39,26 @@ export const Footer = () => (
         </div>
 
         <div>
-          <h4 className="font-heading font-semibold text-accent mb-4">Quick Links</h4>
+          <h4 className="font-heading font-semibold text-primary mb-4">Quick Links</h4>
           <ul className="space-y-2">
             {quickLinks.map((l) => (
-              <li key={l.path}><Link to={l.path} className="text-sm text-text-on-dark/70 hover:text-accent transition-colors">{l.label}</Link></li>
+              <li key={l.path}><Link to={l.path} className="text-sm text-text-on-dark/60 hover:text-primary transition-colors">{l.label}</Link></li>
             ))}
           </ul>
         </div>
 
         <div>
-          <h4 className="font-heading font-semibold text-accent mb-4">Resources</h4>
+          <h4 className="font-heading font-semibold text-primary mb-4">Resources</h4>
           <ul className="space-y-2">
             {resources.map((l) => (
-              <li key={l.label}><Link to={l.path} className="text-sm text-text-on-dark/70 hover:text-accent transition-colors">{l.label}</Link></li>
+              <li key={l.label}><Link to={l.path} className="text-sm text-text-on-dark/60 hover:text-primary transition-colors">{l.label}</Link></li>
             ))}
           </ul>
         </div>
 
         <div>
-          <h4 className="font-heading font-semibold text-accent mb-4">Contact</h4>
-          <ul className="space-y-3 text-sm text-text-on-dark/70">
+          <h4 className="font-heading font-semibold text-primary mb-4">Contact</h4>
+          <ul className="space-y-3 text-sm text-text-on-dark/60">
             <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" />Dept. of ETE, CUET, Chittagong, Bangladesh</li>
             <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" />etefamily@cuet.ac.bd</li>
             <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" />+880-31-XXXXXXX</li>
@@ -65,11 +66,26 @@ export const Footer = () => (
         </div>
       </div>
     </div>
-    <div className="border-t border-surface-dark">
+
+    {/* Copyright */}
+    <div className="border-t border-white/5">
       <div className="container mx-auto px-4 py-4">
-        <p className="text-center text-sm text-text-on-dark/50">
+        <p className="text-center text-sm text-text-on-dark/40">
           © 2025 ETE Family. Made with ❤️ for our alumni community.
         </p>
+      </div>
+    </div>
+
+    {/* Made By Credit */}
+    <div className="border-t border-white/5">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-center gap-6">
+        <span className="text-xs text-text-on-dark/30 font-heading tracking-wide">
+          Made By <span className="text-primary font-semibold">AH RION</span>
+        </span>
+        <span className="w-px h-4 bg-white/10" />
+        <span className="text-xs text-text-on-dark/30 font-heading tracking-wide">
+          <span className="text-accent font-semibold">ETE 24</span>
+        </span>
       </div>
     </div>
   </footer>
