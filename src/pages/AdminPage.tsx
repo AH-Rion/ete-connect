@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Clock, CheckCircle, Star, Mail, Eye, Trash2, Check, X as XIcon, LayoutDashboard, MessageSquare, Settings, RefreshCw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { cloudSupabase } from '@/lib/cloudClient';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
 import { Button } from '@/components/ui/button';
@@ -56,7 +57,7 @@ const AdminPage = () => {
     const [alumniRes, messagesRes, settingsRes] = await Promise.all([
       supabase.from('alumni').select('*').order('created_at', { ascending: false }),
       supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
-      supabase.from('site_settings').select('*').order('key', { ascending: true }),
+      cloudSupabase.from('site_settings').select('*').order('key', { ascending: true }),
     ]);
     setAlumni(alumniRes.data || []);
     setMessages(messagesRes.data || []);
@@ -105,7 +106,7 @@ const AdminPage = () => {
 
   const handleSaveSetting = async (key: string, value: string) => {
     setSavingSettings(true);
-    const { error } = await supabase.from('site_settings').update({ value }).eq('key', key);
+    const { error } = await cloudSupabase.from('site_settings').update({ value }).eq('key', key);
     setSavingSettings(false);
     if (error) {
       toast.error('Failed to update setting');
