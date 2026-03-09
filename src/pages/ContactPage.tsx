@@ -127,10 +127,10 @@ const ContactPage = () => {
         <div>
           <p className="text-sm font-heading font-semibold text-foreground">Email</p>
           <a 
-            href="mailto:ahrionofc@example.com" 
+            href="mailto:ahrionofc@gmail.com" 
             className="text-muted-foreground mt-1 text-sm hover:text-primary transition-colors cursor-pointer block"
           >
-            ahrionofc@example.com
+            ahrionofc@gmail.com
           </a>
         </div>
       </div>
