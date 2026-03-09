@@ -18,7 +18,9 @@ const resources = [
   { label: 'Help', path: '/contact' },
 ];
 
-export const Footer = () => (
+export const Footer = () => {
+  const settings = useSiteSettings();
+  return (
   <footer style={{ background: '#020617' }} className="text-text-on-dark">
     <div className="container mx-auto px-4 py-16">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
