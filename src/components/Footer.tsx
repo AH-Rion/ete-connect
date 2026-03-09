@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Facebook, Linkedin, Twitter, Github, Mail, Phone, MapPin } from 'lucide-react';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import eteLogo from '@/assets/ete-logo.png';
 
 const quickLinks = [
