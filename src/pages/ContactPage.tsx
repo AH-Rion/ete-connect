@@ -103,8 +103,8 @@ const ContactPage = () => {
               <div className="space-y-4">
                 {[
                   { icon: MapPin, label: 'Address', value: 'Dept. of ETE, CUET, Chittagong-4349, Bangladesh' },
-                  { icon: Mail, label: 'Email', value: 'ahrionofc@gmail.com' },
-                  { icon: Phone, label: 'Phone', value: '+880 1313-729422' },
+                  { icon: Mail, label: 'Email', value: settings.contact_email },
+                  { icon: Phone, label: 'Phone', value: settings.contact_phone },
                 ].map((c, i) => (
                   <div key={i} className="flex items-start gap-4 p-4 bg-card rounded-lg">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
