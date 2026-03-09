@@ -140,7 +140,7 @@ const HomePage = () => {
             transition={{ delay: 0.8 }}
             className="text-lg text-text-on-dark/50 max-w-2xl mx-auto mb-12 font-body leading-relaxed"
           >
-            Discover where our alumni are now — their journeys, achievements, and how to connect with them. Join the largest ETE alumni network.
+            {settings.hero_subtitle}
           </motion.p>
 
           <motion.div
