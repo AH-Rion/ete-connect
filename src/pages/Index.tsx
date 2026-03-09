@@ -119,7 +119,7 @@ const HomePage = () => {
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mb-6">
             <span className="block text-2xl md:text-3xl text-text-on-dark/60 font-heading font-light tracking-wide">Welcome to</span>
             <span className="block text-6xl md:text-8xl lg:text-9xl font-heading font-black text-gradient-hero mt-3 leading-tight" style={{ fontFamily: "'Sora', 'Inter', sans-serif", textShadow: '0 0 80px rgba(99,102,241,0.3)' }}>
-              ETE Family
+              {settings.site_title}
             </span>
           </motion.h1>
 
