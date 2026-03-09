@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { fadeInUp, fadeInLeft, fadeInRight } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
 import { supabase } from '@/integrations/supabase/client';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
