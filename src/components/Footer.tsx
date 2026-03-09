@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Facebook, Linkedin, Twitter, Github, Mail, Phone, MapPin } from 'lucide-react';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import eteLogo from '@/assets/ete-logo.png';
 
 const quickLinks = [
@@ -17,7 +18,9 @@ const resources = [
   { label: 'Help', path: '/contact' },
 ];
 
-export const Footer = () => (
+export const Footer = () => {
+  const settings = useSiteSettings();
+  return (
   <footer style={{ background: '#020617' }} className="text-text-on-dark">
     <div className="container mx-auto px-4 py-16">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -60,8 +63,8 @@ export const Footer = () => (
           <h4 className="font-heading font-semibold text-primary mb-4">Contact</h4>
           <ul className="space-y-3 text-sm text-text-on-dark/60">
             <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" />Dept. of ETE, CUET, Chittagong, Bangladesh</li>
-            <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" />ahrionofc@gmail.com</li>
-            <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" />01313729422</li>
+            <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" />{settings.contact_email}</li>
+            <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" />{settings.contact_phone}</li>
           </ul>
         </div>
       </div>
@@ -95,4 +98,5 @@ export const Footer = () => (
       </div>
     </div>
   </footer>
-);
+  );
+};

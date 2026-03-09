@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { ChevronDown, Users, Building2, Globe, Calendar, MapPin, Briefcase, ArrowRight, Quote, Sparkles } from 'lucide-react';
 import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, scaleIn } from '@/lib/animations';
 import { supabase } from '@/integrations/supabase/client';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Button } from '@/components/ui/button';
 import { NeuralNetworkBg } from '@/components/NeuralNetworkBg';
 import { CubeAlumniShowcase } from '@/components/CubeAlumniShowcase';
@@ -72,6 +73,7 @@ interface Alumni {
 }
 
 const HomePage = () => {
+  const settings = useSiteSettings();
   const [featured, setFeatured] = useState<Alumni[]>([]);
   const typewriterText = useTypewriter([
     "Where Every Graduate Stays Connected Forever",
@@ -117,7 +119,7 @@ const HomePage = () => {
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mb-6">
             <span className="block text-2xl md:text-3xl text-text-on-dark/60 font-heading font-light tracking-wide">Welcome to</span>
             <span className="block text-6xl md:text-8xl lg:text-9xl font-heading font-black text-gradient-hero mt-3 leading-tight" style={{ fontFamily: "'Sora', 'Inter', sans-serif", textShadow: '0 0 80px rgba(99,102,241,0.3)' }}>
-              ETE Family
+              {settings.site_title}
             </span>
           </motion.h1>
 
@@ -138,7 +140,7 @@ const HomePage = () => {
             transition={{ delay: 0.8 }}
             className="text-lg text-text-on-dark/50 max-w-2xl mx-auto mb-12 font-body leading-relaxed"
           >
-            Discover where our alumni are now — their journeys, achievements, and how to connect with them. Join the largest ETE alumni network.
+            {settings.hero_subtitle}
           </motion.p>
 
           <motion.div

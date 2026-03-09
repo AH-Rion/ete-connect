@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { fadeInUp, fadeInLeft, fadeInRight } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
 import { supabase } from '@/integrations/supabase/client';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -30,6 +31,7 @@ const faqs = [
 ];
 
 const ContactPage = () => {
+  const settings = useSiteSettings();
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof contactSchema>>({ resolver: zodResolver(contactSchema) });
 
@@ -101,8 +103,8 @@ const ContactPage = () => {
               <div className="space-y-4">
                 {[
                   { icon: MapPin, label: 'Address', value: 'Dept. of ETE, CUET, Chittagong-4349, Bangladesh' },
-                  { icon: Mail, label: 'Email', value: 'ahrionofc@gmail.com' },
-                  { icon: Phone, label: 'Phone', value: '+880 1313-729422' },
+                  { icon: Mail, label: 'Email', value: settings.contact_email },
+                  { icon: Phone, label: 'Phone', value: settings.contact_phone },
                 ].map((c, i) => (
                   <div key={i} className="flex items-start gap-4 p-4 bg-card rounded-lg">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
