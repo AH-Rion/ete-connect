@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { ChevronDown, Users, Building2, Globe, Calendar, MapPin, Briefcase, ArrowRight, Quote, Sparkles } from 'lucide-react';
 import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, scaleIn } from '@/lib/animations';
 import { supabase } from '@/integrations/supabase/client';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Button } from '@/components/ui/button';
 import { NeuralNetworkBg } from '@/components/NeuralNetworkBg';
 import { CubeAlumniShowcase } from '@/components/CubeAlumniShowcase';
