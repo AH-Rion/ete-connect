@@ -73,6 +73,7 @@ interface Alumni {
 }
 
 const HomePage = () => {
+  const settings = useSiteSettings();
   const [featured, setFeatured] = useState<Alumni[]>([]);
   const typewriterText = useTypewriter([
     "Where Every Graduate Stays Connected Forever",
