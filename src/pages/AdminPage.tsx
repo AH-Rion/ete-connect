@@ -106,7 +106,7 @@ const AdminPage = () => {
 
   const handleSaveSetting = async (key: string, value: string) => {
     setSavingSettings(true);
-    const { error } = await supabase.from('site_settings').update({ value }).eq('key', key);
+    const { error } = await cloudSupabase.from('site_settings').update({ value }).eq('key', key);
     setSavingSettings(false);
     if (error) {
       toast.error('Failed to update setting');
