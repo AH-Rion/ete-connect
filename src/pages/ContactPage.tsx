@@ -31,6 +31,7 @@ const faqs = [
 ];
 
 const ContactPage = () => {
+  const settings = useSiteSettings();
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof contactSchema>>({ resolver: zodResolver(contactSchema) });
 
