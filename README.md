@@ -1,11 +1,11 @@
-# 🎓 ETE Family
+# ETE Family
 
 **ETE Family** is a modern alumni networking platform designed for the **Department of Electronics and Telecommunication Engineering (ETE)**.
 The platform connects graduates, students, and professionals in one place to share experiences, build networks, and stay connected with the department.
 
 ---
 
-## 🌐 Project Overview
+## Project Overview
 
 ETE Family allows alumni to:
 
@@ -19,26 +19,26 @@ The platform is designed with a **modern UI, animated backgrounds, and responsiv
 
 ---
 
-## ✨ Features
+## Features
 
-* 🏫 **Alumni Directory**
+* **Alumni Directory**
   Browse and explore alumni profiles.
 
-* 📝 **Alumni Registration**
+* **Alumni Registration**
   Graduates can register themselves to join the network.
 
-* 🔐 **Authentication System**
+* **Authentication System**
   Secure login system for users.
 
-* 🎨 **Modern UI Design**
+* **Modern UI Design**
   Clean interface with animations and interactive elements.
 
-* ⚡ **Fast and Responsive**
+* **Fast and Responsive**
   Optimized for desktop and mobile devices.
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 * **Frontend**
 
