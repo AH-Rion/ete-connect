@@ -204,10 +204,10 @@
 }
 
 .animate-marquee-left {
-  animation: marquee-left 30s linear infinite;
+  animation: marquee-left 60s linear infinite;
 }
 .animate-marquee-right {
-  animation: marquee-right 30s linear infinite;
+  animation: marquee-right 60s linear infinite;
 }
 .animate-float {
   animation: float 6s ease-in-out infinite;
