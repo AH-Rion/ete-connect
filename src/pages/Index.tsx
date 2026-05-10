@@ -1,44 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
-import { ChevronDown, Users, Building2, Globe, Calendar, MapPin, Briefcase, ArrowRight, Quote, Sparkles } from 'lucide-react';
-import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, scaleIn } from '@/lib/animations';
+import { Users, Building2, Globe, ArrowRight, Sparkles, Network, GraduationCap, TrendingUp } from 'lucide-react';
+import { fadeInUp, staggerContainer, scaleIn } from '@/lib/animations';
 import { supabase } from '@/integrations/supabase/client';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
-import { Button } from '@/components/ui/button';
-import { NeuralNetworkBg } from '@/components/NeuralNetworkBg';
-import { CubeAlumniShowcase } from '@/components/CubeAlumniShowcase';
 
-// Typewriter hook
-const useTypewriter = (phrases: string[], typingSpeed = 50, deletingSpeed = 30, pauseDuration = 2000) => {
-  const [text, setText] = useState('');
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const currentPhrase = phrases[phraseIndex];
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        setText(currentPhrase.substring(0, text.length + 1));
-        if (text.length === currentPhrase.length) {
-          setTimeout(() => setIsDeleting(true), pauseDuration);
-        }
-      } else {
-        setText(currentPhrase.substring(0, text.length - 1));
-        if (text.length === 0) {
-          setIsDeleting(false);
-          setPhraseIndex((prev) => (prev + 1) % phrases.length);
-        }
-      }
-    }, isDeleting ? deletingSpeed : typingSpeed);
-    return () => clearTimeout(timeout);
-  }, [text, isDeleting, phraseIndex, phrases, typingSpeed, deletingSpeed, pauseDuration]);
-
-  return text;
-};
-
-// Counter hook
-const useCountUp = (target: number, duration = 2000) => {
+const useCountUp = (target: number, duration = 1800) => {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
@@ -64,167 +32,254 @@ interface Alumni {
   graduation_year: number | null;
   job_title: string | null;
   company: string | null;
-  city: string | null;
-  country: string | null;
-  industry: string | null;
   photo_url: string | null;
   bio: string | null;
-  willing_to_mentor: boolean;
 }
+
+const SectionLabel = ({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) => (
+  <div className={`section-label ${dark ? 'section-label-dark' : ''}`}>
+    <span className="dot" />
+    {children}
+  </div>
+);
 
 const HomePage = () => {
   const settings = useSiteSettings();
   const [featured, setFeatured] = useState<Alumni[]>([]);
-  const typewriterText = useTypewriter([
-    "Where Every Graduate Stays Connected Forever",
-    "Bridging Generations of Engineers",
-    "Your Network, Your Legacy",
-    "From Campus to Career, Together",
-  ]);
 
   useEffect(() => {
-    supabase.from('alumni').select('*').eq('is_approved', true).order('created_at', { ascending: false })
+    supabase.from('alumni').select('*').eq('is_approved', true).order('created_at', { ascending: false }).limit(6)
       .then(({ data }) => { if (data) setFeatured(data); });
   }, []);
 
   const stats = [
-    { icon: Users, target: 250, label: 'Alumni', suffix: '+' },
-    { icon: Globe, target: 5, label: 'Countries', suffix: '+' },
-    { icon: Building2, target: 30, label: 'Companies', suffix: '+' },
+    { target: 250, label: 'Alumni Network', suffix: '+' },
+    { target: 5, label: 'Countries', suffix: '+' },
+    { target: 30, label: 'Companies', suffix: '+' },
+    { target: 12, label: 'Years Strong', suffix: '' },
   ];
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-      {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ background: '#020617' }}>
-        <div className="absolute inset-0 opacity-60">
-          <NeuralNetworkBg />
-        </div>
-
-        {/* Soft radial vignette */}
+    <div style={{ background: '#FAFAFA' }}>
+      {/* HERO */}
+      <section className="relative pt-32 pb-24 overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse at 50% 30%, rgba(79,70,229,0.08) 0%, transparent 55%), radial-gradient(ellipse at 50% 100%, rgba(2,6,23,1) 30%, transparent 70%)',
+              'radial-gradient(ellipse 60% 50% at 80% 20%, rgba(0,82,255,0.08), transparent 60%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(77,124,255,0.06), transparent 60%)',
           }}
         />
+        <div className="max-w-[72rem] mx-auto px-8 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
+            {/* Left */}
+            <div>
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                <SectionLabel>Alumni Network · CUET ETE</SectionLabel>
+              </motion.div>
 
-        <div className="relative z-10 container mx-auto px-6 text-center max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-sm text-xs font-body font-medium text-white/70 mb-8 tracking-wide"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            Department of ETE · CUET
-          </motion.div>
+              <motion.h1
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.05 }}
+                className="mt-6"
+                style={{
+                  fontFamily: "'Calistoga', Georgia, serif",
+                  fontSize: 'clamp(2.6rem, 5vw, 5rem)',
+                  lineHeight: 1.05,
+                  letterSpacing: '-0.02em',
+                  color: '#0F172A',
+                }}
+              >
+                Where every graduate{' '}
+                <span className="text-gradient">stays connected</span> forever.
+              </motion.h1>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-            className="font-heading font-semibold tracking-tight"
-            style={{ fontFamily: "'Sora', 'Inter', sans-serif" }}
-          >
-            <span className="block text-5xl sm:text-6xl md:text-7xl text-gradient-hero leading-[1.05]">
-              {settings.site_title}
-            </span>
-            <span className="block mt-3 text-xl sm:text-2xl md:text-3xl text-white/50 font-normal">
-              {settings.hero_title}
-            </span>
-          </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="mt-6 max-w-xl"
+                style={{ fontSize: '1.125rem', lineHeight: 1.75, color: '#64748B' }}
+              >
+                {settings.hero_subtitle || 'The official alumni network of ETE, CUET — bridging generations of engineers across companies, continents, and careers.'}
+              </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="h-7 mt-6 mb-8"
-          >
-            <span className="text-sm md:text-base font-body text-indigo-300/80 tracking-wide">
-              {typewriterText}
-              <span className="ml-0.5 inline-block w-[2px] h-4 bg-indigo-300/80 align-middle animate-pulse" />
-            </span>
-          </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.25 }}
+                className="mt-8 flex flex-wrap gap-3"
+              >
+                <Link to="/alumni" className="btn-primary-grad">
+                  Explore Alumni <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link to="/register" className="btn-secondary-outline">
+                  Join the Network
+                </Link>
+              </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="text-base md:text-lg text-white/55 max-w-2xl mx-auto mb-10 font-body leading-relaxed"
-          >
-            {settings.hero_subtitle}
-          </motion.p>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="mt-10 flex items-center gap-3"
+              >
+                <div className="flex -space-x-2">
+                  {[0, 1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="w-9 h-9 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white"
+                      style={{
+                        background: `linear-gradient(135deg, hsl(${(i * 60 + 200) % 360}, 70%, 55%), hsl(${(i * 60 + 240) % 360}, 70%, 65%))`,
+                      }}
+                    >
+                      {String.fromCharCode(65 + i)}
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <p className="text-[14px] font-semibold" style={{ color: '#0F172A' }}>Joined by 500+ graduates</p>
+                  <p className="text-[12px]" style={{ color: '#64748B' }}>Across 30+ companies worldwide</p>
+                </div>
+              </motion.div>
+            </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col sm:flex-row gap-3 justify-center"
-          >
-            <Link to="/alumni">
-              <Button className="btn-gradient-primary font-heading text-sm font-medium px-7 h-11 rounded-lg">
-                Explore Alumni <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button variant="ghost" className="btn-outline-glow font-heading text-sm font-medium px-7 h-11 rounded-lg">
-                Join the Network
-              </Button>
-            </Link>
-          </motion.div>
+            {/* Right — abstract graphic */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="relative h-[480px] hidden lg:block"
+            >
+              {/* Rotating dashed rings */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div
+                  className="absolute w-[420px] h-[420px] rounded-full animate-spin-slow"
+                  style={{ border: '1.5px dashed rgba(0,82,255,0.18)' }}
+                />
+                <div
+                  className="absolute w-[300px] h-[300px] rounded-full animate-spin-slower"
+                  style={{ border: '1.5px dashed rgba(77,124,255,0.22)' }}
+                />
+              </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.2 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30"
-          >
-            <div className="w-[1px] h-8 bg-gradient-to-b from-white/40 to-transparent" />
-            <span className="text-[10px] font-body tracking-[0.2em] uppercase">Scroll</span>
-          </motion.div>
+              {/* Center icon */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="icon-box-gradient w-24 h-24">
+                  <Network className="w-12 h-12" />
+                </div>
+              </div>
+
+              {/* Floating stat cards */}
+              <motion.div
+                className="absolute top-6 right-2 card-premium px-4 py-3 flex items-center gap-3 animate-float"
+                style={{ animationDelay: '0s' }}
+              >
+                <div className="icon-box-gradient w-9 h-9"><GraduationCap className="w-4 h-4" /></div>
+                <div>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: '#0F172A', fontFamily: "'Calistoga', serif" }}>250+</p>
+                  <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Alumni</p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="absolute bottom-12 left-0 card-premium px-4 py-3 flex items-center gap-3 animate-float"
+                style={{ animationDelay: '1.5s' }}
+              >
+                <div className="icon-box-gradient w-9 h-9"><Globe className="w-4 h-4" /></div>
+                <div>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: '#0F172A', fontFamily: "'Calistoga', serif" }}>5+</p>
+                  <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Countries</p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="absolute top-1/2 -right-2 card-premium px-4 py-3 flex items-center gap-3 animate-float"
+                style={{ animationDelay: '3s' }}
+              >
+                <div className="icon-box-gradient w-9 h-9"><TrendingUp className="w-4 h-4" /></div>
+                <div>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: '#0F172A', fontFamily: "'Calistoga', serif" }}>30+</p>
+                  <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Companies</p>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Companies — refined */}
-      <section className="py-12 border-y border-white/[0.06] overflow-hidden" style={{ background: '#020617' }}>
-        <div className="container mx-auto px-6">
-          <p className="text-center text-[11px] font-body font-medium tracking-[0.2em] uppercase text-white/30 mb-6">
+      {/* COMPANIES MARQUEE */}
+      <section className="py-12 border-y" style={{ borderColor: '#E2E8F0' }}>
+        <div className="max-w-[72rem] mx-auto px-8 overflow-hidden">
+          <p className="text-center font-mono-label mb-6" style={{ color: '#64748B' }}>
             Our alumni work at
           </p>
-          <div className="flex whitespace-nowrap animate-marquee-left opacity-50">
+          <div className="flex whitespace-nowrap animate-marquee-left" style={{ opacity: 0.85 }}>
             {[...Array(2)].map((_, j) => (
-              <div key={j} className="flex items-center gap-12 px-6 text-base md:text-lg font-heading font-medium text-white/60">
-                <span>Google</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>Microsoft</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>Amazon</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>Tesla</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>Meta</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>Apple</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>Samsung</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>Goldman Sachs</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>NASA</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>Grameenphone</span><span className="w-1 h-1 rounded-full bg-white/20" />
-                <span>IBM</span><span className="w-1 h-1 rounded-full bg-white/20" />
+              <div key={j} className="flex items-center gap-12 px-6 text-base font-medium" style={{ color: '#94A3B8' }}>
+                {['Google', 'Microsoft', 'Amazon', 'Tesla', 'Meta', 'Apple', 'Samsung', 'Goldman Sachs', 'NASA', 'Grameenphone', 'IBM'].map((c, i) => (
+                  <span key={i} className="flex items-center gap-12">
+                    {c}<span className="w-1 h-1 rounded-full" style={{ background: '#CBD5E1' }} />
+                  </span>
+                ))}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-24 relative overflow-hidden" style={{ background: '#020617' }}>
-        <NeuralNetworkBg />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-transparent to-[#020617]/80 pointer-events-none z-[1]" />
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex flex-wrap justify-center gap-8">
+      {/* STATS — DARK INVERTED */}
+      <section className="relative overflow-hidden" style={{ background: '#0F172A', padding: '100px 2rem' }}>
+        <div className="dot-texture absolute inset-0 pointer-events-none" />
+        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(0,82,255,0.18), transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(77,124,255,0.15), transparent 70%)', filter: 'blur(80px)' }} />
+
+        <div className="max-w-[72rem] mx-auto relative">
+          <div className="text-center mb-16">
+            <SectionLabel dark>By the numbers</SectionLabel>
+            <h2
+              className="mt-6"
+              style={{
+                fontFamily: "'Calistoga', serif",
+                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                lineHeight: 1.1,
+                color: '#fff',
+              }}
+            >
+              A network <span className="text-gradient">growing every year</span>.
+            </h2>
+            <p className="mt-4 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.05rem' }}>
+              Our community spans continents, industries, and decades — united by ETE, CUET.
+            </p>
+          </div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4"
+          >
             {stats.map((stat, i) => {
               const { count, ref } = useCountUp(stat.target);
               return (
-                <motion.div key={i} ref={ref} variants={fadeInUp} className="rounded-2xl px-10 py-8 text-center border border-accent/30 bg-accent/5 backdrop-blur-md hover:border-accent/60 hover:bg-accent/10 transition-all duration-500 min-w-[160px]">
-                  <p className="text-5xl md:text-6xl font-heading font-black text-accent">{count}{stat.suffix}</p>
-                  <p className="text-foreground/60 font-heading text-sm tracking-widest uppercase mt-2">{stat.label}</p>
+                <motion.div
+                  key={i}
+                  ref={ref}
+                  variants={fadeInUp}
+                  className="text-center px-6 py-8"
+                  style={{ borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}
+                >
+                  <p
+                    className="text-gradient"
+                    style={{ fontFamily: "'Calistoga', serif", fontSize: 'clamp(2.5rem, 4vw, 4rem)', lineHeight: 1 }}
+                  >
+                    {count}{stat.suffix}
+                  </p>
+                  <p className="font-mono-label mt-3" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                    {stat.label}
+                  </p>
                 </motion.div>
               );
             })}
@@ -232,106 +287,122 @@ const HomePage = () => {
         </div>
       </section>
 
-      <CubeAlumniShowcase />
+      {/* HOW IT WORKS */}
+      <section style={{ padding: '100px 2rem', background: '#FAFAFA' }}>
+        <div className="max-w-[72rem] mx-auto">
+          <div className="text-center mb-16">
+            <SectionLabel>How it works</SectionLabel>
+            <h2 className="mt-6" style={{ fontFamily: "'Calistoga', serif", fontSize: 'clamp(2rem, 4vw, 3.25rem)', lineHeight: 1.1, color: '#0F172A' }}>
+              Three steps to <span className="text-gradient">join the family</span>.
+            </h2>
+          </div>
 
-      {/* How It Works */}
-      <section className="py-20 bg-card">
-        <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">How It Works</h2>
-            <p className="text-muted-foreground mt-4 font-body">Three simple steps to join the ETE Family network</p>
-          </motion.div>
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: '📝', title: 'Register & Fill Your Profile', desc: 'Share your academic and professional journey with us' },
-              { icon: '✅', title: 'Get Verified by Admin', desc: 'Our team reviews and approves your submission' },
-              { icon: '🌐', title: 'Be Discovered by Students', desc: 'Your profile goes live for students and fellow alumni to find' },
+              { num: '01', title: 'Register & build your profile', desc: 'Share your academic and professional journey — graduation year, role, location, and more.' },
+              { num: '02', title: 'Get verified', desc: 'Our admin team reviews and approves your submission to keep the directory authentic.' },
+              { num: '03', title: 'Be discovered', desc: 'Your profile goes live for students and fellow alumni to find, connect, and collaborate with.' },
             ].map((step, i) => (
-              <motion.div key={i} variants={scaleIn} className="text-center">
-                <div className="relative w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl mx-auto mb-4">
-                  {step.icon}
-                  <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping" style={{ animationDuration: '3s' }} />
+              <motion.div key={i} variants={scaleIn} className={`card-premium p-7 ${i === 1 ? 'card-gradient-border' : ''}`}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="icon-box-gradient w-10 h-10 text-[14px] font-mono-label" style={{ fontWeight: 600 }}>
+                    {step.num}
+                  </div>
+                  <Sparkles className="w-4 h-4" style={{ color: '#0052FF' }} />
                 </div>
-                <h3 className="font-heading font-semibold text-foreground mb-2">{step.title}</h3>
-                <p className="text-sm text-muted-foreground font-body">{step.desc}</p>
+                <h3 className="text-[20px] font-semibold mb-2" style={{ color: '#0F172A' }}>{step.title}</h3>
+                <p className="text-[15px]" style={{ color: '#64748B', lineHeight: 1.7 }}>{step.desc}</p>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* FEATURED ALUMNI */}
       {featured.length > 0 && (
-        <section className="py-20" style={{ background: 'linear-gradient(135deg, #020617, #1e1b4b, #020617)' }}>
-          <div className="container mx-auto px-4">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">What Our Alumni Say</h2>
-            </motion.div>
-            <TestimonialsCarousel alumni={featured.filter(a => a.bio)} />
+        <section style={{ padding: '100px 2rem', background: '#fff', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0' }}>
+          <div className="max-w-[72rem] mx-auto">
+            <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+              <div>
+                <SectionLabel>Featured alumni</SectionLabel>
+                <h2 className="mt-6" style={{ fontFamily: "'Calistoga', serif", fontSize: 'clamp(2rem, 3.5vw, 3rem)', color: '#0F172A', lineHeight: 1.1 }}>
+                  Meet our <span className="text-gradient">community</span>.
+                </h2>
+              </div>
+              <Link to="/alumni" className="btn-secondary-outline text-[14px]" style={{ height: '40px' }}>
+                View all <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {featured.slice(0, 6).map((alum) => (
+                <Link key={alum.id} to={`/alumni/${alum.id}`} className="card-premium p-6 block">
+                  <div className="flex items-center gap-4 mb-4">
+                    {alum.photo_url ? (
+                      <img src={alum.photo_url} alt={alum.full_name} className="w-14 h-14 rounded-full object-cover" />
+                    ) : (
+                      <div className="icon-box-gradient w-14 h-14 rounded-full text-[18px] font-semibold" style={{ fontFamily: "'Calistoga', serif" }}>
+                        {alum.full_name.charAt(0)}
+                      </div>
+                    )}
+                    <div>
+                      <p className="font-semibold text-[16px]" style={{ color: '#0F172A' }}>{alum.full_name}</p>
+                      <p className="text-[13px]" style={{ color: '#64748B' }}>Batch {alum.graduation_year}</p>
+                    </div>
+                  </div>
+                  {(alum.job_title || alum.company) && (
+                    <p className="text-[14px]" style={{ color: '#64748B', lineHeight: 1.6 }}>
+                      {alum.job_title}{alum.job_title && alum.company ? ' · ' : ''}{alum.company}
+                    </p>
+                  )}
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       )}
 
-      {/* CTA */}
-      <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1e1b4b, #4c1d95, #312e81)' }}>
-        <div className="absolute top-10 left-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-10 right-10 w-48 h-48 bg-accent/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">Are You an ETE Alumni?</h2>
-            <p className="text-xl text-white/60 font-body mb-8">Join the Family Today and Reconnect!</p>
-            <Link to="/register">
-              <Button className="btn-gradient-primary font-heading text-lg px-10 py-6 rounded-full glow-primary shine-effect">
-                Register Now <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <p className="text-sm text-white/40 mt-4 font-body">It only takes 5 minutes</p>
-          </motion.div>
+      {/* CTA — DARK */}
+      <section className="relative overflow-hidden" style={{ background: '#0F172A', padding: '100px 2rem' }}>
+        <div className="dot-texture absolute inset-0 pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(0,82,255,0.18), transparent 70%)', filter: 'blur(80px)' }} />
+
+        <div className="max-w-[48rem] mx-auto relative text-center">
+          <SectionLabel dark>Join the network</SectionLabel>
+          <h2
+            className="mt-6"
+            style={{ fontFamily: "'Calistoga', serif", fontSize: 'clamp(2.2rem, 4vw, 3.5rem)', lineHeight: 1.1, color: '#fff' }}
+          >
+            Are you an <span className="text-gradient">ETE alumni?</span>
+          </h2>
+          <p className="mt-5 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.05rem', lineHeight: 1.7 }}>
+            Reconnect with classmates, mentor the next generation, and stay part of the family — wherever your career takes you.
+          </p>
+
+          <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-xl mx-auto">
+            <div
+              className="flex items-center flex-1"
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: '14px',
+                padding: '6px',
+              }}
+            >
+              <input
+                type="email"
+                placeholder="your@email.com"
+                className="flex-1 bg-transparent outline-none px-4 text-[14px]"
+                style={{ color: '#fff' }}
+              />
+              <Link to="/register" className="btn-primary-grad text-[14px]" style={{ height: '40px' }}>
+                Register <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+          <p className="mt-4 text-[12px]" style={{ color: 'rgba(255,255,255,0.35)' }}>It only takes 5 minutes.</p>
         </div>
       </section>
-    </motion.div>
-  );
-};
-
-// Simple testimonials display
-const TestimonialsCarousel = ({ alumni }: { alumni: Alumni[] }) => {
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    if (alumni.length <= 1) return;
-    const interval = setInterval(() => setCurrent((p) => (p + 1) % alumni.length), 5000);
-    return () => clearInterval(interval);
-  }, [alumni.length]);
-
-  if (!alumni.length) return null;
-  const alum = alumni[current];
-
-  return (
-    <div className="max-w-3xl mx-auto text-center">
-      <Quote className="w-12 h-12 text-primary/50 mx-auto mb-6" />
-      <motion.p
-        key={current}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        className="text-xl italic text-white/70 font-body mb-8 leading-relaxed"
-      >
-        "{alum.bio}"
-      </motion.p>
-      <div className="flex items-center justify-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-heading font-bold">
-          {alum.full_name.charAt(0)}
-        </div>
-        <div className="text-left">
-          <p className="font-heading font-semibold text-white">{alum.full_name}</p>
-          <p className="text-sm text-white/50 font-body">Batch {alum.graduation_year} · {alum.company}</p>
-        </div>
-      </div>
-      <div className="flex justify-center gap-2 mt-6">
-        {alumni.map((_, i) => (
-          <button key={i} onClick={() => setCurrent(i)} className={`w-2.5 h-2.5 rounded-full transition-all ${i === current ? 'bg-primary w-6' : 'bg-white/20'}`} />
-        ))}
-      </div>
     </div>
   );
 };

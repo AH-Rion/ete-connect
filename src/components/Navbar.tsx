@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, LogOut, User, LayoutDashboard, X } from 'lucide-react';
+import { Menu, LogOut, User, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -13,154 +12,102 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import eteLogo from '@/assets/ete-logo.png';
 
 const navLinks = [
   { label: 'Home', path: '/' },
-  { label: 'Alumni Directory', path: '/alumni' },
-  { label: 'Register as Alumni', path: '/register' },
+  { label: 'Alumni', path: '/alumni' },
+  { label: 'Register', path: '/register' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
 ];
 
 export const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { isAuthenticated, profile, signOut, user } = useAuth();
   const location = useLocation();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   const initials = (profile?.full_name || user?.email || '?').charAt(0).toUpperCase();
 
   return (
-    <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'py-1 shadow-[0_4px_30px_rgba(99,102,241,0.15)]'
-          : 'py-2'
-      }`}
+    <nav
+      className="fixed top-0 left-0 right-0 z-50"
       style={{
-        background: scrolled
-          ? 'rgba(15, 23, 42, 0.85)'
-          : 'rgba(15, 23, 42, 0.6)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(99, 102, 241, 0.15)',
+        background: 'rgba(250, 250, 250, 0.85)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid #E2E8F0',
       }}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Glowing bottom border */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-      <div className="absolute bottom-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent blur-sm" />
-
-      <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+      <div className="max-w-[72rem] mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <motion.img
-            src={eteLogo}
-            alt="ETE Family"
-            className="w-9 h-9 object-contain"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-            style={{ filter: 'drop-shadow(0 0 6px rgba(249,115,22,0.3))' }}
-          />
-          <motion.span
-            className="font-heading font-bold text-xl text-white/90 group-hover:text-white transition-colors duration-300"
-            whileHover={{ scale: 1.03 }}
+        <Link to="/" className="flex items-center gap-2.5">
+          <div
+            className="w-9 h-9 rounded-[10px] flex items-center justify-center text-white font-bold"
+            style={{
+              background: 'linear-gradient(135deg, #0052FF, #4D7CFF)',
+              boxShadow: '0 4px 12px rgba(0, 82, 255, 0.3)',
+              fontFamily: "'Calistoga', serif",
+            }}
           >
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-[gradient-shift_3s_ease_infinite]">
-              ETE
-            </span>{' '}
-            Family
-          </motion.span>
+            E
+          </div>
+          <span
+            className="text-[17px] font-semibold tracking-tight"
+            style={{ color: '#0F172A' }}
+          >
+            ETE Family
+          </span>
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-0.5">
+        <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className="relative px-4 py-2 group"
+                className="px-4 py-2 text-[14px] transition-colors duration-200"
+                style={{
+                  color: isActive ? '#0F172A' : '#64748B',
+                  fontWeight: isActive ? 600 : 500,
+                }}
+                onMouseEnter={(e) => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = '#0F172A'; }}
+                onMouseLeave={(e) => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = '#64748B'; }}
               >
-                {isActive && (
-                  <motion.div
-                    className="absolute inset-0 rounded-full"
-                    layoutId="navActivePill"
-                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1))',
-                      border: '1px solid rgba(99,102,241,0.25)',
-                      boxShadow: '0 0 15px rgba(99,102,241,0.15), inset 0 0 15px rgba(99,102,241,0.05)',
-                    }}
-                  />
-                )}
-                <motion.span
-                  className={`relative z-10 font-heading text-sm font-medium transition-all duration-300 ${
-                    isActive
-                      ? 'text-white'
-                      : 'text-white/60 group-hover:text-white/90 group-hover:-translate-y-[1px]'
-                  }`}
-                  style={{ display: 'inline-block' }}
-                  whileHover={{ y: isActive ? 0 : -1 }}
-                >
-                  {link.label}
-                </motion.span>
-                {/* Hover underline */}
-                {!isActive && (
-                  <span className="absolute bottom-1 left-1/2 w-0 h-[2px] bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4" />
-                )}
-                {/* Active bottom glow dot */}
-                {isActive && (
-                  <motion.div
-                    className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-accent"
-                    layoutId="navActiveDot"
-                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    style={{ boxShadow: '0 0 8px rgba(249,115,22,0.6)' }}
-                  />
-                )}
+                {link.label}
               </Link>
             );
           })}
         </div>
 
         {/* Right side */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <motion.button
-                  className="rounded-full ring-2 ring-primary/50 ring-offset-2 ring-offset-transparent hover:ring-primary transition-all duration-300"
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <button className="rounded-full transition-all duration-200 hover:ring-2 hover:ring-offset-2" style={{ outline: 'none' }}>
                   <Avatar className="w-9 h-9">
                     <AvatarImage src={profile?.avatar_url || ''} />
-                    <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white font-heading font-bold text-sm">
+                    <AvatarFallback
+                      className="text-white font-semibold text-sm"
+                      style={{ background: 'linear-gradient(135deg, #0052FF, #4D7CFF)' }}
+                    >
                       {initials}
                     </AvatarFallback>
                   </Avatar>
-                </motion.button>
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 glass-dark border-primary/20">
+              <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem asChild>
                   <Link to="/register" className="flex items-center gap-2">
-                    <User className="w-4 h-4" /> My Registration
+                    <User className="w-4 h-4" /> My Profile
                   </Link>
                 </DropdownMenuItem>
                 {profile?.role === 'admin' && (
                   <DropdownMenuItem asChild>
                     <Link to="/admin" className="flex items-center gap-2">
-                      <LayoutDashboard className="w-4 h-4" /> Admin Dashboard
+                      <LayoutDashboard className="w-4 h-4" /> Admin
                     </Link>
                   </DropdownMenuItem>
                 )}
@@ -171,18 +118,14 @@ export const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
-              <Button asChild className="relative font-heading rounded-full px-7 py-2 overflow-hidden border-0 text-white shadow-[0_0_20px_rgba(99,102,241,0.3)]"
-                style={{
-                  background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))',
-                }}
-              >
-                <Link to="/login">
-                  <span className="relative z-10">Login</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full animate-[shine_3s_ease-in-out_infinite]" />
-                </Link>
-              </Button>
-            </motion.div>
+            <>
+              <Link to="/login" className="btn-secondary-outline text-[14px]" style={{ height: '40px' }}>
+                Sign in
+              </Link>
+              <Link to="/register" className="btn-primary-grad text-[14px]" style={{ height: '40px' }}>
+                Get started
+              </Link>
+            </>
           )}
         </div>
 
@@ -190,59 +133,48 @@ export const Navbar = () => {
         <div className="md:hidden">
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <motion.button
-                className="text-white/80 hover:text-white p-2 rounded-lg transition-colors"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
+              <button className="p-2 rounded-lg" style={{ color: '#0F172A' }}>
                 <Menu className="w-6 h-6" />
-              </motion.button>
+              </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 border-primary/10" style={{ background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(20px)' }}>
+            <SheetContent side="right" className="w-72 bg-white">
               <div className="flex flex-col gap-1 mt-8">
-                {navLinks.map((link, i) => {
+                {navLinks.map((link) => {
                   const isActive = location.pathname === link.path;
                   return (
-                    <motion.div
+                    <Link
                       key={link.path}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
+                      to={link.path}
+                      onClick={() => setMobileOpen(false)}
+                      className="block px-4 py-3 rounded-xl text-[14px] transition-colors"
+                      style={{
+                        color: isActive ? '#0052FF' : '#0F172A',
+                        background: isActive ? 'rgba(0, 82, 255, 0.06)' : 'transparent',
+                        fontWeight: 500,
+                      }}
                     >
-                      <Link
-                        to={link.path}
-                        onClick={() => setMobileOpen(false)}
-                        className={`block px-4 py-3 rounded-xl font-heading font-medium transition-all duration-300 ${
-                          isActive
-                            ? 'bg-primary/15 text-primary border border-primary/20'
-                            : 'text-white/70 hover:text-white hover:bg-white/5'
-                        }`}
-                      >
-                        {link.label}
-                      </Link>
-                    </motion.div>
+                      {link.label}
+                    </Link>
                   );
                 })}
-                <div className="border-t border-white/10 my-4" />
+                <div className="border-t border-border my-4" />
                 {isAuthenticated ? (
                   <>
                     {profile?.role === 'admin' && (
-                      <Link to="/admin" onClick={() => setMobileOpen(false)} className="px-4 py-3 rounded-xl font-heading font-medium text-white/70 hover:text-white hover:bg-white/5 flex items-center gap-2">
-                        <LayoutDashboard className="w-4 h-4" /> Admin Dashboard
+                      <Link to="/admin" onClick={() => setMobileOpen(false)} className="px-4 py-3 rounded-xl flex items-center gap-2 text-[14px]" style={{ color: '#0F172A' }}>
+                        <LayoutDashboard className="w-4 h-4" /> Admin
                       </Link>
                     )}
                     <button
                       onClick={() => { signOut(); setMobileOpen(false); }}
-                      className="px-4 py-3 rounded-xl font-heading font-medium text-destructive hover:bg-destructive/10 text-left flex items-center gap-2"
+                      className="px-4 py-3 rounded-xl text-left flex items-center gap-2 text-destructive text-[14px]"
                     >
                       <LogOut className="w-4 h-4" /> Logout
                     </button>
                   </>
                 ) : (
-                  <Link to="/login" onClick={() => setMobileOpen(false)}>
-                    <Button className="w-full font-heading rounded-full text-white" style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}>
-                      Login
-                    </Button>
+                  <Link to="/login" onClick={() => setMobileOpen(false)} className="btn-primary-grad mt-2">
+                    Sign in
                   </Link>
                 )}
               </div>
@@ -250,6 +182,6 @@ export const Navbar = () => {
           </Sheet>
         </div>
       </div>
-    </motion.nav>
+    </nav>
   );
 };
