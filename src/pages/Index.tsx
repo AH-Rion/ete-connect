@@ -94,69 +94,83 @@ const HomePage = () => {
   ];
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ background: '#020617' }}>
-        {/* Neural Network Canvas */}
-        <NeuralNetworkBg />
+        <div className="absolute inset-0 opacity-60">
+          <NeuralNetworkBg />
+        </div>
 
-        {/* Gradient overlay blobs */}
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[120px] animate-float pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-secondary/8 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '3s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
+        {/* Soft radial vignette */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse at 50% 30%, rgba(79,70,229,0.08) 0%, transparent 55%), radial-gradient(ellipse at 50% 100%, rgba(2,6,23,1) 30%, transparent 70%)',
+          }}
+        />
 
-        <div className="relative z-10 container mx-auto px-4 text-center">
+        <div className="relative z-10 container mx-auto px-6 text-center max-w-5xl">
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm text-sm font-heading mb-8"
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-sm text-xs font-body font-medium text-white/70 mb-8 tracking-wide"
           >
-            <Sparkles className="w-4 h-4 text-accent" />
-            <span className="text-text-on-dark/90">Department of ETE, CUET</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            Department of ETE · CUET
           </motion.div>
 
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mb-6">
-            <span className="block text-2xl md:text-3xl text-text-on-dark/60 font-heading font-light tracking-wide">Welcome to</span>
-            <span className="block text-6xl md:text-8xl lg:text-9xl font-heading font-black text-gradient-hero mt-3 leading-tight" style={{ fontFamily: "'Sora', 'Inter', sans-serif", textShadow: '0 0 80px rgba(99,102,241,0.3)' }}>
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+            className="font-heading font-semibold tracking-tight"
+            style={{ fontFamily: "'Sora', 'Inter', sans-serif" }}
+          >
+            <span className="block text-5xl sm:text-6xl md:text-7xl text-gradient-hero leading-[1.05]">
               {settings.site_title}
+            </span>
+            <span className="block mt-3 text-xl sm:text-2xl md:text-3xl text-white/50 font-normal">
+              {settings.hero_title}
             </span>
           </motion.h1>
 
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="h-8 mb-8"
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="h-7 mt-6 mb-8"
           >
-            <span className="text-lg md:text-xl font-heading font-medium" style={{ color: '#A5B4FC' }}>
-              {typewriterText}<span className="animate-pulse text-accent">|</span>
+            <span className="text-sm md:text-base font-body text-indigo-300/80 tracking-wide">
+              {typewriterText}
+              <span className="ml-0.5 inline-block w-[2px] h-4 bg-indigo-300/80 align-middle animate-pulse" />
             </span>
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="text-lg text-text-on-dark/50 max-w-2xl mx-auto mb-12 font-body leading-relaxed"
+            transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="text-base md:text-lg text-white/55 max-w-2xl mx-auto mb-10 font-body leading-relaxed"
           >
             {settings.hero_subtitle}
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col sm:flex-row gap-3 justify-center"
           >
             <Link to="/alumni">
-              <Button className="btn-gradient-primary font-heading text-lg px-10 py-6 rounded-full shine-effect">
-                Explore Alumni <ArrowRight className="ml-2 w-5 h-5" />
+              <Button className="btn-gradient-primary font-heading text-sm font-medium px-7 h-11 rounded-lg">
+                Explore Alumni <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
             <Link to="/register">
-              <Button variant="ghost" className="btn-outline-glow font-heading text-lg px-10 py-6 rounded-full">
-                Join the Family
+              <Button variant="ghost" className="btn-outline-glow font-heading text-sm font-medium px-7 h-11 rounded-lg">
+                Join the Network
               </Button>
             </Link>
           </motion.div>
@@ -164,25 +178,38 @@ const HomePage = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-text-on-dark/30 flex flex-col items-center gap-2"
+            transition={{ duration: 1, delay: 1.2 }}
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30"
           >
-            <span className="text-sm font-body tracking-widest uppercase">Scroll to explore</span>
-            <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-              <ChevronDown className="w-5 h-5" />
-            </motion.div>
+            <div className="w-[1px] h-8 bg-gradient-to-b from-white/40 to-transparent" />
+            <span className="text-[10px] font-body tracking-[0.2em] uppercase">Scroll</span>
           </motion.div>
         </div>
       </section>
 
-      {/* Marquee */}
-      <section className="py-6 border-y border-primary/10 overflow-hidden" style={{ background: '#020617' }}>
-        <div className="flex whitespace-nowrap animate-marquee-left">
-          {[...Array(2)].map((_, j) => (
-            <span key={j} className="text-xl font-heading font-semibold text-text-on-dark/30 mx-4">
-              Our Alumni Work At: Google <span className="text-primary mx-3">•</span> Microsoft <span className="text-primary mx-3">•</span> Amazon <span className="text-primary mx-3">•</span> Tesla <span className="text-primary mx-3">•</span> SpaceX <span className="text-primary mx-3">•</span> Goldman Sachs <span className="text-primary mx-3">•</span> Meta <span className="text-primary mx-3">•</span> Apple <span className="text-primary mx-3">•</span> Samsung <span className="text-primary mx-3">•</span> Huawei <span className="text-primary mx-3">•</span> Grameenphone <span className="text-primary mx-3">•</span> NASA <span className="text-primary mx-3">•</span> IBM <span className="text-primary mx-3">•</span>
-            </span>
-          ))}
+      {/* Companies — refined */}
+      <section className="py-12 border-y border-white/[0.06] overflow-hidden" style={{ background: '#020617' }}>
+        <div className="container mx-auto px-6">
+          <p className="text-center text-[11px] font-body font-medium tracking-[0.2em] uppercase text-white/30 mb-6">
+            Our alumni work at
+          </p>
+          <div className="flex whitespace-nowrap animate-marquee-left opacity-50">
+            {[...Array(2)].map((_, j) => (
+              <div key={j} className="flex items-center gap-12 px-6 text-base md:text-lg font-heading font-medium text-white/60">
+                <span>Google</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>Microsoft</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>Amazon</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>Tesla</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>Meta</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>Apple</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>Samsung</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>Goldman Sachs</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>NASA</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>Grameenphone</span><span className="w-1 h-1 rounded-full bg-white/20" />
+                <span>IBM</span><span className="w-1 h-1 rounded-full bg-white/20" />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
