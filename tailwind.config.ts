@@ -12,8 +12,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["Sora", "Poppins", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        heading: ["Calistoga", "Georgia", "serif"],
+        body: ["Inter", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
