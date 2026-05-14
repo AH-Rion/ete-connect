@@ -99,7 +99,7 @@ export const Footer = () => {
 
         <div className="mt-16 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
           <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px' }}>
-            © {new Date().getFullYear()} ETE Family · Made by <span style={{ color: '#fff' }}>AH RION</span> · ETE 24
+            © {new Date().getFullYear()} ETE Family · Made by <a href="https://www.facebook.com/ah.rion.98" target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }} className="hover:underline">AH RION</a> · ETE 24
           </p>
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#0052FF' }} />
