@@ -59,14 +59,31 @@
   }
 
   .dark {
-    --background: 222 47% 11%;
+    --bg: 222 47% 7%;
+    --fg: 210 40% 96%;
+    --muted-bg: 217 33% 13%;
+    --muted-fg: 215 20% 65%;
+    --border-soft: 217 33% 18%;
+    --card-bg: 222 47% 10%;
+
+    --background: 222 47% 7%;
     --foreground: 210 40% 96%;
-    --card: 222 47% 11%;
+    --card: 222 47% 10%;
     --card-foreground: 210 40% 96%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --border: 217 33% 20%;
-    --input: 217 33% 20%;
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 220 100% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 100% 70%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 217 33% 14%;
+    --muted-foreground: 215 20% 70%;
+    --accent: 220 100% 60%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 222 100% 65%;
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 220 100% 60%;
   }
 }
 
@@ -74,11 +91,12 @@
   * { @apply border-border; }
   html { scroll-behavior: smooth; }
   body {
-    background: #FAFAFA;
-    color: #0F172A;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   h1, h2 {
     font-family: 'Calistoga', Georgia, serif;
@@ -134,16 +152,17 @@
 
   /* Cards */
   .card-premium {
-    background: #FFFFFF;
-    border: 1px solid #E2E8F0;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
     border-radius: 16px;
     transition: all 0.25s ease;
   }
   .card-premium:hover {
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
     transform: translateY(-3px);
-    border-color: rgba(0, 82, 255, 0.2);
+    border-color: rgba(0, 82, 255, 0.35);
   }
+  .dark .card-premium:hover { box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); }
   .card-gradient-border {
     position: relative;
     background:
@@ -240,7 +259,7 @@
 
   .card-hover { @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl; }
 
-  .gradient-hero { background: #FAFAFA; }
+  .gradient-hero { background: hsl(var(--background)); }
   .gradient-cta { background: #0F172A; }
 
   .btn-gradient-primary {
