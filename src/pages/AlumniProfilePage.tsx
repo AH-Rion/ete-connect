@@ -77,27 +77,27 @@ const AlumniProfilePage = () => {
   return (
     <motion.div {...pageTransition} className="pt-16">
       {/* Header */}
-      <section className="gradient-hero py-16 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      <section className="py-16 relative overflow-hidden" style={{ background: '#0F172A' }}>
+        <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div variants={fadeInUp} initial="hidden" animate="visible">
-            <div className="w-28 h-28 rounded-full bg-accent flex items-center justify-center text-4xl font-heading font-bold text-accent-foreground mx-auto ring-4 ring-accent/30 mb-4">
+            <div className="w-28 h-28 rounded-full flex items-center justify-center text-4xl font-heading font-bold text-white mx-auto mb-4" style={{ background: 'linear-gradient(135deg, #0052FF, #4D7CFF)', boxShadow: '0 0 0 4px rgba(0,82,255,0.2)' }}>
               {alumni.full_name.charAt(0)}
             </div>
-            <h1 className="text-3xl font-heading font-bold text-text-on-dark">{alumni.full_name}</h1>
-            <p className="text-xl text-text-on-dark/70 font-body mt-1">{alumni.job_title} {alumni.company && `@ ${alumni.company}`}</p>
-            {alumni.city && <p className="text-text-on-dark/50 font-body flex items-center justify-center gap-1 mt-1"><MapPin className="w-4 h-4" />{alumni.city}, {alumni.country}</p>}
+            <h1 className="text-3xl font-heading font-bold text-white">{alumni.full_name}</h1>
+            <p className="text-xl font-body mt-1" style={{ color: 'rgba(255,255,255,0.85)' }}>{alumni.job_title} {alumni.company && `@ ${alumni.company}`}</p>
+            {alumni.city && <p className="font-body flex items-center justify-center gap-1 mt-1" style={{ color: 'rgba(255,255,255,0.65)' }}><MapPin className="w-4 h-4" />{alumni.city}, {alumni.country}</p>}
             <div className="flex flex-wrap justify-center gap-2 mt-4">
-              <Badge className="bg-accent/20 text-accent font-heading">Batch {alumni.graduation_year}</Badge>
-              {alumni.degree && <Badge className="bg-text-on-dark/10 text-text-on-dark font-heading">{alumni.degree}</Badge>}
-              {alumni.industry && <Badge className="bg-text-on-dark/10 text-text-on-dark font-heading">{alumni.industry}</Badge>}
-              {alumni.willing_to_mentor && <Badge className="bg-accent/20 text-accent font-heading"><Star className="w-3 h-3 mr-1" />Available for Mentoring</Badge>}
+              <Badge className="font-heading" style={{ background: 'rgba(0,82,255,0.2)', color: '#7DA3FF' }}>Batch {alumni.graduation_year}</Badge>
+              {alumni.degree && <Badge className="font-heading" style={{ background: 'rgba(255,255,255,0.1)', color: '#fff' }}>{alumni.degree}</Badge>}
+              {alumni.industry && <Badge className="font-heading" style={{ background: 'rgba(255,255,255,0.1)', color: '#fff' }}>{alumni.industry}</Badge>}
+              {alumni.willing_to_mentor && <Badge className="font-heading" style={{ background: 'rgba(0,82,255,0.2)', color: '#7DA3FF' }}><Star className="w-3 h-3 mr-1" />Available for Mentoring</Badge>}
             </div>
             <div className="flex gap-3 justify-center mt-6">
-              <Button asChild className="bg-accent text-accent-foreground hover:bg-accent-hover font-heading">
+              <Button asChild className="font-heading text-white" style={{ background: 'linear-gradient(135deg, #0052FF, #4D7CFF)' }}>
                 <a href={`mailto:${alumni.email}`}><Mail className="w-4 h-4 mr-2" />Connect via Email</a>
               </Button>
-              <Button className="bg-accent text-accent-foreground hover:bg-accent-hover font-heading"
+              <Button className="font-heading text-white" style={{ background: 'linear-gradient(135deg, #0052FF, #4D7CFF)' }}
                 onClick={() => { navigator.clipboard.writeText(window.location.href); toast.success('Link copied!'); }}>
                 <Share2 className="w-4 h-4 mr-1" /> Share Profile
               </Button>
