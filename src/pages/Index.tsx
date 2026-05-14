@@ -60,7 +60,7 @@ const HomePage = () => {
   ];
 
   return (
-    <div style={{ background: '#FAFAFA' }}>
+    <div style={{ background: 'hsl(var(--background))' }}>
       {/* HERO */}
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div
@@ -88,7 +88,7 @@ const HomePage = () => {
                   fontSize: 'clamp(2.6rem, 5vw, 5rem)',
                   lineHeight: 1.05,
                   letterSpacing: '-0.02em',
-                  color: '#0F172A',
+                  color: 'hsl(var(--foreground))',
                 }}
               >
                 Where every graduate{' '}
@@ -139,7 +139,7 @@ const HomePage = () => {
                   ))}
                 </div>
                 <div>
-                  <p className="text-[14px] font-semibold" style={{ color: '#0F172A' }}>Joined by 500+ graduates</p>
+                  <p className="text-[14px] font-semibold" style={{ color: 'hsl(var(--foreground))' }}>Joined by 500+ graduates</p>
                   <p className="text-[12px]" style={{ color: '#64748B' }}>Across 30+ companies worldwide</p>
                 </div>
               </motion.div>
@@ -178,7 +178,7 @@ const HomePage = () => {
               >
                 <div className="icon-box-gradient w-9 h-9"><GraduationCap className="w-4 h-4" /></div>
                 <div>
-                  <p className="text-[18px] font-semibold leading-none" style={{ color: '#0F172A', fontFamily: "'Calistoga', serif" }}>250+</p>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>250+</p>
                   <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Alumni</p>
                 </div>
               </motion.div>
@@ -189,7 +189,7 @@ const HomePage = () => {
               >
                 <div className="icon-box-gradient w-9 h-9"><Globe className="w-4 h-4" /></div>
                 <div>
-                  <p className="text-[18px] font-semibold leading-none" style={{ color: '#0F172A', fontFamily: "'Calistoga', serif" }}>5+</p>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>5+</p>
                   <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Countries</p>
                 </div>
               </motion.div>
@@ -200,7 +200,7 @@ const HomePage = () => {
               >
                 <div className="icon-box-gradient w-9 h-9"><TrendingUp className="w-4 h-4" /></div>
                 <div>
-                  <p className="text-[18px] font-semibold leading-none" style={{ color: '#0F172A', fontFamily: "'Calistoga', serif" }}>30+</p>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>30+</p>
                   <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Companies</p>
                 </div>
               </motion.div>
@@ -288,11 +288,11 @@ const HomePage = () => {
       </section>
 
       {/* HOW IT WORKS */}
-      <section style={{ padding: '100px 2rem', background: '#FAFAFA' }}>
+      <section style={{ padding: '100px 2rem', background: 'hsl(var(--background))' }}>
         <div className="max-w-[72rem] mx-auto">
           <div className="text-center mb-16">
             <SectionLabel>How it works</SectionLabel>
-            <h2 className="mt-6" style={{ fontFamily: "'Calistoga', serif", fontSize: 'clamp(2rem, 4vw, 3.25rem)', lineHeight: 1.1, color: '#0F172A' }}>
+            <h2 className="mt-6" style={{ fontFamily: "'Calistoga', serif", fontSize: 'clamp(2rem, 4vw, 3.25rem)', lineHeight: 1.1, color: 'hsl(var(--foreground))' }}>
               Three steps to <span className="text-gradient">join the family</span>.
             </h2>
           </div>
@@ -310,7 +310,7 @@ const HomePage = () => {
                   </div>
                   <Sparkles className="w-4 h-4" style={{ color: '#0052FF' }} />
                 </div>
-                <h3 className="text-[20px] font-semibold mb-2" style={{ color: '#0F172A' }}>{step.title}</h3>
+                <h3 className="text-[20px] font-semibold mb-2" style={{ color: 'hsl(var(--foreground))' }}>{step.title}</h3>
                 <p className="text-[15px]" style={{ color: '#64748B', lineHeight: 1.7 }}>{step.desc}</p>
               </motion.div>
             ))}
@@ -325,7 +325,7 @@ const HomePage = () => {
             <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
               <div>
                 <SectionLabel>Featured alumni</SectionLabel>
-                <h2 className="mt-6" style={{ fontFamily: "'Calistoga', serif", fontSize: 'clamp(2rem, 3.5vw, 3rem)', color: '#0F172A', lineHeight: 1.1 }}>
+                <h2 className="mt-6" style={{ fontFamily: "'Calistoga', serif", fontSize: 'clamp(2rem, 3.5vw, 3rem)', color: 'hsl(var(--foreground))', lineHeight: 1.1 }}>
                   Meet our <span className="text-gradient">community</span>.
                 </h2>
               </div>
@@ -346,7 +346,7 @@ const HomePage = () => {
                       </div>
                     )}
                     <div>
-                      <p className="font-semibold text-[16px]" style={{ color: '#0F172A' }}>{alum.full_name}</p>
+                      <p className="font-semibold text-[16px]" style={{ color: 'hsl(var(--foreground))' }}>{alum.full_name}</p>
                       <p className="text-[13px]" style={{ color: '#64748B' }}>Batch {alum.graduation_year}</p>
                     </div>
                   </div>

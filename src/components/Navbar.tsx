@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, LogOut, User, LayoutDashboard } from 'lucide-react';
+import { Menu, LogOut, User, LayoutDashboard, Sun, Moon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
@@ -21,6 +21,27 @@ const navLinks = [
   { label: 'Contact', path: '/contact' },
 ];
 
+const ThemeToggle = ({ className = '' }: { className?: string }) => {
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
+  return (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={isDark ? 'Light mode' : 'Dark mode'}
+      className={`w-9 h-9 rounded-[10px] flex items-center justify-center border transition-colors ${className}`}
+      style={{
+        background: 'hsl(var(--muted) / 0.5)',
+        borderColor: 'hsl(var(--border))',
+        color: 'hsl(var(--foreground))',
+      }}
+    >
+      {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+    </button>
+  );
+};
+
 export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { isAuthenticated, profile, signOut, user } = useAuth();
@@ -32,10 +53,10 @@ export const Navbar = () => {
     <nav
       className="fixed top-0 left-0 right-0 z-50"
       style={{
-        background: 'rgba(250, 250, 250, 0.85)',
+        background: 'hsl(var(--background) / 0.85)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        borderBottom: '1px solid #E2E8F0',
+        borderBottom: '1px solid hsl(var(--border))',
       }}
     >
       <div className="max-w-[72rem] mx-auto px-6 h-16 flex items-center justify-between">
@@ -53,7 +74,7 @@ export const Navbar = () => {
           </div>
           <span
             className="text-[17px] font-semibold tracking-tight"
-            style={{ color: '#0F172A' }}
+            style={{ color: 'hsl(var(--foreground))' }}
           >
             ETE Family
           </span>
@@ -67,13 +88,11 @@ export const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className="px-4 py-2 text-[14px] transition-colors duration-200"
+                className="px-4 py-2 text-[14px] transition-colors duration-200 hover:text-foreground"
                 style={{
-                  color: isActive ? '#0F172A' : '#64748B',
+                  color: isActive ? 'hsl(var(--foreground))' : 'hsl(var(--muted-foreground))',
                   fontWeight: isActive ? 600 : 500,
                 }}
-                onMouseEnter={(e) => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = '#0F172A'; }}
-                onMouseLeave={(e) => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = '#64748B'; }}
               >
                 {link.label}
               </Link>
@@ -83,6 +102,7 @@ export const Navbar = () => {
 
         {/* Right side */}
         <div className="hidden md:flex items-center gap-2">
+          <ThemeToggle />
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -130,14 +150,15 @@ export const Navbar = () => {
         </div>
 
         {/* Mobile */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <button className="p-2 rounded-lg" style={{ color: '#0F172A' }}>
+              <button className="p-2 rounded-lg" style={{ color: 'hsl(var(--foreground))' }}>
                 <Menu className="w-6 h-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 bg-white">
+            <SheetContent side="right" className="w-72">
               <div className="flex flex-col gap-1 mt-8">
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.path;
@@ -148,7 +169,7 @@ export const Navbar = () => {
                       onClick={() => setMobileOpen(false)}
                       className="block px-4 py-3 rounded-xl text-[14px] transition-colors"
                       style={{
-                        color: isActive ? '#0052FF' : '#0F172A',
+                        color: isActive ? '#0052FF' : 'hsl(var(--foreground))',
                         background: isActive ? 'rgba(0, 82, 255, 0.06)' : 'transparent',
                         fontWeight: 500,
                       }}
@@ -161,7 +182,7 @@ export const Navbar = () => {
                 {isAuthenticated ? (
                   <>
                     {profile?.role === 'admin' && (
-                      <Link to="/admin" onClick={() => setMobileOpen(false)} className="px-4 py-3 rounded-xl flex items-center gap-2 text-[14px]" style={{ color: '#0F172A' }}>
+                      <Link to="/admin" onClick={() => setMobileOpen(false)} className="px-4 py-3 rounded-xl flex items-center gap-2 text-[14px]" style={{ color: 'hsl(var(--foreground))' }}>
                         <LayoutDashboard className="w-4 h-4" /> Admin
                       </Link>
                     )}
