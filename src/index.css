@@ -246,8 +246,18 @@
   .text-gradient-gold { @apply text-gradient; }
   .text-gradient-accent { @apply text-gradient; }
 
-  .glass { @apply bg-white/70 backdrop-blur-xl border border-border; }
-  .glass-light { @apply bg-white/85 backdrop-blur-xl border-b border-border; }
+  .glass {
+    background: hsl(var(--background) / 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border));
+  }
+  .glass-light {
+    background: hsl(var(--background) / 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid hsl(var(--border));
+  }
   .glass-dark {
     background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(16px);
