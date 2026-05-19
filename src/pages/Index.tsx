@@ -382,7 +382,7 @@ const HomePage = () => {
 
           <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-xl mx-auto">
             <div
-              className="flex items-center flex-1"
+              className="flex items-center flex-1 min-w-0"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.12)',
@@ -393,10 +393,10 @@ const HomePage = () => {
               <input
                 type="email"
                 placeholder="your@email.com"
-                className="flex-1 bg-transparent outline-none px-4 text-[14px]"
+                className="flex-1 min-w-0 bg-transparent outline-none px-3 text-[14px]"
                 style={{ color: '#fff' }}
               />
-              <Link to="/register" className="btn-primary-grad text-[14px]" style={{ height: '40px' }}>
+              <Link to="/register" className="btn-primary-grad text-[14px] shrink-0" style={{ height: '40px', padding: '0 16px' }}>
                 Register <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
