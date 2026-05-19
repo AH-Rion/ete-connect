@@ -332,6 +332,10 @@ const AdminPage = () => {
               )}
             </div>
           </TabsContent>
+
+          <TabsContent value="gallery">
+            <AdminEventGallery />
+          </TabsContent>
         </Tabs>
       </div>
 
