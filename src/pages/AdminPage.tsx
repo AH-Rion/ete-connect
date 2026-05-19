@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Clock, CheckCircle, Star, Mail, Eye, Trash2, Check, X as XIcon, LayoutDashboard, MessageSquare, Settings, RefreshCw } from 'lucide-react';
+import { Users, Clock, CheckCircle, Star, Mail, Eye, Trash2, Check, X as XIcon, LayoutDashboard, MessageSquare, Settings, RefreshCw, ImageIcon } from 'lucide-react';
+import { AdminEventGallery } from '@/components/AdminEventGallery';
 import { supabase } from '@/integrations/supabase/client';
 import { cloudSupabase } from '@/lib/cloudClient';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
@@ -162,6 +163,7 @@ const AdminPage = () => {
               {unreadMessages > 0 && <Badge variant="destructive" className="ml-1 text-xs px-1.5 py-0">{unreadMessages}</Badge>}
             </TabsTrigger>
             <TabsTrigger value="settings" className="font-heading gap-2"><Settings className="w-4 h-4" />Settings</TabsTrigger>
+            <TabsTrigger value="gallery" className="font-heading gap-2"><ImageIcon className="w-4 h-4" />Gallery</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -329,6 +331,10 @@ const AdminPage = () => {
                 <p className="text-center text-muted-foreground py-8 font-body">No settings available</p>
               )}
             </div>
+          </TabsContent>
+
+          <TabsContent value="gallery">
+            <AdminEventGallery />
           </TabsContent>
         </Tabs>
       </div>
