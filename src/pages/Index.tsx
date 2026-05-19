@@ -363,6 +363,8 @@ const HomePage = () => {
           </div>
         </section>
       )}
+      {/* EVENT GALLERY */}
+      <EventGallery />
 
       {/* CTA — DARK */}
       <section className="relative overflow-hidden" style={{ background: '#0F172A', padding: '100px 2rem' }}>
