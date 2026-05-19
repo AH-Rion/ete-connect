@@ -320,7 +320,7 @@ const HomePage = () => {
 
       {/* FEATURED ALUMNI */}
       {featured.length > 0 && (
-        <section style={{ padding: '100px 2rem', background: '#fff', borderTop: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0' }}>
+        <section style={{ padding: '100px 2rem', background: 'hsl(var(--card))', borderTop: '1px solid hsl(var(--border))', borderBottom: '1px solid hsl(var(--border))' }}>
           <div className="max-w-[72rem] mx-auto">
             <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
               <div>
