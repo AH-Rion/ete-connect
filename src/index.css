@@ -166,11 +166,14 @@
   .card-gradient-border {
     position: relative;
     background:
-      linear-gradient(white, white) padding-box,
+      linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
       linear-gradient(135deg, #0052FF, #4D7CFF) border-box;
     border: 2px solid transparent;
     border-radius: 16px;
   }
+
+  /* Prevent horizontal scroll on small screens */
+  html, body { overflow-x: hidden; }
 
   /* Icon box */
   .icon-box-gradient {
