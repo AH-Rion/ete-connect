@@ -129,8 +129,9 @@ const HomePage = () => {
                   {[0, 1, 2, 3].map((i) => (
                     <div
                       key={i}
-                      className="w-9 h-9 rounded-full border-2 border-white flex items-center justify-center text-xs font-semibold text-white"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold text-white"
                       style={{
+                        border: '2px solid hsl(var(--background))',
                         background: `linear-gradient(135deg, hsl(${(i * 60 + 200) % 360}, 70%, 55%), hsl(${(i * 60 + 240) % 360}, 70%, 65%))`,
                       }}
                     >
