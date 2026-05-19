@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Clock, CheckCircle, Star, Mail, Eye, Trash2, Check, X as XIcon, LayoutDashboard, MessageSquare, Settings, RefreshCw } from 'lucide-react';
+import { Users, Clock, CheckCircle, Star, Mail, Eye, Trash2, Check, X as XIcon, LayoutDashboard, MessageSquare, Settings, RefreshCw, ImageIcon } from 'lucide-react';
+import { AdminEventGallery } from '@/components/AdminEventGallery';
 import { supabase } from '@/integrations/supabase/client';
 import { cloudSupabase } from '@/lib/cloudClient';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
