@@ -17,6 +17,7 @@ import ContactPage from "./pages/ContactPage";
 import AdminPage from "./pages/AdminPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ResetPassword from "./pages/ResetPassword";
+import GalleryPage from "./pages/GalleryPage";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/register" element={<ProtectedRoute><RegisterPage /></ProtectedRoute>} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
               <Route path="*" element={<NotFoundPage />} />
               <Route path="/reset-password" element={<ResetPassword />} />
