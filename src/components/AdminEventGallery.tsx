@@ -6,7 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import type { EventGalleryItem } from '@/components/EventGallery';
+import type { EventGalleryItem as BaseEventGalleryItem } from '@/components/EventGallery';
+
+type EventGalleryItem = BaseEventGalleryItem & { batch_year?: number | null };
+
+const BATCH_YEARS = Array.from({ length: 2030 - 2012 + 1 }, (_, i) => 2012 + i);
 
 const BUCKET = 'event-gallery';
 
@@ -18,6 +22,7 @@ export const AdminEventGallery = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [eventDate, setEventDate] = useState('');
+  const [batchYear, setBatchYear] = useState<string>('');
   const [editing, setEditing] = useState<EventGalleryItem | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<EventGalleryItem | null>(null);
 
@@ -39,6 +44,7 @@ export const AdminEventGallery = () => {
     setTitle('');
     setDescription('');
     setEventDate('');
+    setBatchYear('');
     const input = document.getElementById('gallery-file-input') as HTMLInputElement | null;
     if (input) input.value = '';
   };
@@ -63,6 +69,7 @@ export const AdminEventGallery = () => {
         title: title.trim(),
         description: description.trim() || null,
         event_date: eventDate || null,
+        batch_year: batchYear ? parseInt(batchYear, 10) : null,
       });
       if (insErr) throw insErr;
       toast.success('Event uploaded!');
@@ -96,6 +103,7 @@ export const AdminEventGallery = () => {
       title: editing.title,
       description: editing.description,
       event_date: editing.event_date,
+      batch_year: editing.batch_year ?? null,
     }).eq('id', editing.id);
     if (error) { toast.error('Update failed'); return; }
     toast.success('Updated');
@@ -127,6 +135,19 @@ export const AdminEventGallery = () => {
           <div className="space-y-2">
             <label className="text-xs text-muted-foreground font-medium">Event Date</label>
             <Input type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
+          </div>
+          <div className="space-y-2 sm:col-span-2">
+            <label className="text-xs text-muted-foreground font-medium">Batch Year</label>
+            <select
+              value={batchYear}
+              onChange={(e) => setBatchYear(e.target.value)}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            >
+              <option value="">— None —</option>
+              {BATCH_YEARS.slice().reverse().map((y) => (
+                <option key={y} value={y}>Batch {y}</option>
+              ))}
+            </select>
           </div>
           <div className="space-y-2 sm:col-span-2">
             <label className="text-xs text-muted-foreground font-medium">Description</label>
@@ -189,6 +210,19 @@ export const AdminEventGallery = () => {
               <div>
                 <label className="text-xs text-muted-foreground">Date</label>
                 <Input type="date" value={editing.event_date || ''} onChange={(e) => setEditing({ ...editing, event_date: e.target.value || null })} />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground">Batch Year</label>
+                <select
+                  value={editing.batch_year ?? ''}
+                  onChange={(e) => setEditing({ ...editing, batch_year: e.target.value ? parseInt(e.target.value, 10) : null })}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">— None —</option>
+                  {BATCH_YEARS.slice().reverse().map((y) => (
+                    <option key={y} value={y}>Batch {y}</option>
+                  ))}
+                </select>
               </div>
               <div>
                 <label className="text-xs text-muted-foreground">Description</label>
