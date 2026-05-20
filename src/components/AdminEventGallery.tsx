@@ -137,6 +137,19 @@ export const AdminEventGallery = () => {
             <Input type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
           </div>
           <div className="space-y-2 sm:col-span-2">
+            <label className="text-xs text-muted-foreground font-medium">Batch Year</label>
+            <select
+              value={batchYear}
+              onChange={(e) => setBatchYear(e.target.value)}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            >
+              <option value="">— None —</option>
+              {BATCH_YEARS.slice().reverse().map((y) => (
+                <option key={y} value={y}>Batch {y}</option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-2 sm:col-span-2">
             <label className="text-xs text-muted-foreground font-medium">Description</label>
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Short description..." rows={3} />
           </div>
@@ -197,6 +210,19 @@ export const AdminEventGallery = () => {
               <div>
                 <label className="text-xs text-muted-foreground">Date</label>
                 <Input type="date" value={editing.event_date || ''} onChange={(e) => setEditing({ ...editing, event_date: e.target.value || null })} />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground">Batch Year</label>
+                <select
+                  value={editing.batch_year ?? ''}
+                  onChange={(e) => setEditing({ ...editing, batch_year: e.target.value ? parseInt(e.target.value, 10) : null })}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">— None —</option>
+                  {BATCH_YEARS.slice().reverse().map((y) => (
+                    <option key={y} value={y}>Batch {y}</option>
+                  ))}
+                </select>
               </div>
               <div>
                 <label className="text-xs text-muted-foreground">Description</label>
