@@ -5,7 +5,7 @@ import { Users, Building2, Globe, ArrowRight, Sparkles, Network, GraduationCap, 
 import { fadeInUp, staggerContainer, scaleIn } from '@/lib/animations';
 import { supabase } from '@/integrations/supabase/client';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
-import { EventGallery } from '@/components/EventGallery';
+
 
 const useCountUp = (target: number, duration = 1800) => {
   const [count, setCount] = useState(0);
@@ -363,8 +363,6 @@ const HomePage = () => {
           </div>
         </section>
       )}
-      {/* EVENT GALLERY */}
-      <EventGallery />
 
       {/* CTA — DARK */}
       <section className="relative overflow-hidden" style={{ background: '#0F172A', padding: '100px 2rem' }}>
