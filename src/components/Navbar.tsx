@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, LogOut, User, LayoutDashboard, Sun, Moon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,9 +60,9 @@ export const Navbar = () => {
         borderBottom: '1px solid hsl(var(--border))',
       }}
     >
-      <div className="max-w-[72rem] mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-[72rem] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5">
+        <Link to="/" className="flex min-w-0 shrink-0 items-center gap-2.5">
           <div
             className="w-9 h-9 rounded-[10px] flex items-center justify-center text-white font-bold"
             style={{
@@ -74,7 +74,7 @@ export const Navbar = () => {
             E
           </div>
           <span
-            className="text-[17px] font-semibold tracking-tight"
+            className="truncate text-[17px] font-semibold tracking-tight"
             style={{ color: 'hsl(var(--foreground))' }}
           >
             ETE Family
@@ -155,11 +155,18 @@ export const Navbar = () => {
           <ThemeToggle />
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <button className="p-2 rounded-lg" style={{ color: 'hsl(var(--foreground))' }}>
+              <button
+                className="-mr-2 flex min-h-11 min-w-11 items-center justify-center rounded-lg"
+                aria-label="Open mobile menu"
+                aria-expanded={mobileOpen}
+                style={{ color: 'hsl(var(--foreground))' }}
+              >
                 <Menu className="w-6 h-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72">
+            <SheetContent side="right" className="w-[min(88vw,22rem)] overflow-y-auto border-l bg-background/95 p-6">
+              <SheetTitle className="sr-only">Main navigation</SheetTitle>
+              <SheetDescription className="sr-only">Primary links for the ETE Family website</SheetDescription>
               <div className="flex flex-col gap-1 mt-8">
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.path;
@@ -168,7 +175,7 @@ export const Navbar = () => {
                       key={link.path}
                       to={link.path}
                       onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-3 rounded-xl text-[14px] transition-colors"
+                      className="flex min-h-11 items-center px-4 py-3 rounded-xl text-[14px] transition-colors"
                       style={{
                         color: isActive ? '#0052FF' : 'hsl(var(--foreground))',
                         background: isActive ? 'rgba(0, 82, 255, 0.06)' : 'transparent',
@@ -183,19 +190,19 @@ export const Navbar = () => {
                 {isAuthenticated ? (
                   <>
                     {profile?.role === 'admin' && (
-                      <Link to="/admin" onClick={() => setMobileOpen(false)} className="px-4 py-3 rounded-xl flex items-center gap-2 text-[14px]" style={{ color: 'hsl(var(--foreground))' }}>
+                      <Link to="/admin" onClick={() => setMobileOpen(false)} className="min-h-11 px-4 py-3 rounded-xl flex items-center gap-2 text-[14px]" style={{ color: 'hsl(var(--foreground))' }}>
                         <LayoutDashboard className="w-4 h-4" /> Admin
                       </Link>
                     )}
                     <button
                       onClick={() => { signOut(); setMobileOpen(false); }}
-                      className="px-4 py-3 rounded-xl text-left flex items-center gap-2 text-destructive text-[14px]"
+                      className="min-h-11 px-4 py-3 rounded-xl text-left flex items-center gap-2 text-destructive text-[14px]"
                     >
                       <LogOut className="w-4 h-4" /> Logout
                     </button>
                   </>
                 ) : (
-                  <Link to="/login" onClick={() => setMobileOpen(false)} className="btn-primary-grad mt-2">
+                  <Link to="/login" onClick={() => setMobileOpen(false)} className="btn-primary-grad mt-2 w-full">
                     Sign in
                   </Link>
                 )}

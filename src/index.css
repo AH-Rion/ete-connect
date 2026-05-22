@@ -89,7 +89,10 @@
 
 @layer base {
   * { @apply border-border; }
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     background: hsl(var(--background));
     color: hsl(var(--foreground));
@@ -97,6 +100,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, color 0.3s ease;
+    overscroll-behavior-x: none;
+    touch-action: manipulation;
   }
   h1, h2 {
     font-family: 'Calistoga', Georgia, serif;
@@ -109,6 +114,8 @@
     letter-spacing: -0.01em;
   }
   button, input, select, textarea { font-family: 'Inter', system-ui, sans-serif; }
+  a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
+  img, video, canvas, svg { max-width: 100%; }
 }
 
 @layer components {
@@ -172,8 +179,13 @@
     border-radius: 16px;
   }
 
-  /* Prevent horizontal scroll on small screens */
-  html, body { overflow-x: hidden; }
+  /* Prevent horizontal scroll on small screens without blocking vertical touch scroll */
+  html, body, #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+  #root { min-height: 100dvh; }
 
   /* Icon box */
   .icon-box-gradient {
@@ -200,6 +212,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    white-space: nowrap;
   }
   .btn-primary-grad:hover {
     transform: translateY(-2px);
@@ -218,6 +231,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    white-space: nowrap;
   }
   .btn-secondary-outline:hover {
     border-color: rgba(0, 82, 255, 0.4);

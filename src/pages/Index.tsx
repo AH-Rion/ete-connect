@@ -63,7 +63,7 @@ const HomePage = () => {
   return (
     <div style={{ background: 'hsl(var(--background))' }}>
       {/* HERO */}
-      <section className="relative pt-32 pb-24 overflow-hidden">
+      <section className="relative overflow-hidden px-4 pt-28 pb-16 sm:px-6 sm:pt-32 sm:pb-24">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -71,8 +71,8 @@ const HomePage = () => {
               'radial-gradient(ellipse 60% 50% at 80% 20%, rgba(0,82,255,0.08), transparent 60%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(77,124,255,0.06), transparent 60%)',
           }}
         />
-        <div className="max-w-[72rem] mx-auto px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
+        <div className="max-w-[72rem] mx-auto relative">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-16 items-center">
             {/* Left */}
             <div>
               <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -110,12 +110,12 @@ const HomePage = () => {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="mt-8 flex flex-wrap gap-3"
+                  className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
               >
-                <Link to="/alumni" className="btn-primary-grad">
+                <Link to="/alumni" className="btn-primary-grad w-full sm:w-auto">
                   Explore Alumni <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/register" className="btn-secondary-outline">
+                <Link to="/register" className="btn-secondary-outline w-full sm:w-auto">
                   Join the Network
                 </Link>
               </motion.div>
@@ -141,7 +141,7 @@ const HomePage = () => {
                   ))}
                 </div>
                 <div>
-                  <p className="text-[14px] font-semibold" style={{ color: 'hsl(var(--foreground))' }}>Joined by 500+ graduates</p>
+                  <p className="text-[14px] font-semibold leading-snug" style={{ color: 'hsl(var(--foreground))' }}>Joined by 500+ graduates</p>
                   <p className="text-[12px]" style={{ color: '#64748B' }}>Across 30+ companies worldwide</p>
                 </div>
               </motion.div>
