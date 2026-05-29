@@ -53,11 +53,26 @@ const HomePage = () => {
       .then(({ data }) => { if (data) setFeatured(data); });
   }, []);
 
+  const num = (v: string | undefined, fallback: number) => {
+    const n = parseInt((v || '').replace(/\D/g, ''), 10);
+    return isNaN(n) ? fallback : n;
+  };
+  const alumniCount = num(settings.stat_alumni_count, 250);
+  const countriesCount = num(settings.stat_countries_count, 5);
+  const companiesCount = num(settings.stat_companies_count, 30);
+  const yearsCount = num(settings.stat_years_count, 12);
+  const joinedCount = num(settings.hero_joined_count, 500);
+  const worldwideCompanies = num(settings.hero_worldwide_companies, 30);
+  const companiesList = (settings.companies_list || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+
   const stats = [
-    { target: 250, label: 'Alumni Network', suffix: '+' },
-    { target: 5, label: 'Countries', suffix: '+' },
-    { target: 30, label: 'Companies', suffix: '+' },
-    { target: 12, label: 'Years Strong', suffix: '' },
+    { target: alumniCount, label: 'Alumni Network', suffix: '+' },
+    { target: countriesCount, label: 'Countries', suffix: '+' },
+    { target: companiesCount, label: 'Companies', suffix: '+' },
+    { target: yearsCount, label: 'Years Strong', suffix: '' },
   ];
 
   return (
