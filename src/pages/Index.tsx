@@ -235,7 +235,7 @@ const HomePage = () => {
           <div className="flex whitespace-nowrap animate-marquee-left" style={{ opacity: 0.85 }}>
             {[...Array(2)].map((_, j) => (
               <div key={j} className="flex items-center gap-12 px-6 text-base font-medium" style={{ color: '#94A3B8' }}>
-                {['Google', 'Microsoft', 'Amazon', 'Tesla', 'Meta', 'Apple', 'Samsung', 'Goldman Sachs', 'NASA', 'Grameenphone', 'IBM'].map((c, i) => (
+                {companiesList.map((c, i) => (
                   <span key={i} className="flex items-center gap-12">
                     {c}<span className="w-1 h-1 rounded-full" style={{ background: '#CBD5E1' }} />
                   </span>
