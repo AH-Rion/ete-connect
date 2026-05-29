@@ -217,7 +217,7 @@ const HomePage = () => {
               >
                 <div className="icon-box-gradient w-9 h-9"><TrendingUp className="w-4 h-4" /></div>
                 <div>
-                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>30+</p>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>{companiesCount}+</p>
                   <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Companies</p>
                 </div>
               </motion.div>
