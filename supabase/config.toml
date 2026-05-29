@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.sync-alumni-sheets]
 verify_jwt = false
+
+[functions.update-site-settings]
+verify_jwt = false
