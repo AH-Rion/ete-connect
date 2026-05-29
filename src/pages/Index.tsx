@@ -53,11 +53,26 @@ const HomePage = () => {
       .then(({ data }) => { if (data) setFeatured(data); });
   }, []);
 
+  const num = (v: string | undefined, fallback: number) => {
+    const n = parseInt((v || '').replace(/\D/g, ''), 10);
+    return isNaN(n) ? fallback : n;
+  };
+  const alumniCount = num(settings.stat_alumni_count, 250);
+  const countriesCount = num(settings.stat_countries_count, 5);
+  const companiesCount = num(settings.stat_companies_count, 30);
+  const yearsCount = num(settings.stat_years_count, 12);
+  const joinedCount = num(settings.hero_joined_count, 500);
+  const worldwideCompanies = num(settings.hero_worldwide_companies, 30);
+  const companiesList = (settings.companies_list || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+
   const stats = [
-    { target: 250, label: 'Alumni Network', suffix: '+' },
-    { target: 5, label: 'Countries', suffix: '+' },
-    { target: 30, label: 'Companies', suffix: '+' },
-    { target: 12, label: 'Years Strong', suffix: '' },
+    { target: alumniCount, label: 'Alumni Network', suffix: '+' },
+    { target: countriesCount, label: 'Countries', suffix: '+' },
+    { target: companiesCount, label: 'Companies', suffix: '+' },
+    { target: yearsCount, label: 'Years Strong', suffix: '' },
   ];
 
   return (
@@ -141,8 +156,8 @@ const HomePage = () => {
                   ))}
                 </div>
                 <div>
-                  <p className="text-[14px] font-semibold leading-snug" style={{ color: 'hsl(var(--foreground))' }}>Joined by 500+ graduates</p>
-                  <p className="text-[12px]" style={{ color: '#64748B' }}>Across 30+ companies worldwide</p>
+                  <p className="text-[14px] font-semibold leading-snug" style={{ color: 'hsl(var(--foreground))' }}>Joined by {joinedCount}+ graduates</p>
+                  <p className="text-[12px]" style={{ color: '#64748B' }}>Across {worldwideCompanies}+ companies worldwide</p>
                 </div>
               </motion.div>
             </div>
@@ -180,7 +195,7 @@ const HomePage = () => {
               >
                 <div className="icon-box-gradient w-9 h-9"><GraduationCap className="w-4 h-4" /></div>
                 <div>
-                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>250+</p>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>{alumniCount}+</p>
                   <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Alumni</p>
                 </div>
               </motion.div>
@@ -191,7 +206,7 @@ const HomePage = () => {
               >
                 <div className="icon-box-gradient w-9 h-9"><Globe className="w-4 h-4" /></div>
                 <div>
-                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>5+</p>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>{countriesCount}+</p>
                   <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Countries</p>
                 </div>
               </motion.div>
@@ -202,7 +217,7 @@ const HomePage = () => {
               >
                 <div className="icon-box-gradient w-9 h-9"><TrendingUp className="w-4 h-4" /></div>
                 <div>
-                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>30+</p>
+                  <p className="text-[18px] font-semibold leading-none" style={{ color: 'hsl(var(--foreground))', fontFamily: "'Calistoga', serif" }}>{companiesCount}+</p>
                   <p className="text-[11px] font-mono-label" style={{ color: '#64748B' }}>Companies</p>
                 </div>
               </motion.div>
@@ -220,7 +235,7 @@ const HomePage = () => {
           <div className="flex whitespace-nowrap animate-marquee-left" style={{ opacity: 0.85 }}>
             {[...Array(2)].map((_, j) => (
               <div key={j} className="flex items-center gap-12 px-6 text-base font-medium" style={{ color: '#94A3B8' }}>
-                {['Google', 'Microsoft', 'Amazon', 'Tesla', 'Meta', 'Apple', 'Samsung', 'Goldman Sachs', 'NASA', 'Grameenphone', 'IBM'].map((c, i) => (
+                {companiesList.map((c, i) => (
                   <span key={i} className="flex items-center gap-12">
                     {c}<span className="w-1 h-1 rounded-full" style={{ background: '#CBD5E1' }} />
                   </span>

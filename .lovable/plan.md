@@ -1,25 +1,27 @@
-## Fix Vercel Deployment
+## Goal
+Make stat numbers (Alumni, Countries, Companies, Years), the "Joined by X graduates / Across Y companies" badge, and the companies marquee list editable from the admin dashboard Settings tab.
 
-Since you didn't share the specific error, here's a plan covering the most common Vercel deployment failures for this project.
+## Approach
+The admin Settings tab already auto-renders every row of `site_settings` as an editable input with a Save button. So we just need to (1) seed new keys in the DB and (2) make the homepage/login page read them via the existing `useSiteSettings()` context.
 
-### Likely causes
-1. **TypeScript/build errors** — recent edits (EventGallery, GalleryPage, AdminEventGallery) may have type errors that Vite ignores locally but Vercel's build catches.
-2. **Missing environment variables** on Vercel — the external Supabase URL is hardcoded in `client.ts`, but `cloudClient.ts` uses `VITE_SUPABASE_*` env vars that must exist at build time.
-3. **SPA routing** — already handled via `vercel.json` rewrites ✓
-4. **Node/package version mismatch** — no `engines` field in package.json.
+## Steps
 
-### Steps
-1. Run a local production build to reproduce Vercel's failure (`npm run build`) and capture the exact error.
-2. Fix any TypeScript/build errors surfaced (most likely in the newly added `GalleryPage.tsx`, `EventGallery.tsx`, `AdminEventGallery.tsx`).
-3. Ensure `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID` are set in Vercel project settings (these are normally in `.env` but Vercel needs them added in the dashboard). I'll also add safe fallbacks in `cloudClient.ts` if missing.
-4. Add an `engines` field to `package.json` pinning a Node version Vercel supports (e.g., 20.x) to avoid mismatch.
-5. Re-deploy and verify.
+1. **DB migration** — insert new `site_settings` rows (with helpful descriptions) if they don't already exist:
+   - `stat_alumni_count` = "250"
+   - `stat_countries_count` = "5"
+   - `stat_companies_count` = "30"
+   - `stat_years_count` = "12"
+   - `hero_joined_count` = "500"
+   - `hero_worldwide_companies` = "30"
+   - `companies_list` = "Google, Microsoft, Amazon, Tesla, Meta, Apple, Samsung, Goldman Sachs, NASA, Grameenphone, IBM"
 
-### What I need from you
-- **Paste the Vercel build log error** (Deployments → failed deployment → Build Logs). Without it I'll start with step 1 (reproduce the build locally) and fix whatever surfaces.
-- Confirm whether you've added the `VITE_SUPABASE_*` env vars in **Vercel → Project Settings → Environment Variables**.
+2. **`src/pages/Index.tsx`** — replace hardcoded `250 / 5 / 30 / 12`, the "Joined by 500+ / 30+" badge text, the floating cards (250+/5+/30+), and the marquee companies array with values from `settings` (parsed as numbers; companies split by comma).
 
-### Technical notes
-- `.env` is **not** committed/used by Vercel — env vars must be configured in the Vercel dashboard.
-- The external Supabase URL in `src/integrations/supabase/client.ts` is hardcoded, so that part will work without env vars.
-- `vercel.json` SPA rewrites are already correct.
+3. **`src/pages/LoginPage.tsx`** — replace the hardcoded `250+ / 5+ / 30+` left-panel stats with `settings.stat_alumni_count` etc.
+
+4. **`src/contexts/SiteSettingsContext.tsx`** — add the new keys to the `defaults` object so first paint isn't blank.
+
+5. **Admin** — no code changes needed; new rows appear automatically in the Settings tab. The label `companies_list` will render with a helpful description ("Comma-separated company names for the homepage marquee").
+
+## Result
+Admin can change any number or the company list from /admin → Settings, and the homepage + login page update automatically.

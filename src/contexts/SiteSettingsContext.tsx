@@ -16,6 +16,13 @@ const defaults: SiteSettings = {
   hero_subtitle: 'Join the official alumni network of the Department of Electronics & Telecommunication Engineering, CUET. Stay connected, mentor students, and grow your professional network.',
   contact_email: 'alumni@ete.cuet.ac.bd',
   contact_phone: '+880 1234 567890',
+  stat_alumni_count: '250',
+  stat_countries_count: '5',
+  stat_companies_count: '30',
+  stat_years_count: '12',
+  hero_joined_count: '500',
+  hero_worldwide_companies: '30',
+  companies_list: 'Google, Microsoft, Amazon, Tesla, Meta, Apple, Samsung, Goldman Sachs, NASA, Grameenphone, IBM',
 };
 
 const SiteSettingsContext = createContext<SiteSettings>(defaults);

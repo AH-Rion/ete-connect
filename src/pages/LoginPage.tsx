@@ -13,6 +13,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { pageTransition } from '@/lib/animations';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email'),
@@ -27,6 +28,7 @@ const signupSchema = z.object({
 
 const LoginPage = () => {
   const { isAuthenticated, signInWithGoogle, signInWithEmail, signUpWithEmail, resetPassword } = useAuth();
+  const settings = useSiteSettings();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
@@ -70,7 +72,7 @@ const LoginPage = () => {
           <h2 className="text-4xl font-heading font-bold text-text-on-dark"><span className="text-accent">ETE</span> Family</h2>
           <p className="text-text-on-dark/70 font-body max-w-sm">Where Every Graduate Stays Connected Forever</p>
           <div className="flex gap-4 justify-center mt-8">
-            {[{ n: '250+', l: 'Alumni' }, { n: '5+', l: 'Countries' }, { n: '30+', l: 'Companies' }].map((s, i) => (
+            {[{ n: `${settings.stat_alumni_count || '250'}+`, l: 'Alumni' }, { n: `${settings.stat_countries_count || '5'}+`, l: 'Countries' }, { n: `${settings.stat_companies_count || '30'}+`, l: 'Companies' }].map((s, i) => (
               <div key={i} className="rounded-2xl px-6 py-4 text-center border border-accent/30 bg-accent/5 backdrop-blur-md">
                 <p className="text-2xl font-heading font-black text-accent">{s.n}</p>
                 <p className="text-xs text-text-on-dark/60 font-heading tracking-widest uppercase">{s.l}</p>
