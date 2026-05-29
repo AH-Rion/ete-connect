@@ -28,6 +28,7 @@ const signupSchema = z.object({
 
 const LoginPage = () => {
   const { isAuthenticated, signInWithGoogle, signInWithEmail, signUpWithEmail, resetPassword } = useAuth();
+  const settings = useSiteSettings();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
