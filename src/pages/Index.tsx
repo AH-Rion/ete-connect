@@ -156,8 +156,8 @@ const HomePage = () => {
                   ))}
                 </div>
                 <div>
-                  <p className="text-[14px] font-semibold leading-snug" style={{ color: 'hsl(var(--foreground))' }}>Joined by 500+ graduates</p>
-                  <p className="text-[12px]" style={{ color: '#64748B' }}>Across 30+ companies worldwide</p>
+                  <p className="text-[14px] font-semibold leading-snug" style={{ color: 'hsl(var(--foreground))' }}>Joined by {joinedCount}+ graduates</p>
+                  <p className="text-[12px]" style={{ color: '#64748B' }}>Across {worldwideCompanies}+ companies worldwide</p>
                 </div>
               </motion.div>
             </div>
