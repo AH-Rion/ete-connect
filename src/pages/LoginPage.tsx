@@ -13,6 +13,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { pageTransition } from '@/lib/animations';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email'),
