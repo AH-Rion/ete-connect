@@ -4,6 +4,7 @@ import { Users, Clock, CheckCircle, Star, Mail, Eye, Trash2, Check, X as XIcon, 
 import { AdminEventGallery } from '@/components/AdminEventGallery';
 import { supabase } from '@/integrations/supabase/client';
 import { cloudSupabase } from '@/lib/cloudClient';
+import { useAuth } from '@/contexts/AuthContext';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 import { pageTransition } from '@/lib/animations';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { toast } from 'sonner';
 
 const AdminPage = () => {
+  const { session } = useAuth();
   const [tab, setTab] = useState('overview');
   const [alumni, setAlumni] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
@@ -107,13 +109,23 @@ const AdminPage = () => {
 
   const handleSaveSetting = async (key: string, value: string) => {
     setSavingSettings(true);
-    const { error } = await cloudSupabase.from('site_settings').update({ value }).eq('key', key);
-    setSavingSettings(false);
-    if (error) {
-      toast.error('Failed to update setting');
-    } else {
+    try {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || 'fhzsksqfvkviwhwndhdw';
+      const res = await fetch(`https://${projectId}.supabase.co/functions/v1/update-site-settings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.access_token || ''}`,
+        },
+        body: JSON.stringify({ key, value }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to update setting');
       toast.success('Setting updated successfully');
-      // No need to fetch all data again, state is already updated locally
+    } catch (e: any) {
+      toast.error(e.message || 'Failed to update setting');
+    } finally {
+      setSavingSettings(false);
     }
   };
 
