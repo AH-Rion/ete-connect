@@ -371,6 +371,7 @@ const AdminPage = () => {
                         className="w-full"
                       />
                     )}
+                  </div>
                 ))}
               </div>
               {settings.length === 0 && (
