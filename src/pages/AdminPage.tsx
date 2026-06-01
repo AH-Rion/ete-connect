@@ -354,14 +354,23 @@ const AdminPage = () => {
                         Save
                       </Button>
                     </div>
-                    <Input
-                      id={setting.key}
-                      value={setting.value || ''}
-                      onChange={e => handleSettingsChange(setting.key, e.target.value)}
-                      placeholder={`Enter ${setting.key.replace(/_/g, ' ')}`}
-                      className="w-full"
-                    />
-                  </div>
+                    {setting.key === 'companies_list' || setting.key === 'hero_subtitle' ? (
+                      <Textarea
+                        id={setting.key}
+                        value={setting.value || ''}
+                        onChange={e => handleSettingsChange(setting.key, e.target.value)}
+                        placeholder={`Enter ${setting.key.replace(/_/g, ' ')}`}
+                        className="w-full min-h-[90px]"
+                      />
+                    ) : (
+                      <Input
+                        id={setting.key}
+                        value={setting.value || ''}
+                        onChange={e => handleSettingsChange(setting.key, e.target.value)}
+                        placeholder={`Enter ${setting.key.replace(/_/g, ' ')}`}
+                        className="w-full"
+                      />
+                    )}
                 ))}
               </div>
               {settings.length === 0 && (
