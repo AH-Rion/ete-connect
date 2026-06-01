@@ -14,7 +14,23 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+
+const REQUIRED_SETTINGS: { key: string; description: string; default: string }[] = [
+  { key: 'site_title', description: 'Site title shown in the navbar', default: 'ETE Family' },
+  { key: 'hero_title', description: 'Main homepage hero title', default: 'Connecting ETE Alumni' },
+  { key: 'hero_subtitle', description: 'Homepage hero subtitle paragraph', default: '' },
+  { key: 'contact_email', description: 'Public contact email', default: 'alumni@ete.cuet.ac.bd' },
+  { key: 'contact_phone', description: 'Public contact phone', default: '+880 1234 567890' },
+  { key: 'stat_alumni_count', description: 'Alumni count shown in stats (number only)', default: '250' },
+  { key: 'stat_countries_count', description: 'Countries count shown in stats', default: '5' },
+  { key: 'stat_companies_count', description: 'Companies count shown in stats', default: '30' },
+  { key: 'stat_years_count', description: 'Years strong shown in stats', default: '12' },
+  { key: 'hero_joined_count', description: 'Number in "Joined by X+ graduates" hero badge', default: '500' },
+  { key: 'hero_worldwide_companies', description: 'Number in "Across X+ companies worldwide" hero badge', default: '30' },
+  { key: 'companies_list', description: 'Comma-separated company names for the homepage marquee', default: 'Google, Microsoft, Amazon, Tesla, Meta, Apple, Samsung, Goldman Sachs, NASA, Grameenphone, IBM' },
+];
 
 const AdminPage = () => {
   const { session } = useAuth();
@@ -64,7 +80,15 @@ const AdminPage = () => {
     ]);
     setAlumni(alumniRes.data || []);
     setMessages(messagesRes.data || []);
-    setSettings(settingsRes.data || []);
+    const dbRows = settingsRes.data || [];
+    const byKey = new Map(dbRows.map((r: any) => [r.key, r]));
+    const merged = REQUIRED_SETTINGS.map(req => {
+      const existing = byKey.get(req.key);
+      return existing
+        ? { ...existing, description: existing.description || req.description }
+        : { id: `default-${req.key}`, key: req.key, value: req.default, description: req.description };
+    });
+    setSettings(merged);
     setLoading(false);
   };
 
@@ -122,6 +146,7 @@ const AdminPage = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update setting');
       toast.success('Setting updated successfully');
+      fetchData();
     } catch (e: any) {
       toast.error(e.message || 'Failed to update setting');
     } finally {
