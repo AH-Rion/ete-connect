@@ -17,7 +17,7 @@ export const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (isLoading) return <LoadingSpinner />;
   if (!isAuthenticated) return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
-  if (profile?.role !== 'admin') {
+  if (!profile || profile.role !== 'admin') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-4">
