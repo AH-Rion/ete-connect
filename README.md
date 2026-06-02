@@ -68,12 +68,13 @@ The platform is designed with a **modern UI, animated backgrounds, and responsiv
 <img width="1481" height="796" alt="Screenshot 2026-03-09 010816" src="https://github.com/user-attachments/assets/a7503d20-9b6f-4bf3-aa4b-a6908a29d4b7" />
 <img width="1912" height="760" alt="Screenshot 2026-03-09 010829" src="https://github.com/user-attachments/assets/0bc22e23-c1a9-419d-9b54-a7d280b3b5dc" />
 
-## 👨‍💻 Author hehe
+## 👨‍💻 Author
 
 Developed by **AH Rion**
-<h1>ETE 24</h1>
-FB:https://www.facebook.com/ah.rion.98
-in:www.linkedin.com/in/ahrion
+
+**ETE 24**
+
+- Facebook: https://www.facebook.com/ah.rion.98
+- LinkedIn: https://www.linkedin.com/in/ahrion
 
 If you like this project, feel free to ⭐ the repository.
-
