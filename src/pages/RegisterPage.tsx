@@ -210,27 +210,7 @@ const RegisterPage = () => {
 
   if (checkingExisting) return <div className="min-h-screen pt-20 flex items-center justify-center"><p className="text-muted-foreground">Checking...</p></div>;
 
-  if (existingRecord) {
-    const isPending = !existingRecord.is_approved && !existingRecord.is_rejected;
-    const isApproved = existingRecord.is_approved;
-    return (
-      <motion.div {...pageTransition} className="min-h-screen pt-24 bg-background">
-        <div className="container mx-auto px-4 max-w-lg text-center space-y-4">
-          <div className="text-5xl">{isPending ? '⏳' : isApproved ? '🎉' : '❌'}</div>
-          <h1 className="text-2xl font-heading font-bold text-foreground">
-            {isPending ? 'Registration Under Review' : isApproved ? 'Profile is Live!' : 'Registration Not Approved'}
-          </h1>
-          <p className="text-muted-foreground font-body">
-            {isPending ? "Your registration is under review. We'll notify you once approved!" :
-             isApproved ? 'Your profile is live on the alumni directory!' :
-             'Your registration was not approved. Please contact admin.'}
-          </p>
-          {isApproved && <Link to={`/alumni/${existingRecord.id}`}><Button className="bg-accent text-accent-foreground hover:bg-accent-hover font-heading">View My Profile</Button></Link>}
-          <Link to="/"><Button variant="outline" className="font-heading">Go to Homepage</Button></Link>
-        </div>
-      </motion.div>
-    );
-  }
+  // Existing record → render the form pre-filled in EDIT mode (no lockout screen).
 
   if (showSuccess) {
     return (
