@@ -386,7 +386,6 @@ const AlumniDirectoryPage = () => {
   }, [alumni]);
 
   const handleViewProfile = (id: string) => {
-    if (!isAuthenticated) { setLoginPrompt(true); return; }
     window.location.href = `/alumni/${id}`;
   };
 

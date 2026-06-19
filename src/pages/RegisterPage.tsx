@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Upload, X, ChevronRight, ChevronLeft, Users, Globe, Building2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,6 +17,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
+import { EducationManager } from '@/components/EducationManager';
+import { EmploymentManager } from '@/components/EmploymentManager';
 
 const steps = ['Personal', 'Academic', 'Professional', 'Review'];
 
@@ -92,14 +94,53 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (!user) return;
-    setForm(f => ({
-      ...f,
-      full_name: profile?.full_name || '',
-      email: user.email || '',
-    }));
     supabase.from('alumni').select('*').eq('user_id', user.id).maybeSingle()
       .then(({ data }) => {
-        setExistingRecord(data);
+        if (data) {
+          setExistingRecord(data);
+          setForm(f => ({
+            ...f,
+            full_name: data.full_name || profile?.full_name || '',
+            email: data.email || user.email || '',
+            phone: data.phone || '',
+            date_of_birth: data.date_of_birth || '',
+            photo_url: data.photo_url || '',
+            gender: data.gender || '',
+            city: data.city || '',
+            country: data.country || '',
+            linkedin_url: data.linkedin_url || '',
+            website_url: data.website_url || '',
+            department: data.department || 'Electronics & Telecommunication Engineering (ETE)',
+            degree: data.degree || '',
+            graduation_year: data.graduation_year ? String(data.graduation_year) : '',
+            student_id: data.student_id || '',
+            hall_of_residence: data.hall_of_residence || '',
+            university_memory: data.university_memory || '',
+            employment_status: data.employment_status || '',
+            job_title: data.job_title || '',
+            company: data.company || '',
+            company_link: data.company_link || '',
+            industry: data.industry || '',
+            other_industry: data.other_industry || '',
+            years_of_experience: data.years_of_experience || 0,
+            previous_companies: data.previous_companies || '',
+            skills: data.skills || '',
+            salary_range: data.salary_range || '',
+            willing_to_mentor: !!data.willing_to_mentor,
+            bio: data.bio || '',
+          }));
+          setSkillTags(
+            (data.skills || '').split(',').map((s: string) => s.trim()).filter(Boolean)
+          );
+          setAgreeAccuracy(true);
+          setAgreeVisibility(true);
+        } else {
+          setForm(f => ({
+            ...f,
+            full_name: profile?.full_name || '',
+            email: user.email || '',
+          }));
+        }
         setCheckingExisting(false);
       });
   }, [user, profile]);
@@ -131,21 +172,35 @@ const RegisterPage = () => {
     setSkillInput('');
   };
 
+  const isEditMode = !!existingRecord;
+
   const handleSubmit = async () => {
     if (!agreeAccuracy || !agreeVisibility) { toast.error('Please agree to both checkboxes'); return; }
     setSubmitting(true);
     try {
-      const { error } = await supabase.from('alumni').insert({
+      const payload = {
         ...form,
         user_id: user!.id,
         skills: skillTags.join(', '),
         graduation_year: form.graduation_year ? parseInt(form.graduation_year) : null,
         date_of_birth: form.date_of_birth || null,
-        is_approved: false,
-      });
-      if (error) throw error;
-      setShowConfetti(true);
-      setTimeout(() => { setShowConfetti(false); setShowSuccess(true); }, 3000);
+      };
+      if (isEditMode) {
+        const { error } = await supabase.from('alumni').update(payload).eq('id', existingRecord.id);
+        if (error) throw error;
+        toast.success('Profile updated!');
+        setExistingRecord({ ...existingRecord, ...payload });
+      } else {
+        const { data, error } = await supabase
+          .from('alumni')
+          .insert({ ...payload, is_approved: false })
+          .select()
+          .single();
+        if (error) throw error;
+        setExistingRecord(data);
+        setShowConfetti(true);
+        setTimeout(() => { setShowConfetti(false); setShowSuccess(true); }, 3000);
+      }
     } catch (e: any) {
       toast.error(e.message || 'Submission failed');
     } finally {
@@ -155,27 +210,7 @@ const RegisterPage = () => {
 
   if (checkingExisting) return <div className="min-h-screen pt-20 flex items-center justify-center"><p className="text-muted-foreground">Checking...</p></div>;
 
-  if (existingRecord) {
-    const isPending = !existingRecord.is_approved && !existingRecord.is_rejected;
-    const isApproved = existingRecord.is_approved;
-    return (
-      <motion.div {...pageTransition} className="min-h-screen pt-24 bg-background">
-        <div className="container mx-auto px-4 max-w-lg text-center space-y-4">
-          <div className="text-5xl">{isPending ? '⏳' : isApproved ? '🎉' : '❌'}</div>
-          <h1 className="text-2xl font-heading font-bold text-foreground">
-            {isPending ? 'Registration Under Review' : isApproved ? 'Profile is Live!' : 'Registration Not Approved'}
-          </h1>
-          <p className="text-muted-foreground font-body">
-            {isPending ? "Your registration is under review. We'll notify you once approved!" :
-             isApproved ? 'Your profile is live on the alumni directory!' :
-             'Your registration was not approved. Please contact admin.'}
-          </p>
-          {isApproved && <Link to={`/alumni/${existingRecord.id}`}><Button className="bg-accent text-accent-foreground hover:bg-accent-hover font-heading">View My Profile</Button></Link>}
-          <Link to="/"><Button variant="outline" className="font-heading">Go to Homepage</Button></Link>
-        </div>
-      </motion.div>
-    );
-  }
+  // Existing record → render the form pre-filled in EDIT mode (no lockout screen).
 
   if (showSuccess) {
     return (
@@ -353,6 +388,18 @@ const RegisterPage = () => {
                   <Textarea value={form.university_memory} onChange={e => updateForm('university_memory', e.target.value.slice(0, 300))} placeholder="Share your favorite campus memory..." maxLength={300} className="resize-none" rows={3} />
                   <p className="text-xs text-muted-foreground text-right mt-1">{form.university_memory.length}/300</p>
                 </div>
+
+                {user && (
+                  <div className="pt-4 border-t border-border">
+                    <EducationManager
+                      userId={user.id}
+                      defaultYear={form.graduation_year ? parseInt(form.graduation_year) : undefined}
+                    />
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Add multiple degrees (MSc, PhD, etc.). Your BSc in ETE is pre-filled on first add.
+                    </p>
+                  </div>
+                )}
               </>
             )}
 
@@ -391,7 +438,14 @@ const RegisterPage = () => {
                   </div>
                   <div><Label className="font-heading text-sm">Years of Experience</Label><Input type="number" value={form.years_of_experience} onChange={e => updateForm('years_of_experience', parseInt(e.target.value) || 0)} min={0} max={50} /></div>
                 </div>
-                <div><Label className="font-heading text-sm">Previous Companies</Label><Textarea value={form.previous_companies} onChange={e => updateForm('previous_companies', e.target.value)} placeholder="Enter each company on a new line" rows={3} className="resize-none" /></div>
+                {user && (
+                  <div className="pt-4 border-t border-border">
+                    <EmploymentManager userId={user.id} />
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Add your full work history (like LinkedIn). The "Primary Job Title / Company" above shows on directory cards.
+                    </p>
+                  </div>
+                )}
                 <div>
                   <Label className="font-heading text-sm">Key Skills (max 15)</Label>
                   <div className="flex gap-2 mt-2">
@@ -489,7 +543,7 @@ const RegisterPage = () => {
             </Button>
           ) : (
             <Button onClick={handleSubmit} disabled={submitting || !agreeAccuracy || !agreeVisibility} className="bg-accent text-accent-foreground hover:bg-accent-hover font-heading px-8">
-              {submitting ? 'Submitting...' : 'Submit Registration'}
+              {submitting ? (isEditMode ? 'Updating...' : 'Submitting...') : (isEditMode ? 'Update Profile' : 'Submit Registration')}
             </Button>
           )}
         </div>
