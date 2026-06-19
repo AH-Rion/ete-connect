@@ -388,6 +388,18 @@ const RegisterPage = () => {
                   <Textarea value={form.university_memory} onChange={e => updateForm('university_memory', e.target.value.slice(0, 300))} placeholder="Share your favorite campus memory..." maxLength={300} className="resize-none" rows={3} />
                   <p className="text-xs text-muted-foreground text-right mt-1">{form.university_memory.length}/300</p>
                 </div>
+
+                {user && (
+                  <div className="pt-4 border-t border-border">
+                    <EducationManager
+                      userId={user.id}
+                      defaultYear={form.graduation_year ? parseInt(form.graduation_year) : undefined}
+                    />
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Add multiple degrees (MSc, PhD, etc.). Your BSc in ETE is pre-filled on first add.
+                    </p>
+                  </div>
+                )}
               </>
             )}
 
@@ -426,7 +438,14 @@ const RegisterPage = () => {
                   </div>
                   <div><Label className="font-heading text-sm">Years of Experience</Label><Input type="number" value={form.years_of_experience} onChange={e => updateForm('years_of_experience', parseInt(e.target.value) || 0)} min={0} max={50} /></div>
                 </div>
-                <div><Label className="font-heading text-sm">Previous Companies</Label><Textarea value={form.previous_companies} onChange={e => updateForm('previous_companies', e.target.value)} placeholder="Enter each company on a new line" rows={3} className="resize-none" /></div>
+                {user && (
+                  <div className="pt-4 border-t border-border">
+                    <EmploymentManager userId={user.id} />
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Add your full work history (like LinkedIn). The "Primary Job Title / Company" above shows on directory cards.
+                    </p>
+                  </div>
+                )}
                 <div>
                   <Label className="font-heading text-sm">Key Skills (max 15)</Label>
                   <div className="flex gap-2 mt-2">
@@ -524,7 +543,7 @@ const RegisterPage = () => {
             </Button>
           ) : (
             <Button onClick={handleSubmit} disabled={submitting || !agreeAccuracy || !agreeVisibility} className="bg-accent text-accent-foreground hover:bg-accent-hover font-heading px-8">
-              {submitting ? 'Submitting...' : 'Submit Registration'}
+              {submitting ? (isEditMode ? 'Updating...' : 'Submitting...') : (isEditMode ? 'Update Profile' : 'Submit Registration')}
             </Button>
           )}
         </div>
