@@ -94,14 +94,53 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (!user) return;
-    setForm(f => ({
-      ...f,
-      full_name: profile?.full_name || '',
-      email: user.email || '',
-    }));
     supabase.from('alumni').select('*').eq('user_id', user.id).maybeSingle()
       .then(({ data }) => {
-        setExistingRecord(data);
+        if (data) {
+          setExistingRecord(data);
+          setForm(f => ({
+            ...f,
+            full_name: data.full_name || profile?.full_name || '',
+            email: data.email || user.email || '',
+            phone: data.phone || '',
+            date_of_birth: data.date_of_birth || '',
+            photo_url: data.photo_url || '',
+            gender: data.gender || '',
+            city: data.city || '',
+            country: data.country || '',
+            linkedin_url: data.linkedin_url || '',
+            website_url: data.website_url || '',
+            department: data.department || 'Electronics & Telecommunication Engineering (ETE)',
+            degree: data.degree || '',
+            graduation_year: data.graduation_year ? String(data.graduation_year) : '',
+            student_id: data.student_id || '',
+            hall_of_residence: data.hall_of_residence || '',
+            university_memory: data.university_memory || '',
+            employment_status: data.employment_status || '',
+            job_title: data.job_title || '',
+            company: data.company || '',
+            company_link: data.company_link || '',
+            industry: data.industry || '',
+            other_industry: data.other_industry || '',
+            years_of_experience: data.years_of_experience || 0,
+            previous_companies: data.previous_companies || '',
+            skills: data.skills || '',
+            salary_range: data.salary_range || '',
+            willing_to_mentor: !!data.willing_to_mentor,
+            bio: data.bio || '',
+          }));
+          setSkillTags(
+            (data.skills || '').split(',').map((s: string) => s.trim()).filter(Boolean)
+          );
+          setAgreeAccuracy(true);
+          setAgreeVisibility(true);
+        } else {
+          setForm(f => ({
+            ...f,
+            full_name: profile?.full_name || '',
+            email: user.email || '',
+          }));
+        }
         setCheckingExisting(false);
       });
   }, [user, profile]);
@@ -133,21 +172,35 @@ const RegisterPage = () => {
     setSkillInput('');
   };
 
+  const isEditMode = !!existingRecord;
+
   const handleSubmit = async () => {
     if (!agreeAccuracy || !agreeVisibility) { toast.error('Please agree to both checkboxes'); return; }
     setSubmitting(true);
     try {
-      const { error } = await supabase.from('alumni').insert({
+      const payload = {
         ...form,
         user_id: user!.id,
         skills: skillTags.join(', '),
         graduation_year: form.graduation_year ? parseInt(form.graduation_year) : null,
         date_of_birth: form.date_of_birth || null,
-        is_approved: false,
-      });
-      if (error) throw error;
-      setShowConfetti(true);
-      setTimeout(() => { setShowConfetti(false); setShowSuccess(true); }, 3000);
+      };
+      if (isEditMode) {
+        const { error } = await supabase.from('alumni').update(payload).eq('id', existingRecord.id);
+        if (error) throw error;
+        toast.success('Profile updated!');
+        setExistingRecord({ ...existingRecord, ...payload });
+      } else {
+        const { data, error } = await supabase
+          .from('alumni')
+          .insert({ ...payload, is_approved: false })
+          .select()
+          .single();
+        if (error) throw error;
+        setExistingRecord(data);
+        setShowConfetti(true);
+        setTimeout(() => { setShowConfetti(false); setShowSuccess(true); }, 3000);
+      }
     } catch (e: any) {
       toast.error(e.message || 'Submission failed');
     } finally {
